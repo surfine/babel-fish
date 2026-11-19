@@ -1,12 +1,20 @@
-# Babel Fish
+<p align="center">
+  <img src="apps/shell/src-tauri/icons/128x128@2x.png" width="128" alt="Babel Fish 圖示：深藍底上的黃色小魚">
+</p>
 
-<img src="apps/shell/src-tauri/icons/128x128@2x.png" width="128" alt="Babel Fish 圖示：深藍底上的黃色小魚吐出對話泡泡">
+<h1 align="center">Babel Fish</h1>
+
+<p align="center">用自己的語言讀寫 Slack。</p>
+
+<p align="center">
+  <a href="https://github.com/surfine/babel-fish/releases/latest"><b>下載 macOS 版</b></a>（Apple 晶片，已經過 Apple 公證）
+  <br>
+  <a href="#babel-fish-in-english">English</a>
+</p>
 
 Babel Fish 是 macOS 上的 Slack 閱讀輔助工具，讓說中文和說英文的同事互相看懂。不是你的語言的訊息，它翻成你的語言。你用自己的語言寫回覆，它把草稿潤色成這個頻道的人會寫的樣子，再翻回你的語言，讓你確認意思沒有跑掉。
 
 你的語言可以選英文、台灣正體、香港繁體、大陆简体或马新简体。介面也跟著換。
-
-*English: see [Babel Fish in English](#babel-fish-in-english) below.*
 
 名字取自《銀河便車指南》裡的巴別魚：塞進耳朵，就聽得懂任何語言。
 
@@ -27,7 +35,7 @@ Babel Fish 不是 Slack 官方的 App，也不是工作空間安裝的 App。它
 
 ## 安裝
 
-1. 到 [Releases](../../releases) 下載最新的 `.dmg`。
+1. 到 [Releases](https://github.com/surfine/babel-fish/releases) 下載最新的 `.dmg`。
 2. 打開 `.dmg`，把 Babel Fish 拖到「應用程式」。
 3. 開啟 Babel Fish，讀完風險說明後登入 Slack。
 
@@ -66,6 +74,8 @@ Babel Fish 預設是唯讀模式。它只讀訊息，不會替你傳送任何東
 ## Babel Fish in English
 
 Babel Fish is an unofficial macOS reader for Slack. It helps people who read English and people who read Chinese work in the same Slack.
+
+[Download the latest release](https://github.com/surfine/babel-fish/releases/latest) for Macs with Apple silicon. The app is notarized by Apple.
 
 ![A Chinese channel with English translations](apps/shell/docs/screenshots/demo-en-feed.png)
 

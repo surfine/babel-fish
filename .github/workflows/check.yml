@@ -1,8 +1,7 @@
 name: check
+# 只手動執行。平常的檢查在本機：pre-commit 跑快速檢查，pre-push 跑完整檢查。
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 jobs:
   check:
     runs-on: macos-15

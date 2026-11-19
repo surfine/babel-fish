@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# 推送前跑完整檢查（含端到端與 Rust）。CI 不自動執行，這一關就是推送前最後的檢查。
+# 真的要跳過：git push --no-verify
+exec "$(git rev-parse --show-toplevel)/scripts/check.sh"
