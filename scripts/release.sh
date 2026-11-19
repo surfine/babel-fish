@@ -64,16 +64,31 @@ BASE=""
 [[ -n "${ROSETTA_GITHUB_REPO:-}" ]] && BASE="https://github.com/$ROSETTA_GITHUB_REPO/releases"
 node -e '
 const fs = require("fs");
-const [profile, pubFile, base] = process.argv.slice(1);
+const [profile, pubFile, base, assets] = process.argv.slice(1);
 const conf = {};
+conf.bundle = { macOS: { files: { "Resources/Assets.car": assets } } };
 if (fs.existsSync(profile)) {
-  conf.bundle = { macOS: { entitlements: "Entitlements.plist", files: { "embedded.provisionprofile": profile } } };
+  conf.bundle.macOS.entitlements = "Entitlements.plist";
+  conf.bundle.macOS.files["embedded.provisionprofile"] = profile;
 }
 if (base) {
   conf.plugins = { updater: { pubkey: fs.readFileSync(pubFile, "utf8").trim(), endpoints: [base + "/latest/download/latest.json"] } };
 }
-process.stdout.write(JSON.stringify(conf));' "$PROFILE_FILE" "$KEY.pub" "$BASE" > "$TMP/release.conf.json"
+process.stdout.write(JSON.stringify(conf));' "$PROFILE_FILE" "$KEY.pub" "$BASE" "$TMP/icon/Assets.car" > "$TMP/release.conf.json"
 CONFIG_ARGS=(--config "$TMP/release.conf.json")
+
+# Liquid Glass 圖示：自己用 actool 從 BabelFish.icon 編出 Assets.car，再放進 App 的 Resources。
+# （交給 Tauri 編時 actool 會報「Bad file descriptor」，原因不明；自己編就正常。）
+# 圖示服務留著過期的共用記憶體時也會失敗，所以先清掉。
+xcrun ictool --quit-all-idle-servers >/dev/null 2>&1 || true
+xcrun ictool --clear-shared-memory >/dev/null 2>&1 || true
+mkdir -p "$TMP/icon"
+cp -R "$SHELL_DIR/src-tauri/icons/BabelFish.icon" "$TMP/icon/Icon.icon"
+xcrun actool "$TMP/icon/Icon.icon" --compile "$TMP/icon" --output-format human-readable-text --errors \
+  --output-partial-info-plist "$TMP/icon/partial.plist" --app-icon Icon --include-all-app-icons \
+  --enable-on-demand-resources NO --development-region en --target-device mac \
+  --minimum-deployment-target 10.13 --platform macosx >/dev/null
+[[ -f "$TMP/icon/Assets.car" ]] || { echo "actool 沒有編出 Assets.car"; exit 1; }
 
 # 1. 建置並簽章 .app（只建 app；dmg 要等 app 公證完再做，裡面才是蓋過章的 app）
 npm --prefix "$SHELL_DIR" run tauri build -- --bundles app ${CONFIG_ARGS[@]+"${CONFIG_ARGS[@]}"}

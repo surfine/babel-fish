@@ -4,6 +4,7 @@ pub mod error;
 pub mod files;
 pub mod guide;
 pub mod llm;
+pub mod menu;
 pub mod slack;
 pub mod state;
 pub mod vault;
@@ -31,17 +32,8 @@ pub fn run() {
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_process::init())
-        // 系統預設選單，加上 Rosetta › 設定…（⌘,）：Mac 上開設定的慣例位置
-        .menu(|handle| {
-            use tauri::menu::{Menu, MenuItemBuilder, MenuItemKind, PredefinedMenuItem};
-            let menu = Menu::default(handle)?;
-            if let Some(MenuItemKind::Submenu(app_menu)) = menu.items()?.into_iter().next() {
-                let settings = MenuItemBuilder::with_id("settings", "設定…").accelerator("CmdOrCtrl+,").build(handle)?;
-                app_menu.insert(&PredefinedMenuItem::separator(handle)?, 1)?;
-                app_menu.insert(&settings, 2)?;
-            }
-            Ok(menu)
-        })
+        // 選單列先用台灣正體；前端啟動後呼叫 set_ui_locale 換成使用者選的語言（menu.rs）
+        .menu(|handle| menu::build(handle, "zh-TW"))
         .on_menu_event(|app, event| {
             if event.id() == "settings" {
                 use tauri::Emitter;
@@ -115,6 +107,7 @@ pub fn run() {
             guide::guide_data,
             guide::guide_sent,
             guide::guide_close,
+            menu::set_ui_locale,
             guide::guide_resize,
             guide::guide_copy_again,
         ])

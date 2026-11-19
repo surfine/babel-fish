@@ -451,3 +451,28 @@ fn write_commands_are_rejected_in_read_only_mode_and_allowed_when_off() {
     assert_eq!(state.write_api().err().unwrap().code, "read_only");
 }
 
+
+#[test]
+fn link_previews_come_from_unfurl_attachments_and_images_go_through_slack_proxy() {
+    use rosetta_shell_lib::slack::model::normalize_message;
+    let v = json!({
+        "ts": "1.0", "user": "U1", "text": "<https://x.com/a/status/1>",
+        "attachments": [
+            { "from_url": "https://x.com/a/status/1", "title": "forcequit (@forcequitOS) on X", "text": "iOS 27.3 beta 2 patches it", "service_name": "x.com",
+              "service_icon": "https://abs.twimg.com/icon.png", "thumb_url": "https://pbs.twimg.com/t.jpg" },
+            { "original_url": "https://www.bilibili.com/video/BV1", "title": "Mac 新玩法", "image_url": "https://i0.hdslb.com/a.jpg", "image_width": 640, "image_height": 360 },
+            { "fallback": "bot card without url", "text": "build passed" },
+            { "from_url": "https://empty.example" }
+        ]
+    });
+    let m = normalize_message(&v, "U9").unwrap();
+    assert_eq!(m.previews.len(), 2, "只收有網址、有內容的預覽：{:?}", m.previews);
+    let x = &m.previews[0];
+    assert_eq!(x.title.as_deref(), Some("forcequit (@forcequitOS) on X"));
+    assert_eq!(x.service.as_deref(), Some("x.com"));
+    assert!(x.thumb.as_deref().unwrap().starts_with("https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fpbs.twimg.com"));
+    let b = &m.previews[1];
+    assert_eq!((b.image_w, b.image_h), (Some(640), Some(360)));
+    assert!(b.image.as_deref().unwrap().contains("hdslb.com"));
+    assert!(b.thumb.is_none(), "有大圖就不另放縮圖");
+}

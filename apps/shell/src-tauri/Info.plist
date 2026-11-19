@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Tauri 會把這份併入 App 的 Info.plist。CFBundleIconName 指向 Assets.car 裡的 Liquid Glass 圖示
+     （scripts/release.sh 用 actool 從 icons/BabelFish.icon 編出來）；沒有 Assets.car 的建置會退回 icon.icns。 -->
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconName</key>
+	<string>Icon</string>
+</dict>
+</plist>

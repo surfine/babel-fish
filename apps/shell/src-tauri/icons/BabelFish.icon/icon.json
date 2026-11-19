@@ -1,67 +1,67 @@
 {
-  "fill": {
-    "automatic-gradient": "extended-srgb:0.09000,0.13000,0.27000,1.00000"
+  "fill" : {
+    "automatic-gradient" : "extended-srgb:0.09000,0.13000,0.27000,1.00000"
   },
-  "groups": [
+  "groups" : [
     {
-      "layers": [
+      "layers" : [
         {
-          "image-name": "eye.svg",
-          "name": "eye",
-          "glass": false
+          "glass" : false,
+          "image-name" : "eye.svg",
+          "name" : "eye"
         },
         {
-          "image-name": "waves.svg",
-          "name": "waves",
-          "glass": true
+          "glass" : true,
+          "image-name" : "waves.svg",
+          "name" : "waves"
         }
       ],
-      "shadow": {
-        "kind": "neutral",
-        "opacity": 0.4
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.4
       },
-      "translucency": {
-        "enabled": true,
-        "value": 0.2
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
       }
     },
     {
-      "layers": [
+      "layers" : [
         {
-          "image-name": "fish.svg",
-          "name": "fish",
-          "glass": true
+          "glass" : true,
+          "image-name" : "fish.svg",
+          "name" : "fish"
         }
       ],
-      "shadow": {
-        "kind": "neutral",
-        "opacity": 0.5
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
       },
-      "translucency": {
-        "enabled": true,
-        "value": 0.25
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.25
       }
     },
     {
-      "layers": [
+      "layers" : [
         {
-          "image-name": "stars.svg",
-          "name": "stars",
-          "glass": false,
-          "opacity": 0.6
+          "glass" : false,
+          "image-name" : "stars.svg",
+          "name" : "stars",
+          "opacity" : 0.6
         }
       ],
-      "shadow": {
-        "kind": "none",
-        "opacity": 0.0
+      "shadow" : {
+        "kind" : "none",
+        "opacity" : 0
       },
-      "translucency": {
-        "enabled": false,
-        "value": 0.0
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0
       }
     }
   ],
-  "supported-platforms": {
-    "squares": "shared"
+  "supported-platforms" : {
+    "squares" : "shared"
   }
 }

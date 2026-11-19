@@ -118,6 +118,17 @@ const THREAD: DemoMsg[] = [
   },
 ];
 
+// 示範用的連結預覽（虛構網站）；圖用 data URL，不連外
+const PREVIEW_SVG =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300"><rect width="640" height="300" fill="#1d3461"/><text x="40" y="170" font-family="-apple-system,Helvetica" font-size="44" font-weight="700" fill="#f6c31c">iPadOS 27 beta 4</text></svg>`);
+NEWSROOM.push({
+  ts: ts(27, 8, 12), user: 'U01SAM',
+  text: 'release notes are up <https://notes.example.com/ipados-27-beta-4>',
+  zh: '發行說明出來了',
+  previews: [{ url: 'https://notes.example.com/ipados-27-beta-4', title: 'iPadOS 27 beta 4 release notes', text: 'Find My now lists AirPods Pro (2nd generation) on iPad. Precision Finding still requires iPhone.', image: PREVIEW_SVG, image_w: 640, image_h: 300, service: 'Example Notes' }],
+});
+
 const GENERAL: DemoMsg[] = [
   { ts: ts(27, 9, 12), user: 'U01SAM', text: 'reminder: <!here> standup moved to 10:30 today', zh: '提醒：@here 今天站會改到 10:30' },
   { ts: ts(27, 9, 14), user: 'U01RITA', text: 'ty! see everyone then :wave:', zh: '謝啦！到時見 👋' },

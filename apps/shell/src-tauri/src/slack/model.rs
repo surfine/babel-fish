@@ -62,6 +62,24 @@ pub struct Message {
     pub edited: bool,
     pub reactions: Vec<Reaction>,
     pub files: Vec<SlackFile>,
+    /// 連結預覽（Slack 的 unfurl，放在 attachments 裡）
+    #[serde(default)]
+    pub previews: Vec<LinkPreview>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct LinkPreview {
+    pub url: String,
+    pub title: Option<String>,
+    pub text: Option<String>,
+    /// 預覽圖，已換成 Slack 的圖片代理網址（和官方用戶端一樣，不直接連到對方網站）
+    pub image: Option<String>,
+    pub image_w: Option<u32>,
+    pub image_h: Option<u32>,
+    /// 小圖（縮圖），排在右側
+    pub thumb: Option<String>,
+    pub service: Option<String>,
+    pub service_icon: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -224,6 +242,49 @@ pub fn normalize_message(v: &Value, self_id: &str) -> Option<Message> {
         edited: v.get("edited").is_some_and(|e| !e.is_null()),
         reactions,
         files,
+        previews: v
+            .get("attachments")
+            .and_then(Value::as_array)
+            .map(|a| a.iter().filter_map(normalize_preview).collect())
+            .unwrap_or_default(),
+    })
+}
+
+/// 外部圖片改走 Slack 的圖片代理（slack-imgs.com），對方網站看不到使用者的位址
+pub fn proxy_image(url: &str) -> Option<String> {
+    let u = url::Url::parse(url).ok()?;
+    match u.scheme() {
+        "https" | "http" => {}
+        _ => return None,
+    }
+    if u.host_str().is_some_and(|h| h == "slack-imgs.com" || h.ends_with(".slack-edge.com")) {
+        return Some(url.to_string());
+    }
+    let enc: String = url::form_urlencoded::byte_serialize(url.as_bytes()).collect();
+    Some(format!("https://slack-imgs.com/?c=1&o1=ro&url={enc}"))
+}
+
+/// 只收連結預覽（有 from_url 或 original_url 的 attachment），一般 bot 附件不畫
+pub fn normalize_preview(a: &Value) -> Option<LinkPreview> {
+    let url = s(a, "from_url").or_else(|| s(a, "original_url"))?;
+    let title = s(a, "title").or_else(|| s(a, "fallback")).filter(|t| !t.trim().is_empty());
+    let text = s(a, "text").filter(|t| !t.trim().is_empty());
+    let image = s(a, "image_url").and_then(|u| proxy_image(&u));
+    let thumb = if image.is_none() { s(a, "thumb_url").and_then(|u| proxy_image(&u)) } else { None };
+    if title.is_none() && text.is_none() && image.is_none() && thumb.is_none() {
+        return None;
+    }
+    let n = |k: &str| a.get(k).and_then(Value::as_u64).map(|x| x as u32);
+    Some(LinkPreview {
+        url,
+        title,
+        text,
+        image,
+        image_w: n("image_width"),
+        image_h: n("image_height"),
+        thumb,
+        service: s(a, "service_name").or_else(|| s(a, "author_name")),
+        service_icon: s(a, "service_icon").and_then(|u| proxy_image(&u)),
     })
 }
 

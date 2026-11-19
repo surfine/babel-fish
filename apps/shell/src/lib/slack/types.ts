@@ -50,6 +50,19 @@ export interface Message {
   edited: boolean;
   reactions: Reaction[];
   files: SlackFile[];
+  previews?: LinkPreview[]; // 連結預覽
+}
+
+export interface LinkPreview {
+  url: string;
+  title?: string | null;
+  text?: string | null;
+  image?: string | null; // 已走 Slack 圖片代理
+  image_w?: number | null;
+  image_h?: number | null;
+  thumb?: string | null;
+  service?: string | null;
+  service_icon?: string | null;
 }
 
 export interface User {

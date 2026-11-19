@@ -21,7 +21,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; img-src 'self' data: blob: slackfile: http://slackfile.localhost https://*.slack-edge.com https://*.slack.com https://secure.gravatar.com; style-src 'self' 'unsafe-inline'; connect-src 'self' ipc: http://ipc.localhost"
+      "csp": "default-src 'self'; img-src 'self' data: blob: slackfile: http://slackfile.localhost https://*.slack-edge.com https://*.slack.com https://secure.gravatar.com https://slack-imgs.com; style-src 'self' 'unsafe-inline'; connect-src 'self' ipc: http://ipc.localhost"
     },
     "macOSPrivateApi": true
   },

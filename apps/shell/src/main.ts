@@ -28,6 +28,7 @@ if (!isGuide) refreshLLM().catch((e) => console.warn('讀取 AI 金鑰狀態失�
 // 中文地區用字：介面原文是台灣正體，選了其他地區就轉換畫面上的文字（見 lib/zh.ts）
 const zhVariant = loadVariant();
 document.documentElement.lang = zhVariant;
+if (!isGuide && internals) import('@tauri-apps/api/core').then(({ invoke }) => invoke('set_ui_locale', { locale: zhVariant }).catch(() => {}));
 if (zhVariant !== 'zh-TW') makeConverter(zhVariant).then((c) => convertUI(document.body, c));
 
 // 開發用：主控台可用 __app 檢查狀態；?demo&shot=review|thread|zh 直接擺好截圖用的畫面

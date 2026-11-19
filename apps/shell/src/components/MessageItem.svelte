@@ -10,6 +10,7 @@
   import Avatar from './Avatar.svelte';
   import Reactions from './Reactions.svelte';
   import Files from './Files.svelte';
+  import LinkPreviews from './LinkPreviews.svelte';
 
   let {
     channel,
@@ -128,6 +129,7 @@
     {/if}
 
     <Files files={m.files} />
+    {#if m.previews?.length}<LinkPreviews previews={m.previews} />{/if}
     <Reactions {channel} {m} />
 
     {#if scope === 'main' && m.reply_count > 0}
