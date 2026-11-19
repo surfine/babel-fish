@@ -1,0 +1,22 @@
+{
+  "providers": {
+    "local": {
+      "kind": "openai-compatible",
+      "baseURL": "http://localhost:11434/v1",
+      "requireApiKey": false,
+      "jsonMode": "prompt"
+    },
+    "openrouter": {
+      "kind": "openai-compatible",
+      "baseURL": "https://openrouter.ai/api/v1",
+      "apiKeyEnv": "OPENROUTER_API_KEY",
+      "jsonMode": "json_object"
+    }
+  },
+  "steps": {
+    "translate": "deepseek:deepseek-flash",
+    "polish": "anthropic:claude-sonnet-5-5@medium",
+    "backtranslate": "anthropic:claude-haiku-5-5@low",
+    "compare": "anthropic:claude-sonnet-5-5@medium"
+  }
+}

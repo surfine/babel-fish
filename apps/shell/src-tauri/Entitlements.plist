@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- 新式鑰匙圈（Touch ID 解鎖）需要的權限，由 embedded.provisionprofile 授權。
+     團隊 ID 綁定 DQ45KFVHJ8：用別的開發者帳號建置時，要換成自己的 App ID 與描述檔，
+     或不放描述檔（scripts/release.sh 就不加這些權限，App 改用舊式鑰匙圈）。 -->
+<plist version="1.0">
+<dict>
+	<key>com.apple.application-identifier</key>
+	<string>DQ45KFVHJ8.app.rosetta.shell</string>
+	<key>com.apple.developer.team-identifier</key>
+	<string>DQ45KFVHJ8</string>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>DQ45KFVHJ8.app.rosetta.shell</string>
+	</array>
+</dict>
+</plist>

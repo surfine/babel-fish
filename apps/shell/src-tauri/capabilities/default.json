@@ -1,0 +1,24 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "main 視窗的權限；登入視窗（遠端頁面）不給任何 capability；opener 只放行 slack://（唯讀模式下打開官方 Slack）；updater 與 process:allow-restart 給自動更新用（只有發行版會註冊 updater）",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "notification:default",
+    "core:window:allow-set-badge-count",
+    "core:window:allow-request-user-attention",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "slack://*"
+        }
+      ]
+    },
+    "updater:default",
+    "process:allow-restart"
+  ]
+}

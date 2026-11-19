@@ -1,0 +1,40 @@
+[package]
+name = "rosetta-shell"
+version = "0.1.0"
+edition = "2021"
+description = "Rosetta：中英雙語 Slack 殼"
+
+[lib]
+name = "rosetta_shell_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["macos-private-api"] }
+tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
+tokio-tungstenite = { version = "0.26", features = ["rustls-tls-webpki-roots"] }
+futures-util = "0.3"
+async-trait = "0.1"
+thiserror = "2"
+keyring = { version = "3", features = ["apple-native"] }
+url = "2"
+percent-encoding = "2"
+base64 = "0.22"
+tauri-plugin-updater = "2"
+tauri-plugin-process = "2"
+core-graphics = "0.25"
+core-foundation = "0.10"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "test-util"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+security-framework = { version = "3", features = ["OSX_10_15"] }
+security-framework-sys = "2"

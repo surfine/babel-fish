@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "guide",
+  "description": "貼上引導卡（本機頁面）：只能收事件；開關、複製都走 guide_* 命令",
+  "windows": ["guide"],
+  "permissions": ["core:event:default"]
+}

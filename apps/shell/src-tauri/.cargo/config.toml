@@ -1,0 +1,6 @@
+# 開發版執行前先用固定身分簽章，避免鑰匙圈每次重編譯都跳密碼視窗（見 scripts/dev-sign-run.sh）
+[target.aarch64-apple-darwin]
+runner = "../../../scripts/dev-sign-run.sh"
+
+[target.x86_64-apple-darwin]
+runner = "../../../scripts/dev-sign-run.sh"

@@ -1,0 +1,5 @@
+{"ok":true,
+ "channels":[{"id":"C012AB3CD","has_unreads":true,"mention_count":2,"last_read":"1700000100.000100"},{"id":"G0123SECRET","has_unreads":false,"mention_count":0}],
+ "mpims":[{"id":"G0MPDM001","has_unreads":true,"mention_count":0}],
+ "ims":[{"id":"D0123ABCD","has_unreads":true,"mention_count":3,"unread_count_display":3}],
+ "threads":{"has_unreads":false,"mention_count":0}}

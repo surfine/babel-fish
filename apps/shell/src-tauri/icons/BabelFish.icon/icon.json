@@ -1,0 +1,67 @@
+{
+  "fill": {
+    "automatic-gradient": "extended-srgb:0.09000,0.13000,0.27000,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "eye.svg",
+          "name": "eye",
+          "glass": false
+        },
+        {
+          "image-name": "waves.svg",
+          "name": "waves",
+          "glass": true
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.4
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.2
+      }
+    },
+    {
+      "layers": [
+        {
+          "image-name": "fish.svg",
+          "name": "fish",
+          "glass": true
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.25
+      }
+    },
+    {
+      "layers": [
+        {
+          "image-name": "stars.svg",
+          "name": "stars",
+          "glass": false,
+          "opacity": 0.6
+        }
+      ],
+      "shadow": {
+        "kind": "none",
+        "opacity": 0.0
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0.0
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

@@ -1,0 +1,3256 @@
+{
+  "steps": {
+    "translate": "deepseek:deepseek-flash",
+    "annotate": "deepseek:deepseek-flash",
+    "summarize": "deepseek:deepseek-flash",
+    "polish": "anthropic:claude-sonnet-5-5@medium",
+    "backtranslate": "deepseek:deepseek-flash",
+    "compare": "deepseek:deepseek-flash"
+  },
+  "sameModel": false,
+  "mock": false,
+  "cases": [
+    {
+      "id": "01-same-here",
+      "title": "附和＋帶保留的猜測（設計稿範例）",
+      "conversation": "newsroom",
+      "replyTo": 3,
+      "draft": "我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試",
+      "watch": "「也許」不能變成 prob；不能自己加 report back",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, no AirPods in find my on beta 4",
+                  "maybe they show up after an iPad restart? gonna try in a bit"
+                ],
+                "merged": "same here, no AirPods in find my on beta 4, maybe they show up after an iPad restart? gonna try in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "用 same here 取代直譯的 I also have the same situation，這是頻道裡自然的附和說法。"
+                  },
+                  {
+                    "phrase": "no AirPods in find my",
+                    "why": "省略主詞與 be 動詞的片段句，符合頻道多數訊息短、不用句號的風格。"
+                  },
+                  {
+                    "phrase": "gonna try in a bit",
+                    "why": "gonna 和 in a bit 是口語縮寫，對應「等一下再試試」，比 later 更随意。"
+                  },
+                  {
+                    "phrase": "maybe they show up after...?",
+                    "why": "保留問號與 maybe，維持原句不確定的推測語氣，沒有變成肯定。"
+                  }
+                ],
+                "english": "same here, no AirPods in find my on beta 4\nmaybe they show up after an iPad restart? gonna try in a bit",
+                "back": "我這邊也一樣，beta 4 上「尋找」裡沒有 AirPods\n也許重開 iPad 之後就會出現？等一下來試試",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也與你的原稿相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, can’t see AirPods on beta 4",
+                  "maybe they show up after restarting the iPad?",
+                  "i’ll try again in a bit"
+                ],
+                "merged": "same here, can’t see AirPods on beta 4, maybe they show up after restarting the iPad? i’ll try again in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "以簡短的附和開頭，直接回應 Owen 的訊息，避免翻譯腔的 I also have the same situation。"
+                  },
+                  {
+                    "phrase": "can’t see AirPods on beta 4",
+                    "why": "用 can’t see 表達「看不到」，並保留 beta 4 原樣，符合頻道用語。"
+                  },
+                  {
+                    "phrase": "after restarting the iPad?",
+                    "why": "把「重開機」說成 restarting the iPad，並保留問號讓它仍是詢問。"
+                  },
+                  {
+                    "phrase": "i’ll try again in a bit",
+                    "why": "拆成獨立短訊息，符合頻道常見的連續短句節奏。"
+                  }
+                ],
+                "english": "same here, can’t see AirPods on beta 4\nmaybe they show up after restarting the iPad?\ni’ll try again in a bit",
+                "back": "我這邊也一樣，beta 4 上看不到 AirPods\n也許重開 iPad 之後就會出現？\n我等一下再試一次",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Same here. I can’t see my AirPods on iPadOS 27 beta 4 either. Maybe they will show up after I restart the iPad? I’ll try again in a bit."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Same here.",
+                    "why": "正式版本用完整句子與句號，但仍以 Same here 開頭直接回應對方。"
+                  },
+                  {
+                    "phrase": "can’t see my AirPods on iPadOS 27 beta 4 either",
+                    "why": "補上主詞與產品名稱 iPadOS 27，符合正式場合的清楚表達。"
+                  },
+                  {
+                    "phrase": "Maybe they will show up after I restart the iPad?",
+                    "why": "保留 Maybe 與問號，維持原文的推測與詢問語氣，不加強成 definitely。"
+                  },
+                  {
+                    "phrase": "I’ll try again in a bit.",
+                    "why": "用完整句陳述「等一下再試」，語氣中性不誇大。"
+                  }
+                ],
+                "english": "Same here. I can’t see my AirPods on iPadOS 27 beta 4 either. Maybe they will show up after I restart the iPad? I’ll try again in a bit.",
+                "back": "我這邊也一樣。我在 iPadOS 27 beta 4 上也看不到我的 AirPods。也許重開 iPad 之後就會出現？我等一下再試一次。",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只把「beta 4」明確寫成 iPadOS 27 beta 4，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "iPadOS 27 beta 4"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1637,
+                  "outputTokens": 643
+                },
+                "ms": 4716
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 735,
+                  "outputTokens": 128
+                },
+                "ms": 1273
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 955,
+                    "outputTokens": 47
+                  },
+                  "ms": 858
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 956,
+                    "outputTokens": 43
+                  },
+                  "ms": 1118
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 971,
+                    "outputTokens": 65
+                  },
+                  "ms": 808
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@low",
+          "card": {
+            "draft": "我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, no AirPods on beta 4 either",
+                  "maybe it only shows up after restarting the iPad? trying again in a bit"
+                ],
+                "merged": "same here, no AirPods on beta 4 either. maybe it only shows up after restarting the iPad? trying again in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "用 same here 回應對方的狀況，比直譯的「I also have the same situation」自然得多，也是頻道裡常見的簡短附和。"
+                  },
+                  {
+                    "phrase": "no AirPods on beta 4",
+                    "why": "省略動詞的片段寫法，符合這個頻道平均九個字、不寫完整句子的風格。"
+                  },
+                  {
+                    "phrase": "maybe it only shows up after restarting the iPad?",
+                    "why": "保留 maybe 與問號，維持原稿「也許……？」的猜測加詢問語氣，不會變成肯定句。"
+                  },
+                  {
+                    "phrase": "trying again in a bit",
+                    "why": "用進行式表達「我等一下再試試」，比 will try 更口語，也貼近頻道的隨性語氣。"
+                  }
+                ],
+                "english": "same here, no AirPods on beta 4 either\nmaybe it only shows up after restarting the iPad? trying again in a bit",
+                "back": "我這邊也一樣，beta 4 上也沒有 AirPods\n也許要重開 iPad 之後才會出現？等一下再試一次",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, can't see AirPods on beta 4 either",
+                  "maybe it only shows up after restarting the iPad? gonna try again in a bit"
+                ],
+                "merged": "same here, can't see AirPods on beta 4 either. maybe it only shows up after restarting the iPad? gonna try again in a bit",
+                "notes": [
+                  {
+                    "phrase": "can't see AirPods on beta 4 either",
+                    "why": "either 對應原稿的「也一樣」，讓整句讀起來是在回覆 Owen 那則訊息，而不是憑空開新話題。"
+                  },
+                  {
+                    "phrase": "gonna try again in a bit",
+                    "why": "gonna 是這個頻道常見的縮寫，in a bit 對應「等一下」，比 shortly 更口語。"
+                  },
+                  {
+                    "phrase": "iPad、AirPods、beta 4",
+                    "why": "產品名稱與版本號依 Apple 官方大小寫保留原樣，不翻成中文也不改寫。"
+                  },
+                  {
+                    "phrase": "結尾不加句號",
+                    "why": "頻道裡近九成訊息結尾沒有標點，因此兩個泡泡都不加句號，維持原本的節奏。"
+                  }
+                ],
+                "english": "same here, can't see AirPods on beta 4 either\nmaybe it only shows up after restarting the iPad? gonna try again in a bit",
+                "back": "我這邊也一樣，beta 4 上也看不到 AirPods\n也許要重開 iPad 之後才會出現？等一下再試一次",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Same here, I can't see AirPods on beta 4 either. Maybe they only show up after restarting the iPad? I'll try again in a bit."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Same here, I can't see AirPods on beta 4 either.",
+                    "why": "正式版本補回主詞與動詞寫成完整句子，但用 Same here 開頭仍保留「我這邊也一樣」的意思。"
+                  },
+                  {
+                    "phrase": "Maybe they only show up after restarting the iPad?",
+                    "why": "以 they 指涉前一句的 AirPods，並保留問號，讓猜測仍然是個詢問而不是結論。"
+                  },
+                  {
+                    "phrase": "I'll try again in a bit.",
+                    "why": "把「我等一下再試試」寫成完整句並加上句號，符合正式版本給不熟對象閱讀的規格。"
+                  }
+                ],
+                "english": "Same here, I can't see AirPods on beta 4 either. Maybe they only show up after restarting the iPad? I'll try again in a bit.",
+                "back": "我這邊也一樣，beta 4 上也看不到 AirPods。也許要重開 iPad 之後才會出現？我等一下再試一次。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1662,
+                  "outputTokens": 1448
+                },
+                "ms": 8844
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 727,
+                  "outputTokens": 118
+                },
+                "ms": 1384
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 952,
+                    "outputTokens": 43
+                  },
+                  "ms": 767
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 955,
+                    "outputTokens": 43
+                  },
+                  "ms": 925
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 959,
+                    "outputTokens": 43
+                  },
+                  "ms": 934
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, no AirPods on beta 4 either",
+                  "maybe they only show up after an iPad restart? gonna try in a bit"
+                ],
+                "merged": "same here, no AirPods on beta 4 either, maybe they only show up after an iPad restart? gonna try in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "用 same here 取代直譯的「我這邊也一樣」，是英文訊息裡最自然的附和說法，簡短又不生硬。"
+                  },
+                  {
+                    "phrase": "no AirPods on beta 4 either",
+                    "why": "口語省略主詞和動詞，只留重點名詞，符合這個頻道短句連發的風格；either 放在句尾表示「也（沒有）」。"
+                  },
+                  {
+                    "phrase": "gonna try in a bit",
+                    "why": "gonna 是 going to 的口語縮寫，in a bit 對應「等一下」，比 later 更貼近原稿的短暫延後。"
+                  }
+                ],
+                "english": "same here, no AirPods on beta 4 either\nmaybe they only show up after an iPad restart? gonna try in a bit",
+                "back": "我這邊也一樣，beta 4 上也沒有 AirPods\n也許要重開 iPad 之後才會出現？等一下來試試",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, can't see the AirPods on beta 4 either",
+                  "maybe they only show up after restarting the iPad? i'll try again in a bit"
+                ],
+                "merged": "same here, can't see the AirPods on beta 4 either. maybe they only show up after restarting the iPad? i'll try again in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "這是回覆 Owen 的訊息，用 same here 開頭直接表明狀況相同，比「I also have the same situation」自然得多。"
+                  },
+                  {
+                    "phrase": "maybe they only show up after restarting the iPad?",
+                    "why": "原稿的「也許……才會出現？」是疑問句，英文保留問號維持詢問語氣；maybe 對應「也許」，不升級成 probably。"
+                  },
+                  {
+                    "phrase": "i'll try again in a bit",
+                    "why": "整句用小寫開頭、句尾不加句點，符合頻道 89% 訊息開頭小寫、幾乎不用標點的習慣；beta 4 依術語表保留原樣。"
+                  }
+                ],
+                "english": "same here, can't see the AirPods on beta 4 either\nmaybe they only show up after restarting the iPad? i'll try again in a bit",
+                "back": "我這邊也一樣，beta 4 上也看不到 AirPods\n也許要重開 iPad 之後才會出現？我等一下再試一次",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Same here, I can't see the AirPods on beta 4 either. Maybe they only show up after restarting the iPad? I'll try again in a bit."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Same here",
+                    "why": "正式版本仍用 Same here 承接對方訊息，語感比 «I have the same situation» 更貼近母語者的簡潔說法。"
+                  },
+                  {
+                    "phrase": "Maybe they only show up after restarting the iPad?",
+                    "why": "完整句構加上問號，維持原稿的推測與詢問；maybe 對應「也許」，強度不變。"
+                  },
+                  {
+                    "phrase": "I'll try again in a bit",
+                    "why": "正式版用完整句子與正常大小寫、標點，適合對不熟的對象或需要留紀錄的場合。"
+                  }
+                ],
+                "english": "Same here, I can't see the AirPods on beta 4 either. Maybe they only show up after restarting the iPad? I'll try again in a bit.",
+                "back": "我這邊也一樣，beta 4 上也看不到 AirPods。也許要重開 iPad 之後才會出現？我等一下再試一次。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1662,
+                  "outputTokens": 1173
+                },
+                "ms": 7679
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 729,
+                  "outputTokens": 119
+                },
+                "ms": 1472
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 951,
+                    "outputTokens": 43
+                  },
+                  "ms": 822
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 958,
+                    "outputTokens": 43
+                  },
+                  "ms": 891
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 960,
+                    "outputTokens": 43
+                  },
+                  "ms": 911
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-v4-pro",
+          "card": {
+            "draft": "我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, can't see my AirPods on beta 4",
+                  "maybe needs an iPad restart?",
+                  "gonna try again later"
+                ],
+                "merged": "same here, can't see my AirPods on beta 4. maybe needs an iPad restart? gonna try again later",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "用「same here」簡潔表達「我這邊也一樣」，符合頻道裡常用短句開頭、小寫的習慣。"
+                  },
+                  {
+                    "phrase": "can't see my AirPods",
+                    "why": "「看不到 AirPods」直接說 can't see，口語自然，省略主詞 I 也是頻道常見寫法。"
+                  },
+                  {
+                    "phrase": "maybe needs an iPad restart?",
+                    "why": "用 maybe 對應「也許」，保留原本不確定的語氣，句尾問號維持疑問句，但風格還是很隨興。"
+                  },
+                  {
+                    "phrase": "gonna try again later",
+                    "why": "「我等一下再試試」翻成 gonna try again later，比 will 更口語，也符合頻道縮寫風格。"
+                  }
+                ],
+                "english": "same here, can't see my AirPods on beta 4\nmaybe needs an iPad restart?\ngonna try again later",
+                "back": "我這邊也一樣，在 beta 4 上看不到我的 AirPods\n也許需要重開 iPad？\n晚點再試一次",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只是把「也許要等重開機」說成「也許需要重開機」，語氣差別不大。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, not seeing my AirPods on beta 4",
+                  "maybe a restart will fix it?",
+                  "i'll try again in a bit"
+                ],
+                "merged": "same here, not seeing my AirPods on beta 4. maybe a restart will fix it? i'll try again in a bit",
+                "notes": [
+                  {
+                    "phrase": "same here, not seeing my AirPods",
+                    "why": "頻道裡常用「same here」接別人的話，後面用現在進行式 not seeing 說明自己狀況，自然又簡短。"
+                  },
+                  {
+                    "phrase": "maybe a restart will fix it?",
+                    "why": "把「也許要等 iPad 重開機後才會出現」換成更直接的 maybe a restart will fix it?，保留疑問語氣，符合頻道愛用短問句。"
+                  },
+                  {
+                    "phrase": "i'll try again in a bit",
+                    "why": "「我等一下再試試」用 i'll try again in a bit，小寫 i 是頻道九成訊息的寫法，in a bit 比 later 更口語。"
+                  }
+                ],
+                "english": "same here, not seeing my AirPods on beta 4\nmaybe a restart will fix it?\ni'll try again in a bit",
+                "back": "我這邊也一樣，在 beta 4 上沒看到我的 AirPods\n也許重開就能解決？\n我等一下再試一次",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只有把「等 iPad 重開機後」簡化成「重開」，沒有新增或漏掉重要資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm seeing the same issue: my AirPods don't appear on beta 4. Perhaps restarting the iPad will resolve it. I'll try again shortly."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm seeing the same issue",
+                    "why": "正式場合用完整句表達「我這邊也一樣」，避免口語縮寫，並清楚說明狀況。"
+                  },
+                  {
+                    "phrase": "Perhaps restarting the iPad will resolve it.",
+                    "why": "用 Perhaps 對應「也許」，語氣正式且保留不確定性，句尾句點符合正式訊息習慣。"
+                  },
+                  {
+                    "phrase": "I'll try again shortly.",
+                    "why": "「我等一下再試試」用完整句子呈現，shortly 比 later 更正式，適合對不熟的人或編輯說明。"
+                  }
+                ],
+                "english": "I'm seeing the same issue: my AirPods don't appear on beta 4. Perhaps restarting the iPad will resolve it. I'll try again shortly.",
+                "back": "我也遇到同樣的問題：我的 AirPods 在 beta 4 上沒有出現。也許重新啟動 iPad 就能解決。我很快會再試一次。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也與你的原稿相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-v4-pro",
+                "usage": {
+                  "inputTokens": 1634,
+                  "outputTokens": 775
+                },
+                "ms": 11596
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 719,
+                  "outputTokens": 124
+                },
+                "ms": 1347
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 948,
+                    "outputTokens": 63
+                  },
+                  "ms": 1161
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 951,
+                    "outputTokens": 57
+                  },
+                  "ms": 832
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 961,
+                    "outputTokens": 47
+                  },
+                  "ms": 907
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02-confirm-wording",
+      "title": "向同事確認寫法（問句）",
+      "conversation": "newsroom",
+      "replyTo": 7,
+      "draft": "了解，所以我們文章裡統一寫 Find My app 就好？不用特別寫成 Find My 應用程式之類的",
+      "watch": "要保持問句；產品名大小寫；不要變成命令語氣",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "了解，所以我們文章裡統一寫 Find My app 就好？不用特別寫成 Find My 應用程式之類的",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "got it, so we just use \"Find My app\" throughout the article? no need to spell it out as like the Find My application"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "got it",
+                    "why": "用簡短的 got it 開頭，符合頻道低調、口語化的回覆習慣，不用寫成正式的理解聲明。"
+                  },
+                  {
+                    "phrase": "throughout the article",
+                    "why": "用 throughout 表達「統一、全文」的意思，比 in our article consistently 更自然簡潔。"
+                  },
+                  {
+                    "phrase": "no need to spell it out as",
+                    "why": "用 spell it out 帶出「特別寫成」，保留原文疑問語氣，結尾不加問號符合頻道習慣。"
+                  }
+                ],
+                "english": "got it, so we just use \"Find My app\" throughout the article? no need to spell it out as like the Find My application",
+                "back": "了解，所以我們整篇文章就只用「Find My app」？不需要把它寫成像是 Find My application 那樣？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "got it, so we just use \"Find My app\" throughout the article?",
+                  "no need to write it out as the Find My application or whatever"
+                ],
+                "merged": "got it, so we just use \"Find My app\" throughout the article? no need to write it out as the Find My application or whatever",
+                "notes": [
+                  {
+                    "phrase": "got it, so",
+                    "why": "用 got it 承接對方的糾正，so 帶出確認問題，是頻道常見的短回覆開頭。"
+                  },
+                  {
+                    "phrase": "throughout the article",
+                    "why": "throughout 表達「文章裡統一」，比 consistently in the article 更像母語者的簡短說法。"
+                  },
+                  {
+                    "phrase": "write it out as ... or whatever",
+                    "why": "or whatever 對應原文「之類的」，口氣輕鬆且保留不確定感，不會顯得太正式。"
+                  },
+                  {
+                    "phrase": "不加問號",
+                    "why": "頻道多數訊息結尾不加標點，問句也常省略問號，符合這裡的節奏。"
+                  }
+                ],
+                "english": "got it, so we just use \"Find My app\" throughout the article?\nno need to write it out as the Find My application or whatever",
+                "back": "了解，所以我們整篇文章就只用「Find My app」？\n不需要把它寫成 Find My application 之類的？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Understood. So should we just use \"Find My app\" consistently throughout the article? There is no need to write it out as something like the Find My application."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Understood. So should we",
+                    "why": "用完整句子開頭並接 So 提問，符合正式版本對不熟對象的禮貌與清楚度。"
+                  },
+                  {
+                    "phrase": "consistently throughout the article",
+                    "why": "用 consistently throughout 精確表達「統一寫」，比 just write 更完整。"
+                  },
+                  {
+                    "phrase": "There is no need to write it out as something like",
+                    "why": "用 there is no need to 保留原文「不用特別」的語氣，something like 對應「之類的」。"
+                  }
+                ],
+                "english": "Understood. So should we just use \"Find My app\" consistently throughout the article? There is no need to write it out as something like the Find My application.",
+                "back": "了解。所以我們整篇文章就一致使用「Find My app」嗎？不需要把它寫成像是 Find My application 那樣。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1611,
+                  "outputTokens": 537
+                },
+                "ms": 3953
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 723,
+                  "outputTokens": 108
+                },
+                "ms": 1254
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 940,
+                    "outputTokens": 43
+                  },
+                  "ms": 692
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 941,
+                    "outputTokens": 42
+                  },
+                  "ms": 929
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 947,
+                    "outputTokens": 39
+                  },
+                  "ms": 806
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@low",
+          "card": {
+            "draft": "了解，所以我們文章裡統一寫 Find My app 就好？不用特別寫成 Find My 應用程式之類的",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "got it",
+                  "so we just use Find My app throughout the article? no need to write Find My application or whatever"
+                ],
+                "merged": "got it, so we just use Find My app throughout the article? no need to write Find My application or whatever",
+                "notes": [
+                  {
+                    "phrase": "throughout the article",
+                    "why": "把「文章裡統一」翻成 throughout，比 in the article 更自然表達「整篇都用」。"
+                  },
+                  {
+                    "phrase": "or whatever",
+                    "why": "對應「之類的」，語氣較鬆，符合 casual 變體。"
+                  },
+                  {
+                    "phrase": "got it",
+                    "why": "用簡短回應表達「了解」，符合此頻道短訊息節奏。"
+                  }
+                ],
+                "english": "got it\nso we just use Find My app throughout the article? no need to write Find My application or whatever",
+                "back": "了解\n所以我們整篇文章就用「尋找」app 就好？不用寫成「尋找」應用程式還是什麼的",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：把 Find My 具體寫成「尋找」app，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "「尋找」app",
+                    "「尋找」應用程式"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "got it",
+                  "so we just use Find My app consistently in the article? no need to write Find My application or anything"
+                ],
+                "merged": "got it, so we just use Find My app consistently in the article? no need to write Find My application or anything",
+                "notes": [
+                  {
+                    "phrase": "consistently",
+                    "why": "直接對應「統一」，比 always 更精準。"
+                  },
+                  {
+                    "phrase": "no need to write",
+                    "why": "保留「不用特別寫成」的語氣，沒有加入額外建議。"
+                  },
+                  {
+                    "phrase": "or anything",
+                    "why": "對應「之類的」，在此頻道比 or similar 更口語。"
+                  },
+                  {
+                    "phrase": "Find My app",
+                    "why": "產品名稱依 glossary 與 Apple 官方大小寫保留。"
+                  }
+                ],
+                "english": "got it\nso we just use Find My app consistently in the article? no need to write Find My application or anything",
+                "back": "了解\n所以我們在文章裡就統一用「尋找」app？不用寫成「尋找」應用程式之類的",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只是把 Find My app 寫成「尋找」app，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "「尋找」app",
+                    "「尋找」應用程式"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Got it. So we should just use “Find My app” consistently in our article, and there’s no need to write it as “Find My application” or similar?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Got it.",
+                    "why": "用完整但簡短的句子表達「了解」，符合正式變體。"
+                  },
+                  {
+                    "phrase": "consistently",
+                    "why": "對應「統一」，明確表達整篇文章用法一致。"
+                  },
+                  {
+                    "phrase": "or similar",
+                    "why": "將「之類的」轉成正式書面語，避免口語的 or whatever。"
+                  },
+                  {
+                    "phrase": "there’s no need to",
+                    "why": "保留「不用特別」的意思，語氣比 don’t need to 更書面。"
+                  }
+                ],
+                "english": "Got it. So we should just use “Find My app” consistently in our article, and there’s no need to write it as “Find My application” or similar?",
+                "back": "了解。所以我們在文章裡統一寫「尋找」app 就好，不需要寫成「尋找」應用程式或類似的寫法嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1636,
+                  "outputTokens": 2105
+                },
+                "ms": 19643
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 714,
+                  "outputTokens": 111
+                },
+                "ms": 1430
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 935,
+                    "outputTokens": 62
+                  },
+                  "ms": 1193
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 936,
+                    "outputTokens": 63
+                  },
+                  "ms": 1216
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 953,
+                    "outputTokens": 43
+                  },
+                  "ms": 760
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "了解，所以我們文章裡統一寫 Find My app 就好？不用特別寫成 Find My 應用程式之類的",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "got it",
+                  "so we just write “Find My app” throughout? no need to specifically write “Find My application” or whatever"
+                ],
+                "merged": "got it, so we just write “Find My app” throughout? no need to specifically write “Find My application” or whatever",
+                "notes": [
+                  {
+                    "phrase": "got it",
+                    "why": "用 got it 表示收到對方的說明，比 OK 更口語，也符合這個頻道偏短的開頭。"
+                  },
+                  {
+                    "phrase": "throughout",
+                    "why": "throughout 一個字就表達「整篇統一」，比 in the article 更精簡，符合頻道平均九個字的長度。"
+                  },
+                  {
+                    "phrase": "or whatever",
+                    "why": "用 whatever 收掉「之類的」，是口語的含糊結尾，比正式寫成 etc. 更貼近頻道語氣。"
+                  }
+                ],
+                "english": "got it\nso we just write “Find My app” throughout? no need to specifically write “Find My application” or whatever",
+                "back": "了解\n所以我們就整篇都寫「Find My app」？不用特別寫成「Find My application」還是什麼的",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "got it, so we just use “Find My app” consistently in the article?",
+                  "no need to write “Find My application” or anything"
+                ],
+                "merged": "got it, so we just use “Find My app” consistently in the article? no need to write “Find My application” or anything",
+                "notes": [
+                  {
+                    "phrase": "got it, so",
+                    "why": "got it 承接對方上一則糾正，so 直接帶出推論，是頻道裡常見的短句接續方式。"
+                  },
+                  {
+                    "phrase": "consistently in the article",
+                    "why": "consistently 對應中文「統一」，比 always 更精準表達用字一致，而不是每次都寫。"
+                  },
+                  {
+                    "phrase": "or anything",
+                    "why": "用 or anything 表達「之類的」，語尾自然不收得太正式，也保留原本的疑問語氣。"
+                  }
+                ],
+                "english": "got it, so we just use “Find My app” consistently in the article?\nno need to write “Find My application” or anything",
+                "back": "了解，所以我們文章裡就統一用「Find My app」？\n不用寫「Find My application」之類的",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相同。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Got it. So we'll consistently use “Find My app” in the article? There's no need to spell it out as “Find My application” or something similar."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Got it.",
+                    "why": "正式版本用完整句子與句號開頭，語氣比口語的 got it 更適合對不熟的人或編輯說話。"
+                  },
+                  {
+                    "phrase": "There's no need to",
+                    "why": "用 There's no need to 改寫「不用」，比 don't need to 更書面，意思強度不變。"
+                  },
+                  {
+                    "phrase": "or something similar",
+                    "why": "以 something similar 取代口語的 or anything，維持正式語氣但仍保留原本的試探性問法。"
+                  }
+                ],
+                "english": "Got it. So we'll consistently use “Find My app” in the article? There's no need to spell it out as “Find My application” or something similar.",
+                "back": "了解。所以我們在文章中會統一使用「Find My app」？不需要把它完整寫成「Find My application」或類似的說法。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1636,
+                  "outputTokens": 1679
+                },
+                "ms": 9789
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 721,
+                  "outputTokens": 113
+                },
+                "ms": 843
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 940,
+                    "outputTokens": 43
+                  },
+                  "ms": 1066
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 939,
+                    "outputTokens": 43
+                  },
+                  "ms": 789
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 952,
+                    "outputTokens": 43
+                  },
+                  "ms": 791
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-v4-pro",
+          "card": {
+            "draft": "了解，所以我們文章裡統一寫 Find My app 就好？不用特別寫成 Find My 應用程式之類的",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "got it",
+                  "so we just say Find My app in the article?",
+                  "no need for Find My application or whatever"
+                ],
+                "merged": "got it so we just say Find My app in the article? no need for Find My application or whatever",
+                "notes": [
+                  {
+                    "phrase": "got it",
+                    "why": "口語上常用「got it」來表達「了解」，符合 casual 風格的簡短感。"
+                  },
+                  {
+                    "phrase": "so we just say",
+                    "why": "「just」帶出「就好」的輕鬆語氣，而不用「only」這種較正式的字。"
+                  },
+                  {
+                    "phrase": "or whatever",
+                    "why": "「or whatever」是口語中常見的模糊帶過說法，能自然傳達「之類的」意思。"
+                  }
+                ],
+                "english": "got it\nso we just say Find My app in the article?\nno need for Find My application or whatever",
+                "back": "了解\n所以我們在文章裡就只寫 Find My app 嗎？\n不需要寫成 Find My application 還是什麼的嗎",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "got it",
+                  "so we just use Find My app in the article?",
+                  "no need to write Find My application"
+                ],
+                "merged": "got it so we just use Find My app in the article? no need to write Find My application",
+                "notes": [
+                  {
+                    "phrase": "use",
+                    "why": "「use」比「say」更符合編輯文章的語境，表示實際採用的用詞。"
+                  },
+                  {
+                    "phrase": "no need to write",
+                    "why": "「no need to write」直譯「不用特別寫成」，簡潔且自然。"
+                  },
+                  {
+                    "phrase": "got it",
+                    "why": "開頭用「got it」回應前文，符合頻道中常見的簡短確認方式。"
+                  }
+                ],
+                "english": "got it\nso we just use Find My app in the article?\nno need to write Find My application",
+                "back": "了解\n所以我們在文章裡就用 Find My app 嗎？\n不需要寫成 Find My application 嗎",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Understood. So in the article, we should consistently use \"Find My app\"? There's no need to write it as \"Find My application\" or similar."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Understood.",
+                    "why": "以完整句子「Understood.」開頭，表現正式的回應。"
+                  },
+                  {
+                    "phrase": "consistently use",
+                    "why": "「consistently use」對應「統一寫」，精確表達前後一致的用法。"
+                  },
+                  {
+                    "phrase": "There's no need to",
+                    "why": "「There's no need to」是正式寫作中表達「不用」的常見句型。"
+                  }
+                ],
+                "english": "Understood. So in the article, we should consistently use \"Find My app\"? There's no need to write it as \"Find My application\" or similar.",
+                "back": "了解。所以在文章裡，我們應該一致使用「Find My app」嗎？不需要寫成「Find My application」之類的嗎。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也與原稿相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-v4-pro",
+                "usage": {
+                  "inputTokens": 1608,
+                  "outputTokens": 584
+                },
+                "ms": 7719
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 710,
+                  "outputTokens": 111
+                },
+                "ms": 1275
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 936,
+                    "outputTokens": 43
+                  },
+                  "ms": 990
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 930,
+                    "outputTokens": 43
+                  },
+                  "ms": 713
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 948,
+                    "outputTokens": 46
+                  },
+                  "ms": 825
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03-suggest-mention",
+      "title": "道謝＋提建議（建議而非決定）",
+      "conversation": "newsroom",
+      "replyTo": 5,
+      "draft": "謝謝 Owen 貼細則。所以精確尋找只有 iPhone 才能用，這點我們要不要在文章裡特別提一下？",
+      "watch": "道謝要保留但不能誇張；「要不要」是提議，不能寫成 we should",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以精確尋找只有 iPhone 才能用，這點我們要不要在文章裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thanks for the fine print Owen",
+                  "so Precision Finding is iPhone only, should we call that out in the post"
+                ],
+                "merged": "thanks for the fine print Owen, so Precision Finding is iPhone only, should we call that out in the post",
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print",
+                    "why": "用「fine print」承接 Owen 原本的說法，語感自然，比逐字翻「細則」更口語。"
+                  },
+                  {
+                    "phrase": "iPhone only",
+                    "why": "英文慣用 only 直接放句尾表達「只有 iPhone 才能用」，比完整句更簡潔。"
+                  },
+                  {
+                    "phrase": "should we call that out",
+                    "why": "call out 是頻道裡常見的說法，意思是特別提出來，符合這裡短句閒聊的語氣。"
+                  }
+                ],
+                "english": "thanks for the fine print Owen\nso Precision Finding is iPhone only, should we call that out in the post",
+                "back": "謝啦 Owen 補充這些小字\n所以精確尋找只有 iPhone 才行，我們要在貼文裡特別講這個嗎",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print Owen",
+                  "so Precision Finding is iPhone only, should we call that out in the post?"
+                ],
+                "merged": "thanks for the fine print Owen, so Precision Finding is iPhone only, should we call that out in the post?",
+                "notes": [
+                  {
+                    "phrase": "the fine print",
+                    "why": "沿用 Owen 的用詞，讓回覆明顯是在接他的訊息。"
+                  },
+                  {
+                    "phrase": "iPhone only",
+                    "why": "用精簡的 only 表達「只有 iPhone 才能用」，符合頻道平均九個字的長度。"
+                  },
+                  {
+                    "phrase": "should we call that out",
+                    "why": "保留問句形式，因為原稿是在詢問要不要在文章裡提，不能寫成肯定句。"
+                  }
+                ],
+                "english": "thanks for the fine print Owen\nso Precision Finding is iPhone only, should we call that out in the post?",
+                "back": "謝啦 Owen 補充這些小字\n所以精確尋找只有 iPhone 才行，我們要在貼文裡特別講這個嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for posting the fine print, Owen. So Precision Finding only works with iPhone. Should we call that out specifically in the post?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Thanks for posting the fine print, Owen",
+                    "why": "正式版本補上完整句子結構，並把稱呼放在句尾，語氣禮貌但不浮誇。"
+                  },
+                  {
+                    "phrase": "only works with iPhone",
+                    "why": "用完整動詞片語表達「只有 iPhone 才能用」，比口語版本更明確。"
+                  },
+                  {
+                    "phrase": "call that out specifically",
+                    "why": "加上 specifically 強調「特別提一下」，對應原稿的特別。"
+                  }
+                ],
+                "english": "Thanks for posting the fine print, Owen. So Precision Finding only works with iPhone. Should we call that out specifically in the post?",
+                "back": "謝謝你貼出這些小字，Owen。所以精確尋找只能在 iPhone 上運作。我們應該在貼文中特別指出這一點嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1646,
+                  "outputTokens": 459
+                },
+                "ms": 3316
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 702,
+                  "outputTokens": 117
+                },
+                "ms": 1551
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 938,
+                    "outputTokens": 43
+                  },
+                  "ms": 830
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 939,
+                    "outputTokens": 43
+                  },
+                  "ms": 1014
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 947,
+                    "outputTokens": 43
+                  },
+                  "ms": 928
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@low",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以精確尋找只有 iPhone 才能用，這點我們要不要在文章裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so Precision Finding is iphone only, should we call that out in the article"
+                ],
+                "merged": "thanks for the fine print owen, so Precision Finding is iphone only, should we call that out in the article",
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print owen",
+                    "why": "小寫開頭、不加逗號直接稱呼名字，是頻道裡常見的口語寫法，讀起來像訊息而非信件。"
+                  },
+                  {
+                    "phrase": "iphone only",
+                    "why": "用連字號複合形容詞省略動詞，簡短又口語，符合這裡平均九個字的訊息長度。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "比 mention 更口語，英文社群常用來指「特別指出某件事」。"
+                  },
+                  {
+                    "phrase": "should we ... the article",
+                    "why": "保留原句的徵詢語氣；不用問號是因為頻道幾乎不用標點結尾，語序本身就讀得出是問句。"
+                  }
+                ],
+                "english": "thanks for the fine print owen\nso Precision Finding is iphone only, should we call that out in the article",
+                "back": "謝啦 owen 補充小字\n所以精確尋找只有 iphone 能用，我們文章裡是不是該寫清楚",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只有把 iPhone 寫成 iphone，沒有新增或漏掉資訊",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so Precision Finding is iPhone only, should we call that out in the article"
+                ],
+                "merged": "thanks for the fine print owen, so Precision Finding is iPhone only, should we call that out in the article",
+                "notes": [
+                  {
+                    "phrase": "fine print",
+                    "why": "「細則」的固定英文說法，比 details 更精確，也常見於支援文件的討論。"
+                  },
+                  {
+                    "phrase": "should we call that out",
+                    "why": "對應「要不要特別提一下」，是徵詢意見的問句，call out 表示在文章中特別點出。"
+                  },
+                  {
+                    "phrase": "iPhone only",
+                    "why": "依 Apple 官方大小寫保留 iPhone 與 Precision Finding，用 only 表達「只有」的限定，不軟化語氣。"
+                  },
+                  {
+                    "phrase": "in the article",
+                    "why": "原文說「文章」，用 article 而非 post，保留原本指稱。"
+                  }
+                ],
+                "english": "thanks for the fine print owen\nso Precision Finding is iPhone only, should we call that out in the article",
+                "back": "謝了 owen 提供小字\n所以精確尋找只支援 iPhone，我們該在文章裡特別提出來嗎",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只有把「細則」說成「小字」這種同義詞替換，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for posting the fine print, Owen. So Precision Finding only works on iPhone; should we mention that specifically in the article?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Thanks for posting the fine print, Owen.",
+                    "why": "正式版用完整句子、逗號分隔稱呼，語氣禮貌但不過度，也不需要加驚嘆號。"
+                  },
+                  {
+                    "phrase": "only works on iPhone",
+                    "why": "把「只有 iPhone 才能用」說成 works on，語意清楚，且不加入原文沒有的推測。"
+                  },
+                  {
+                    "phrase": "should we mention that specifically",
+                    "why": "對應「特別提一下」，specifically 保留原本的強調；整句仍是問句，用問號收尾。"
+                  }
+                ],
+                "english": "Thanks for posting the fine print, Owen. So Precision Finding only works on iPhone; should we mention that specifically in the article?",
+                "back": "謝謝你貼出小字說明，Owen。所以精確尋找只能在 iPhone 上使用；我們是不是應該在文章裡特別提到這一點？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1671,
+                  "outputTokens": 1861
+                },
+                "ms": 17831
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 705,
+                  "outputTokens": 114
+                },
+                "ms": 1336
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 941,
+                    "outputTokens": 48
+                  },
+                  "ms": 704
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 938,
+                    "outputTokens": 58
+                  },
+                  "ms": 666
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 945,
+                    "outputTokens": 39
+                  },
+                  "ms": 1017
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以精確尋找只有 iPhone 才能用，這點我們要不要在文章裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so Precision Finding is iPhone-only, should we call that out in the article?"
+                ],
+                "merged": "thanks for the fine print owen. so Precision Finding is iPhone-only, should we call that out in the article?",
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print owen",
+                    "why": "台灣同事之間致謝常簡短帶過，不加 so much 或完整句，符合這個頻道鬆散的語氣。"
+                  },
+                  {
+                    "phrase": "iPhone-only",
+                    "why": "口語把「只有 iPhone 能用」壓成形容詞片語，比 only works on iPhone 更短，符合 casual 變體。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "英文母語者講「特別提出來」常說 call out，比 mention specifically 更口語自然。"
+                  }
+                ],
+                "english": "thanks for the fine print owen\nso Precision Finding is iPhone-only, should we call that out in the article?",
+                "back": "謝謝你提供小字的說明，Owen\n所以精確尋找只能在 iPhone 上用，我們應該在文章裡特別點出來嗎？",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只是把小字說明講得更完整，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so Precision Finding is iPhone-only, should we call that out in the article?"
+                ],
+                "merged": "thanks for the fine print owen, so Precision Finding is iPhone-only, should we call that out in the article?",
+                "notes": [
+                  {
+                    "phrase": "should we call that out in the article?",
+                    "why": "原文是徵詢意見的問句，英文保留問句形式，才不會讀成已經決定的宣布。"
+                  },
+                  {
+                    "phrase": "thanks for the fine print owen",
+                    "why": "頻道多為小寫開頭、句末不加標點，這裡照樣不加大寫與句號。"
+                  },
+                  {
+                    "phrase": "so Precision Finding is iPhone-only",
+                    "why": "用 so 承接對方剛貼的細則內容，對應中文「所以」的推論語氣。"
+                  }
+                ],
+                "english": "thanks for the fine print owen\nso Precision Finding is iPhone-only, should we call that out in the article?",
+                "back": "謝謝你提供小字的說明，Owen\n所以精確尋找只能在 iPhone 上用，我們應該在文章裡特別點出來嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for sharing the fine print, Owen. So Precision Finding is only available on iPhone. Should we mention this specifically in the article?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Thanks for sharing the fine print, Owen.",
+                    "why": "formal 變體用完整句、正常大小寫與標點，並把名字放在稱呼位置。"
+                  },
+                  {
+                    "phrase": "only available on iPhone",
+                    "why": "正式場合用 available on 比 only works on 更書面。"
+                  },
+                  {
+                    "phrase": "Should we mention this specifically in the article?",
+                    "why": "「特別提一下」用 mention this specifically，並保留原本的詢問語氣與問號。"
+                  }
+                ],
+                "english": "Thanks for sharing the fine print, Owen. So Precision Finding is only available on iPhone. Should we mention this specifically in the article?",
+                "back": "謝謝你分享小字的說明，Owen。所以精確尋找只能在 iPhone 上使用。我們應該在文章裡特別提到這一點嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1671,
+                  "outputTokens": 1729
+                },
+                "ms": 9919
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 704,
+                  "outputTokens": 118
+                },
+                "ms": 1188
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 941,
+                    "outputTokens": 47
+                  },
+                  "ms": 709
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 941,
+                    "outputTokens": 43
+                  },
+                  "ms": 794
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 945,
+                    "outputTokens": 43
+                  },
+                  "ms": 1087
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-v4-pro",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以精確尋找只有 iPhone 才能用，這點我們要不要在文章裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thx for the fine print",
+                  "so precision finding is iphone only? should we call that out in the post?"
+                ],
+                "merged": "thx for the fine print - so precision finding is iphone only? should we call that out in the post?",
+                "notes": [
+                  {
+                    "phrase": "thx",
+                    "why": "「thx」是 thank you 的口語縮寫，符合這個頻道喜歡用縮寫的風格。"
+                  },
+                  {
+                    "phrase": "iphone only?",
+                    "why": "「iphone only?」用問句表達確認，保留原意「只有 iPhone 才能用」，口語且自然。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "「call that out」是常用的片語，意思是特別提出說明，比直譯「mention specifically」更道地。"
+                  }
+                ],
+                "english": "thx for the fine print\nso precision finding is iphone only? should we call that out in the post?",
+                "back": "謝啦，補充說明\n所以精確尋找只有 iPhone 能用？我們應該在貼文裡講清楚嗎？",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只是把 Owen 明確點出來為「補充說明」，並把「文章」寫成「貼文」，沒有新增或漏掉重點。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print",
+                  "so precision finding is iphone only right? should we call that out in the post?"
+                ],
+                "merged": "thanks for the fine print - so precision finding is iphone only right? should we call that out in the post?",
+                "notes": [
+                  {
+                    "phrase": "fine print",
+                    "why": "沿用 Owen 的用詞「fine print」，指的是細則、附帶條款，在這個對話脈絡中很自然。"
+                  },
+                  {
+                    "phrase": "iphone only right?",
+                    "why": "「iphone only right?」以反問確認，帶有尋求同意的語氣，對應原文的「要不要」。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "「call that out」意指特別強調，是文章寫作中常見的動詞，比「mention it specially」更簡潔。"
+                  }
+                ],
+                "english": "thanks for the fine print\nso precision finding is iphone only right? should we call that out in the post?",
+                "back": "謝謝補充說明\n所以精確尋找只有 iPhone 能用對吧？我們應該在貼文裡講清楚嗎？",
+                "check": {
+                  "status": "warn",
+                  "summary": "英文版漏掉了「謝謝 Owen」的點名感謝，只寫成「謝謝補充說明」；另外「這點我們要不要在文章裡特別提一下」被寫成「我們應該在貼文裡講清楚嗎」，語氣稍微更強、更像在要求。",
+                  "added": [],
+                  "omitted": [
+                    "點名感謝 Owen（英文只說 thanks，沒有提到 Owen）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "這點我們要不要在文章裡特別提一下？",
+                      "now": "我們應該在貼文裡講清楚嗎？",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "謝謝補充說明",
+                    "我們應該在貼文裡講清楚嗎？"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for sharing the fine print, Owen.",
+                  "So Precision Finding is only available on iPhone. Should we call that out in the article?"
+                ],
+                "merged": "Thanks for sharing the fine print, Owen. So Precision Finding is only available on iPhone. Should we call that out in the article?",
+                "notes": [
+                  {
+                    "phrase": "Thanks for sharing",
+                    "why": "「Thanks for sharing」比口語的 thx 正式，適合對不熟的人或正式場合。"
+                  },
+                  {
+                    "phrase": "only available on iPhone",
+                    "why": "「only available on iPhone」用完整子句表達限制，正式且明確。"
+                  },
+                  {
+                    "phrase": "Should we call that out",
+                    "why": "「Should we call that out」是禮貌的建議問句，適合正式討論。"
+                  }
+                ],
+                "english": "Thanks for sharing the fine print, Owen.\nSo Precision Finding is only available on iPhone. Should we call that out in the article?",
+                "back": "謝謝你分享補充說明，Owen。\n所以精確尋找只在 iPhone 上提供。我們應該在文章裡講清楚嗎？",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只把「細則」寫成「補充說明」、把「特別提一下」寫成「講清楚」，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-v4-pro",
+                "usage": {
+                  "inputTokens": 1643,
+                  "outputTokens": 650
+                },
+                "ms": 8892
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 707,
+                  "outputTokens": 110
+                },
+                "ms": 1315
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 938,
+                    "outputTokens": 62
+                  },
+                  "ms": 776
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 938,
+                    "outputTokens": 150
+                  },
+                  "ms": 1720
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 943,
+                    "outputTokens": 64
+                  },
+                  "ms": 1238
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04-unsure-disagree",
+      "title": "委婉的不同意見（不確定語氣）",
+      "conversation": "newsroom",
+      "replyTo": 8,
+      "draft": "我不太確定控制中心那個方塊是不是真的拿掉了，我這邊 beta 4 好像還看得到，晚點截圖給你們看",
+      "watch": "「不太確定」「好像」兩層保留都要在；不能變成直接反駁",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我不太確定控制中心那個方塊是不是真的拿掉了，我這邊 beta 4 好像還看得到，晚點截圖給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not 100% sure they actually pulled the Control Center tile tbh",
+                  "still think i can see it on beta 4, will grab a screenshot later"
+                ],
+                "merged": "not 100% sure they actually pulled the Control Center tile tbh, still think i can see it on beta 4, will grab a screenshot later",
+                "notes": [
+                  {
+                    "phrase": "not 100% sure",
+                    "why": "用口語方式表達「不太確定」，比 I'm not certain 更貼近 slack 隨口講的語氣。"
+                  },
+                  {
+                    "phrase": "pulled",
+                    "why": "用 pull 指「拿掉、移除」，是這個頻道講功能被移除時的自然動詞。"
+                  },
+                  {
+                    "phrase": "grab a screenshot",
+                    "why": "grab 比 take 更口語，符合這裡短句、動詞片語的節奏。"
+                  }
+                ],
+                "english": "not 100% sure they actually pulled the Control Center tile tbh\nstill think i can see it on beta 4, will grab a screenshot later",
+                "back": "老實說不 100% 確定他們真的把控制中心那個磚塊拿掉了\n還是覺得我在 beta 4 上還看得到，之後再截個圖",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致相符，但「晚點截圖給你們看」變成「之後再截個圖」，少了「給你們看」的承諾，另外「好像還看得到」寫成「還是覺得…還看得到」，語氣比較主觀一點。",
+                  "added": [],
+                  "omitted": [
+                    "原本要截圖給對方看的承諾（給你們看）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "好像還看得到",
+                      "now": "還是覺得我在 beta 4 上還看得到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "還是覺得我在 beta 4 上還看得到",
+                    "之後再截個圖"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure they actually removed the Control Center tile",
+                  "i think i can still see it on beta 4, will screenshot it later"
+                ],
+                "merged": "not sure they actually removed the Control Center tile, i think i can still see it on beta 4, will screenshot it later",
+                "notes": [
+                  {
+                    "phrase": "not sure they actually removed",
+                    "why": "照原稿「不太確定」保留不確定程度，不寫成 definitely 或 I don't think，語氣才一致。"
+                  },
+                  {
+                    "phrase": "i think i can still see it",
+                    "why": "用 i think 對應「好像」，表示只是自己的印象，並非確定。"
+                  },
+                  {
+                    "phrase": "will screenshot it later",
+                    "why": "英文常直接把 screenshot 當動詞，比 send you a screenshot 更簡短，符合頻道訊息長度。"
+                  }
+                ],
+                "english": "not sure they actually removed the Control Center tile\ni think i can still see it on beta 4, will screenshot it later",
+                "back": "不確定他們是不是真的把控制中心的磚塊移除了\n我覺得我在 beta 4 上還看得到，之後再截圖",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I am not entirely sure whether the Control Center tile was actually removed. I think I can still see it on beta 4, and I will send a screenshot later."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "not entirely sure whether",
+                    "why": "正式版本用完整子句與 whether，把「不太確定」寫得清楚又不失保留。"
+                  },
+                  {
+                    "phrase": "was actually removed",
+                    "why": "用被動態描述功能被移除，適合對不熟的人或編輯說明。"
+                  },
+                  {
+                    "phrase": "I will send a screenshot later",
+                    "why": "正式版補回主詞與受詞，避免口語省略造成語意不明。"
+                  }
+                ],
+                "english": "I am not entirely sure whether the Control Center tile was actually removed. I think I can still see it on beta 4, and I will send a screenshot later.",
+                "back": "我不完全確定控制中心的磚塊是否真的被移除了。我覺得我在 beta 4 上還看得到，之後會再傳截圖。",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致一致，但加了「之後會再傳截圖」的承諾語氣，原文只是說「晚點截圖」，沒有明確保證。",
+                  "added": [
+                    "之後會再傳截圖（原文只是「晚點截圖給你們看」，英文變成明確承諾）"
+                  ],
+                  "omitted": [
+                    "給你們看（收件對象被省略）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "晚點截圖給你們看",
+                      "now": "之後會再傳截圖",
+                      "direction": "weaker"
+                    }
+                  ],
+                  "highlights": [
+                    "之後會再傳截圖"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1628,
+                  "outputTokens": 494
+                },
+                "ms": 3523
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 722,
+                  "outputTokens": 125
+                },
+                "ms": 1499
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 961,
+                    "outputTokens": 144
+                  },
+                  "ms": 1142
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 947,
+                    "outputTokens": 39
+                  },
+                  "ms": 1058
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 957,
+                    "outputTokens": 129
+                  },
+                  "ms": 1478
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@low",
+          "card": {
+            "draft": "我不太確定控制中心那個方塊是不是真的拿掉了，我這邊 beta 4 好像還看得到，晚點截圖給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not sure that control center tile is actually gone",
+                  "still seeing it on beta 4 on my end, will screenshot later"
+                ],
+                "merged": "not sure that control center tile is actually gone, still seeing it on beta 4 on my end, will screenshot later",
+                "notes": [
+                  {
+                    "phrase": "not sure ... is actually gone",
+                    "why": "用「not sure」直譯「不太確定」，保留原本的猶疑，沒有加強成 know 或確定。"
+                  },
+                  {
+                    "phrase": "on my end",
+                    "why": "英文母語者講「我這邊」常用 on my end，比 on my side 更道地。"
+                  },
+                  {
+                    "phrase": "will screenshot later",
+                    "why": "省略主詞、不用未來式完整句，符合這個頻道短句連發的習慣。"
+                  }
+                ],
+                "english": "not sure that control center tile is actually gone\nstill seeing it on beta 4 on my end, will screenshot later",
+                "back": "不確定那個控制中心圖示是不是真的不見了\n我這邊 beta 4 還看得到，之後再截圖",
+                "check": {
+                  "status": "warn",
+                  "summary": "新增了「之後再截圖」這個承諾，但原稿只是說「晚點截圖給你們看」，同樣是承諾，沒有漏掉；另外「好像還看得到」變成肯定的「還看得到」，語氣比原稿確定。",
+                  "added": [],
+                  "omitted": [
+                    "「好像」的不確定語氣，英文變成肯定的「還看得到」"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "好像還看得到",
+                      "now": "還看得到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "還看得到"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure that control center tile is really gone tbh",
+                  "i think i can still see it on beta 4 on my end, will grab a screenshot later"
+                ],
+                "merged": "not sure that control center tile is really gone tbh, i think i can still see it on beta 4 on my end, will grab a screenshot later",
+                "notes": [
+                  {
+                    "phrase": "tbh",
+                    "why": "頻道本來就會用 fwiw 這類縮寫，tbh 對應中文那種「老實說我也不太確定」的語氣。"
+                  },
+                  {
+                    "phrase": "i think i can still see it",
+                    "why": "用 i think 對應「好像」，維持原本的不確定程度，不會講成 definitely still there。"
+                  },
+                  {
+                    "phrase": "will grab a screenshot later",
+                    "why": "grab a screenshot 是頻道裡自然的說法，「晚點」用 later 放在句尾即可。"
+                  }
+                ],
+                "english": "not sure that control center tile is really gone tbh\ni think i can still see it on beta 4 on my end, will grab a screenshot later",
+                "back": "老實說不確定那個控制中心圖示是不是真的不見了\n我這邊 beta 4 好像還看得到，之後再截圖",
+                "check": {
+                  "status": "warn",
+                  "summary": "「晚點截圖給你們看」寫成「之後再截圖」，漏掉「給你們看」，也少了「老實說」這個原稿沒有的語氣。",
+                  "added": [
+                    "老實說"
+                  ],
+                  "omitted": [
+                    "給你們看"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "我不太確定",
+                      "now": "不確定",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "老實說",
+                    "之後再截圖"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm not sure that Control Center tile has actually been removed. I think I can still see it on beta 4 on my end, and I'll send a screenshot later."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm not sure ... has actually been removed",
+                    "why": "正式版用完整子句與現在完成式，對應「是不是真的拿掉了」的疑問語氣。"
+                  },
+                  {
+                    "phrase": "on my end",
+                    "why": "即使在正式訊息也用 on my end 表達「我這邊」，語感比 on my device 自然。"
+                  },
+                  {
+                    "phrase": "I'll send a screenshot later",
+                    "why": "「截圖給你們看」用 send a screenshot 表達，並保留原本承諾的時間點 later。"
+                  }
+                ],
+                "english": "I'm not sure that Control Center tile has actually been removed. I think I can still see it on beta 4 on my end, and I'll send a screenshot later.",
+                "back": "我不確定那個控制中心圖示是不是真的已經移除了。我這邊 beta 4 好像還看得到，之後會傳截圖。",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致一致，但英文把「晚點截圖給你們看」寫成會傳截圖，少了「給你們看」的對象，也把「不太確定」講得稍微肯定一點。",
+                  "added": [],
+                  "omitted": [
+                    "截圖是「給你們看」的，英文只說會傳截圖，沒說傳給誰"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "我不太確定",
+                      "now": "我不確定",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "我不確定",
+                    "之後會傳截圖"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1653,
+                  "outputTokens": 1103
+                },
+                "ms": 6402
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 723,
+                  "outputTokens": 115
+                },
+                "ms": 1351
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 943,
+                    "outputTokens": 123
+                  },
+                  "ms": 1058
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 955,
+                    "outputTokens": 101
+                  },
+                  "ms": 872
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 958,
+                    "outputTokens": 123
+                  },
+                  "ms": 1263
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我不太確定控制中心那個方塊是不是真的拿掉了，我這邊 beta 4 好像還看得到，晚點截圖給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not sure that control center tile is actually gone",
+                  "i think i still see it on beta 4, gonna screenshot later"
+                ],
+                "merged": "not sure that control center tile is actually gone, i think i still see it on beta 4, gonna screenshot later",
+                "notes": [
+                  {
+                    "phrase": "not sure ... is actually gone",
+                    "why": "用 not sure 保留「不太確定」的語氣，比 I doubt 或 definitely 更貼近原稿的保留態度。"
+                  },
+                  {
+                    "phrase": "i think i still see it",
+                    "why": "用 i think 對應「好像」，不把話說死，符合原稿的不確定感。"
+                  },
+                  {
+                    "phrase": "gonna screenshot later",
+                    "why": "英文口語常把 screenshot 當動詞用，加上 gonna 讓句子更短，符合此頻道隨手打字的風格。"
+                  }
+                ],
+                "english": "not sure that control center tile is actually gone\ni think i still see it on beta 4, gonna screenshot later",
+                "back": "不確定控制中心那個圖示是不是真的沒了\n我覺得我在 beta 4 上還看得到，之後再截圖",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，「不太確定」和「好像」的保留程度也差不多。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure the control center tile is actually gone tbh",
+                  "i think i still see it on beta 4",
+                  "will screenshot later for you guys"
+                ],
+                "merged": "not sure the control center tile is actually gone tbh, i think i still see it on beta 4, will screenshot later for you guys",
+                "notes": [
+                  {
+                    "phrase": "control center tile",
+                    "why": "專有名詞依 Apple 官方寫法，但整句維持小寫開頭，符合頻道 89% 小寫起頭的習慣。"
+                  },
+                  {
+                    "phrase": "i think i still see it on beta 4",
+                    "why": "用 i think 對應「好像」，beta 4 依 glossary 保留原樣不翻譯。"
+                  },
+                  {
+                    "phrase": "will screenshot later",
+                    "why": "省略主詞、不寫 will send you a screenshot，是此頻道常見的簡短講法；句尾不加句號也符合頻道標點習慣。"
+                  }
+                ],
+                "english": "not sure the control center tile is actually gone tbh\ni think i still see it on beta 4\nwill screenshot later for you guys",
+                "back": "老實說不確定控制中心那個圖示是不是真的沒了\n我覺得我在 beta 4 上還看得到\n之後再截圖給你們",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm not sure the Control Center tile is actually gone. I think I still see it on beta 4, and I'll take a screenshot later and share it with you."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm not sure ... is actually gone",
+                    "why": "完整句搭配正常大小寫與句號，語氣仍保留原稿的不確定，不擅自加強成 definitely。"
+                  },
+                  {
+                    "phrase": "I'll take a screenshot later and share it with you",
+                    "why": "把「晚點截圖給你們看」講成完整的承諾句，適合對不熟的人或編輯說明。"
+                  }
+                ],
+                "english": "I'm not sure the Control Center tile is actually gone. I think I still see it on beta 4, and I'll take a screenshot later and share it with you.",
+                "back": "我不確定控制中心那個圖示是不是真的沒了。我覺得我在 beta 4 上還看得到，我之後會截圖並分享給你們。",
+                "check": {
+                  "status": "warn",
+                  "summary": "加了「之後會截圖並分享」的承諾，比你原稿的「晚點截圖給你們看」更明確；另外「不太確定」變成「不確定」，語氣稍微肯定了一點。",
+                  "added": [
+                    "我之後會截圖並分享給你們（把原本「晚點截圖給你們看」說成明確的承諾）"
+                  ],
+                  "omitted": [],
+                  "toneShifts": [
+                    {
+                      "original": "不太確定",
+                      "now": "不確定",
+                      "direction": "stronger"
+                    },
+                    {
+                      "original": "好像還看得到",
+                      "now": "還看得到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "不確定",
+                    "還看得到",
+                    "我之後會截圖並分享給你們"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1653,
+                  "outputTokens": 1148
+                },
+                "ms": 6701
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 720,
+                  "outputTokens": 121
+                },
+                "ms": 1015
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 944,
+                    "outputTokens": 52
+                  },
+                  "ms": 959
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 954,
+                    "outputTokens": 43
+                  },
+                  "ms": 888
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 961,
+                    "outputTokens": 155
+                  },
+                  "ms": 1407
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-v4-pro",
+          "card": {
+            "draft": "我不太確定控制中心那個方塊是不是真的拿掉了，我這邊 beta 4 好像還看得到，晚點截圖給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not sure they actually removed that control center tile",
+                  "i still see it on beta 4",
+                  "screenshot later"
+                ],
+                "merged": "not sure they actually removed that control center tile, i still see it on beta 4, screenshot later",
+                "notes": [
+                  {
+                    "phrase": "not sure they actually removed",
+                    "why": "用 'not sure' 表達不確定，比 'I'm not sure' 更口語，符合輕鬆的風格。"
+                  },
+                  {
+                    "phrase": "that control center tile",
+                    "why": "直接用 'that control center tile' 指稱，不用重複 'the tile in Control Center'，符合對話中已知的上下文。"
+                  },
+                  {
+                    "phrase": "i still see it on beta 4",
+                    "why": "'beta 4' 保持英文大寫，符合專有名詞的寫法。"
+                  },
+                  {
+                    "phrase": "screenshot later",
+                    "why": "省略主詞和連接詞，用最精簡的方式表達會晚點截圖。"
+                  }
+                ],
+                "english": "not sure they actually removed that control center tile\ni still see it on beta 4\nscreenshot later",
+                "back": "不確定他們是不是真的把那個控制中心圖示拿掉了\n我在 beta 4 上還看得到\n晚點補截圖",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只是把「我這邊」、「給你們看」等語句精簡，並把「方塊」寫成「圖示」。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "晚點補截圖"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure they actually removed that control center tile",
+                  "i still see it on beta 4",
+                  "screenshot later"
+                ],
+                "merged": "not sure they actually removed that control center tile, i still see it on beta 4, screenshot later",
+                "notes": [
+                  {
+                    "phrase": "not sure they actually removed",
+                    "why": "以 'not sure' 開頭，省略主詞，符合頻道中小寫開頭、簡潔的風格。"
+                  },
+                  {
+                    "phrase": "that control center tile",
+                    "why": "用 'that control center tile' 直接指涉前文提到的方塊，不重複完整名稱。"
+                  },
+                  {
+                    "phrase": "i still see it on beta 4",
+                    "why": "直接說明自己的情況，使用 'beta 4' 保留版本號英文。"
+                  },
+                  {
+                    "phrase": "screenshot later",
+                    "why": "簡短承諾稍後提供截圖，不加多餘修飾。"
+                  }
+                ],
+                "english": "not sure they actually removed that control center tile\ni still see it on beta 4\nscreenshot later",
+                "back": "不確定他們是不是真的把那個控制中心圖示拿掉了\n我在 beta 4 上還看得到\n晚點補截圖",
+                "check": {
+                  "status": "warn",
+                  "summary": "「好像還看得到」變成確定看得到，還漏掉了「晚點截圖給你們看」的承諾。",
+                  "added": [],
+                  "omitted": [
+                    "晚點截圖給你們看（英文只說晚點補截圖，沒有說要給你們看）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "好像還看得到",
+                      "now": "還看得到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "還看得到",
+                    "晚點補截圖"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm not sure if the Control Center tile has actually been removed. I can still see it on beta 4. I'll send a screenshot later."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm not sure",
+                    "why": "使用完整形式 'I'm not sure'，並以大寫開頭，符合正式風格。"
+                  },
+                  {
+                    "phrase": "if the Control Center tile has actually been removed",
+                    "why": "用完整子句表達不確定，'Control Center' 作為專有名詞大寫。"
+                  },
+                  {
+                    "phrase": "I can still see it on beta 4",
+                    "why": "完整句子，主詞動詞明確，'beta 4' 保留原樣。"
+                  },
+                  {
+                    "phrase": "I'll send a screenshot later",
+                    "why": "用 'I'll send a screenshot later' 表達未來行動，語氣正式。"
+                  }
+                ],
+                "english": "I'm not sure if the Control Center tile has actually been removed. I can still see it on beta 4. I'll send a screenshot later.",
+                "back": "我不確定控制中心的那個圖示是不是真的被移除了。我在 beta 4 上還看得到。我晚點會傳截圖。",
+                "check": {
+                  "status": "info",
+                  "summary": "意思大致一致：只有把「好像還看得到」寫成確定「還看得到」，其餘沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [
+                    {
+                      "original": "好像還看得到",
+                      "now": "還看得到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "我在 beta 4 上還看得到"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-v4-pro",
+                "usage": {
+                  "inputTokens": 1625,
+                  "outputTokens": 764
+                },
+                "ms": 9582
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 706,
+                  "outputTokens": 119
+                },
+                "ms": 1080
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 944,
+                    "outputTokens": 73
+                  },
+                  "ms": 760
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 944,
+                    "outputTokens": 110
+                  },
+                  "ms": 869
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 955,
+                    "outputTokens": 86
+                  },
+                  "ms": 880
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "05-report-facts",
+      "title": "多個事實與數字的回報",
+      "conversation": "newsroom",
+      "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
+      "watch": "15 分鐘、第二代／第一代不能錯；「大概」要保留；Find My 不能寫成 Find",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just updated my iPad to iPadOS 27 beta 4, took like 15 min",
+                  "my AirPods Pro 2nd gen show up in find my now but my 1st gen ones don't, same as the fine print"
+                ],
+                "merged": "just updated my iPad to iPadOS 27 beta 4, took like 15 min, my AirPods Pro 2nd gen show up in find my now but my 1st gen ones don't, same as the fine print",
+                "notes": [
+                  {
+                    "phrase": "just updated my iPad to iPadOS 27 beta 4",
+                    "why": "用 just 加過去式開頭，簡短交代剛做完的事，是這個頻道常見的推進方式。"
+                  },
+                  {
+                    "phrase": "took like 15 min",
+                    "why": "like 當口語填充詞、min 縮寫，符合這裡偏鬆散的短句節奏。"
+                  },
+                  {
+                    "phrase": "but my 1st gen ones don't",
+                    "why": "用 ones 代稱前面的 AirPods Pro，避免重複，英文母語者常這樣省略。"
+                  }
+                ],
+                "english": "just updated my iPad to iPadOS 27 beta 4, took like 15 min\nmy AirPods Pro 2nd gen show up in find my now but my 1st gen ones don't, same as the fine print",
+                "back": "剛把 iPad 更新到 iPadOS 27 beta 4，大概花了 15 分鐘\n我的 AirPods Pro 第二代現在會出現在「尋找」裡了，但第一代的沒有，跟細則寫的一樣",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只有把 iPadOS 27 的完整名稱和 AirPods Pro 第二代講得更清楚，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just updated my iPad to iPadOS 27 beta 4, took about 15 min",
+                  "my AirPods Pro 2nd gen show up in find my now, but my 1st gen ones don't, same as the fine print"
+                ],
+                "merged": "just updated my iPad to iPadOS 27 beta 4, took about 15 min. my AirPods Pro 2nd gen show up in find my now, but my 1st gen ones don't, same as the fine print",
+                "notes": [
+                  {
+                    "phrase": "show up in find my now",
+                    "why": "show up 是這個頻道用來描述裝置出現在 app 裡的說法，find my 也照頻道習慣全小寫。"
+                  },
+                  {
+                    "phrase": "1st gen ones don't",
+                    "why": "用 ones 代稱 AirPods Pro，後半句只留 don't，省掉重複的動詞片語。"
+                  },
+                  {
+                    "phrase": "same as the fine print",
+                    "why": "fine print 是頻道裡既有的用詞，拿來回指先前貼的細則內容最自然。"
+                  }
+                ],
+                "english": "just updated my iPad to iPadOS 27 beta 4, took about 15 min\nmy AirPods Pro 2nd gen show up in find my now, but my 1st gen ones don't, same as the fine print",
+                "back": "剛把 iPad 更新到 iPadOS 27 beta 4，大概花了 15 分鐘\n我的 AirPods Pro 第二代現在會出現在「尋找」裡了，但第一代的沒有，跟細則寫的一樣",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只把「AirPods Pro 第二代」寫得更完整，沒有新增或漏掉資訊。",
+                  "added": [
+                    "我的 AirPods Pro 第二代"
+                  ],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "我的 AirPods Pro 第二代"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just updated my iPad to iPadOS 27 beta 4. It took about 15 minutes. My AirPods Pro (2nd generation) now appear in Find My, but my 1st generation ones don't, which matches what the fine print says."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I just updated my iPad to iPadOS 27 beta 4.",
+                    "why": "正式版本補上主詞與句號，並把產品名稱依 Apple 官方寫法保留原樣。"
+                  },
+                  {
+                    "phrase": "My AirPods Pro (2nd generation)",
+                    "why": "正式語境用完整版本標註世代，符合 Apple 官方命名格式。"
+                  },
+                  {
+                    "phrase": "which matches what the fine print says",
+                    "why": "用 which 子句連接，比口語的 same as 更完整、書面。"
+                  }
+                ],
+                "english": "I just updated my iPad to iPadOS 27 beta 4. It took about 15 minutes. My AirPods Pro (2nd generation) now appear in Find My, but my 1st generation ones don't, which matches what the fine print says.",
+                "back": "我剛把 iPad 更新到 iPadOS 27 beta 4。大概花了 15 分鐘。我的 AirPods Pro（第二代）現在會出現在「尋找」裡，但第一代的沒有，這跟細則寫的一致。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1612,
+                  "outputTokens": 648
+                },
+                "ms": 3644
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 785,
+                  "outputTokens": 175
+                },
+                "ms": 1002
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1008,
+                    "outputTokens": 60
+                  },
+                  "ms": 1164
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1009,
+                    "outputTokens": 69
+                  },
+                  "ms": 1018
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1015,
+                    "outputTokens": 43
+                  },
+                  "ms": 896
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@low",
+          "card": {
+            "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just updated my iPad to iPadOS 27 beta 4, took ~15 min",
+                  "AirPods Pro 2nd gen show up in Find My now, 1st gen still don't",
+                  "matches the fine print"
+                ],
+                "merged": "just updated my iPad to iPadOS 27 beta 4, took ~15 min. AirPods Pro 2nd gen show up in Find My now, 1st gen still don't, matches the fine print",
+                "notes": [
+                  {
+                    "phrase": "~15 min",
+                    "why": "用波浪號代替 about、min 代替 minutes，是英文閒聊裡很常見的簡寫，比正式寫法更貼近頻道語氣。"
+                  },
+                  {
+                    "phrase": "1st gen still don't",
+                    "why": "省略主詞與助動詞、用 don't 對應複數的 AirPods，是口語中自然的省略句型。"
+                  },
+                  {
+                    "phrase": "matches the fine print",
+                    "why": "用 match 表達「跟……一樣」，比 same as 更短，適合這種一句話收尾。"
+                  }
+                ],
+                "english": "just updated my iPad to iPadOS 27 beta 4, took ~15 min\nAirPods Pro 2nd gen show up in Find My now, 1st gen still don't\nmatches the fine print",
+                "back": "剛把 iPad 更新到 iPadOS 27 beta 4，大概花了 15 分鐘\nAirPods Pro 第 2 代現在會出現在「尋找」裡，第 1 代還是不會\n跟小字寫的一致",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致相同，但英文把「現在有出現」改成「會出現」，並多出「還是不會」這種原本沒有的對比說法，語氣比你原稿肯定一點。",
+                  "added": [
+                    "還是不會（原稿只說第一代沒有，英文多出「還是」的對比意味）"
+                  ],
+                  "omitted": [],
+                  "toneShifts": [
+                    {
+                      "original": "現在有出現在「尋找」裡",
+                      "now": "現在會出現在「尋找」裡",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "現在會出現在「尋找」裡",
+                    "還是不會"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just updated my iPad to iPadOS 27 beta 4, took about 15 min",
+                  "AirPods Pro 2nd gen now show up in Find My, but not the 1st gen",
+                  "same as the fine print says"
+                ],
+                "merged": "just updated my iPad to iPadOS 27 beta 4, took about 15 min. AirPods Pro 2nd gen now show up in Find My, but not the 1st gen, same as the fine print says",
+                "notes": [
+                  {
+                    "phrase": "just updated",
+                    "why": "用 just 表達「剛」，句首小寫、句尾不加句號，符合本頻道多數訊息的格式。"
+                  },
+                  {
+                    "phrase": "but not the 1st gen",
+                    "why": "用省略句做對比，不必重複動詞，讀起來更接近母語者的寫法。"
+                  },
+                  {
+                    "phrase": "fine print",
+                    "why": "頻道前面就有人用 fine print 指「細則」，沿用同一個詞可以讓對話延續下去。"
+                  },
+                  {
+                    "phrase": "show up in Find My",
+                    "why": "Find My 依詞彙表保留英文原樣，版本號 iPadOS 27 beta 4 也原封不動。"
+                  }
+                ],
+                "english": "just updated my iPad to iPadOS 27 beta 4, took about 15 min\nAirPods Pro 2nd gen now show up in Find My, but not the 1st gen\nsame as the fine print says",
+                "back": "剛把 iPad 更新到 iPadOS 27 beta 4，大約花了 15 分鐘\nAirPods Pro 第 2 代現在會出現在「尋找」裡，但第 1 代不會\n就跟小字寫的一樣",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just updated my iPad to iPadOS 27 beta 4, which took about 15 minutes. The second-generation AirPods Pro now appear in Find My, but the first-generation ones do not, which matches the fine print."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "second-generation AirPods Pro",
+                    "why": "正式書面用序數加上連字號修飾，比 2nd gen 更完整；產品名仍保留 AirPods Pro 的原樣。"
+                  },
+                  {
+                    "phrase": "which took about 15 minutes",
+                    "why": "用關係子句接續，把口語的兩個短句整合成一個完整句，語氣較正式。"
+                  },
+                  {
+                    "phrase": "which matches the fine print",
+                    "why": "用關係子句收尾，避免口語的 same as 開頭片段，符合正式訊息需要完整句的習慣。"
+                  }
+                ],
+                "english": "I just updated my iPad to iPadOS 27 beta 4, which took about 15 minutes. The second-generation AirPods Pro now appear in Find My, but the first-generation ones do not, which matches the fine print.",
+                "back": "我剛把 iPad 更新到 iPadOS 27 beta 4，大約花了 15 分鐘。第 2 代 AirPods Pro 現在會出現在「尋找」中，但第 1 代不會，這與小字說明一致。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只有用詞選擇不同。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1637,
+                  "outputTokens": 1553
+                },
+                "ms": 8207
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 772,
+                  "outputTokens": 190
+                },
+                "ms": 1341
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1009,
+                    "outputTokens": 132
+                  },
+                  "ms": 1577
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1012,
+                    "outputTokens": 43
+                  },
+                  "ms": 880
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1013,
+                    "outputTokens": 45
+                  },
+                  "ms": 1010
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just updated to iPadOS 27 beta 4, took like 15 min",
+                  "AirPods Pro 2 show up in Find My now, 1st gen still don't, so yeah same as the fine print"
+                ],
+                "merged": "just updated to iPadOS 27 beta 4, took like 15 min. AirPods Pro 2 show up in Find My now, 1st gen still don't, so yeah same as the fine print",
+                "notes": [
+                  {
+                    "phrase": "like 15 min",
+                    "why": "用 like 代替 about 來表達「大概」，是口語中常見的模糊用法，比 about 更隨性；min 縮寫也符合頻道愛用縮寫的習慣。"
+                  },
+                  {
+                    "phrase": "AirPods Pro 2",
+                    "why": "casual 版本把 2nd generation 簡化成 2，是熟人頻道裡常見的省略，但不影響辨識。"
+                  },
+                  {
+                    "phrase": "so yeah same as the fine print",
+                    "why": "用 so yeah 收尾是英文口語的總結語氣，對應中文「跟細則寫的一樣」，不會顯得沒禮貌。"
+                  }
+                ],
+                "english": "just updated to iPadOS 27 beta 4, took like 15 min\nAirPods Pro 2 show up in Find My now, 1st gen still don't, so yeah same as the fine print",
+                "back": "剛更新到 iPadOS 27 beta 4，花了大概 15 分鐘\nAirPods Pro 2 現在會出現在「尋找」裡了，1 代還是不會，所以對啦就跟小字寫的一樣",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just updated to iPadOS 27 beta 4, took about 15 min",
+                  "AirPods Pro 2nd gen show up in Find My now but the 1st gen don't, same as the fine print"
+                ],
+                "merged": "just updated to iPadOS 27 beta 4, took about 15 min. AirPods Pro 2nd gen show up in Find My now but the 1st gen don't, same as the fine print",
+                "notes": [
+                  {
+                    "phrase": "just updated to iPadOS 27 beta 4",
+                    "why": "省略主詞直接開頭、全句小寫，符合這個頻道 89% 訊息小寫開頭、長度偏短的習慣。"
+                  },
+                  {
+                    "phrase": "took about 15 min",
+                    "why": "min 是頻道常用的縮寫寫法（像是 fwiw、k），比 minutes 更貼近這裡的訊息節奏。"
+                  },
+                  {
+                    "phrase": "the 1st gen don't",
+                    "why": "口語裡 AirPods 當複數用 don't，並用 1st gen 省略 generation，是母語者自然的說法。"
+                  },
+                  {
+                    "phrase": "same as the fine print",
+                    "why": "用 same as 帶出「跟細則寫的一樣」，簡短又不加多餘評論；整句結尾不加句號，符合頻道 89% 訊息無標點的風格。"
+                  }
+                ],
+                "english": "just updated to iPadOS 27 beta 4, took about 15 min\nAirPods Pro 2nd gen show up in Find My now but the 1st gen don't, same as the fine print",
+                "back": "剛更新到 iPadOS 27 beta 4，花了大概 15 分鐘\nAirPods Pro 2nd gen 現在會出現在「尋找」裡，但 1 代不會，就跟小字寫的一樣",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just updated my iPad to iPadOS 27 beta 4, which took about 15 minutes. AirPods Pro (2nd generation) now appear in Find My, but the 1st generation do not, which matches what the fine print says."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "which took about 15 minutes",
+                    "why": "正式版用完整關係子句連接兩件事，並把 min 還原成 minutes，適合給不熟的人或編輯閱讀。"
+                  },
+                  {
+                    "phrase": "AirPods Pro (2nd generation)",
+                    "why": "依 Apple 官方寫法保留完整產品名稱與括號格式，正式場合不宜簡寫成 2nd gen。"
+                  },
+                  {
+                    "phrase": "do not",
+                    "why": "正式版不使用 don't 縮寫，語氣較完整；但仍保留 matches what the fine print says 的忠實轉述，沒有加入個人評論。"
+                  }
+                ],
+                "english": "I just updated my iPad to iPadOS 27 beta 4, which took about 15 minutes. AirPods Pro (2nd generation) now appear in Find My, but the 1st generation do not, which matches what the fine print says.",
+                "back": "我剛把 iPad 更新到 iPadOS 27 beta 4，花了大概 15 分鐘。AirPods Pro (2nd generation) 現在會出現在「尋找」裡，但 1st generation 不會，這跟小字寫的內容相符。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，「大概」和「細則」的語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1637,
+                  "outputTokens": 1468
+                },
+                "ms": 8053
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 774,
+                  "outputTokens": 184
+                },
+                "ms": 1120
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1006,
+                    "outputTokens": 43
+                  },
+                  "ms": 973
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1004,
+                    "outputTokens": 43
+                  },
+                  "ms": 956
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1020,
+                    "outputTokens": 51
+                  },
+                  "ms": 1123
+                }
+              ]
+            }
+          }
+        },
+        {
+          "model": "deepseek:deepseek-v4-pro",
+          "card": {
+            "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just updated iPad to iPadOS 27 beta 4",
+                  "took like 15 min",
+                  "AirPods Pro 2nd gen shows in Find My now, 1st gen doesn't, matches the fine print"
+                ],
+                "merged": "just updated iPad to iPadOS 27 beta 4, took like 15 min. AirPods Pro 2nd gen shows in Find My now, 1st gen doesn't, matches the fine print",
+                "notes": [
+                  {
+                    "phrase": "just updated iPad to iPadOS 27 beta 4",
+                    "why": "開頭小寫、省略主詞，符合頻道裡 89% 訊息小寫開頭的習慣，聽起來很隨興。"
+                  },
+                  {
+                    "phrase": "took like 15 min",
+                    "why": "用「like」表達「大概」，比「about」更口語，符合 casual 風格。"
+                  },
+                  {
+                    "phrase": "matches the fine print",
+                    "why": "「細則」翻成「fine print」，是英文中常用的說法，表示文件裡的小字條款。"
+                  },
+                  {
+                    "phrase": "1st gen doesn't",
+                    "why": "省略後面的動詞，是口語常見的簡潔用法，但意思完整。"
+                  }
+                ],
+                "english": "just updated iPad to iPadOS 27 beta 4\ntook like 15 min\nAirPods Pro 2nd gen shows in Find My now, 1st gen doesn't, matches the fine print",
+                "back": "剛剛把 iPad 更新到 iPadOS 27 beta 4\n大概花了 15 分鐘\nAirPods Pro 第 2 代現在會顯示在「尋找」裡，第 1 代不會，跟小字說明一致",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just updated my iPad to iPadOS 27 beta 4",
+                  "took about 15 min",
+                  "AirPods Pro 2nd gen now shows in Find My, 1st gen doesn't. matches the fine print"
+                ],
+                "merged": "just updated my iPad to iPadOS 27 beta 4, took about 15 min. AirPods Pro 2nd gen now shows in Find My, 1st gen doesn't. matches the fine print",
+                "notes": [
+                  {
+                    "phrase": "just updated my iPad to iPadOS 27 beta 4",
+                    "why": "加入「my」讓句子更完整，但保持小寫開頭和無句尾標點，符合頻道平均 9 字的簡潔風格。"
+                  },
+                  {
+                    "phrase": "took about 15 min",
+                    "why": "「about」比「like」稍微正式一點，但仍屬口語，貼近頻道一般成員的用字。"
+                  },
+                  {
+                    "phrase": "matches the fine print",
+                    "why": "直接沿用前文 Owen 使用的「fine print」，展現對頻道脈絡的熟悉。"
+                  },
+                  {
+                    "phrase": "AirPods Pro 2nd gen now shows in Find My",
+                    "why": "「shows」用現在式描述目前狀態，省略「up」在 Slack 訊息中很常見，聽起來像在回報測試結果。"
+                  }
+                ],
+                "english": "just updated my iPad to iPadOS 27 beta 4\ntook about 15 min\nAirPods Pro 2nd gen now shows in Find My, 1st gen doesn't. matches the fine print",
+                "back": "剛剛把我的 iPad 更新到 iPadOS 27 beta 4\n大概花了 15 分鐘\nAirPods Pro 第 2 代現在會顯示在「尋找」裡，第 1 代不會。跟小字說明一致",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just updated my iPad to iPadOS 27 beta 4. It took about 15 minutes. My AirPods Pro (2nd generation) now shows up in Find My, but the 1st generation does not, which matches the fine print."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I just updated my iPad to iPadOS 27 beta 4.",
+                    "why": "完整句並以句號結尾，正式風格需要標準的標點符號。"
+                  },
+                  {
+                    "phrase": "It took about 15 minutes.",
+                    "why": "用「It took」開頭，句子結構完整，比口語的「took like 15 min」更正式。"
+                  },
+                  {
+                    "phrase": "My AirPods Pro (2nd generation) now shows up in Find My, but the 1st generation does not,",
+                    "why": "使用「but」連接對比，並寫出完整型號「AirPods Pro (2nd generation)」，正式且清楚。"
+                  },
+                  {
+                    "phrase": "which matches the fine print.",
+                    "why": "用關係子句「which matches...」連結前句，語氣正式，也保留原文「跟細則寫的一樣」的邏輯。"
+                  }
+                ],
+                "english": "I just updated my iPad to iPadOS 27 beta 4. It took about 15 minutes. My AirPods Pro (2nd generation) now shows up in Find My, but the 1st generation does not, which matches the fine print.",
+                "back": "我剛剛把我的 iPad 更新到 iPadOS 27 beta 4。大概花了 15 分鐘。我的 AirPods Pro（第 2 代）現在會顯示在「尋找」裡，但第 1 代不會，這跟小字說明一致。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，時間與「尋找」顯示情況都與你的原稿相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-v4-pro",
+                "usage": {
+                  "inputTokens": 1609,
+                  "outputTokens": 951
+                },
+                "ms": 12399
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 773,
+                  "outputTokens": 191
+                },
+                "ms": 1364
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1007,
+                    "outputTokens": 39
+                  },
+                  "ms": 749
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1008,
+                    "outputTokens": 42
+                  },
+                  "ms": 770
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1021,
+                    "outputTokens": 53
+                  },
+                  "ms": 967
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

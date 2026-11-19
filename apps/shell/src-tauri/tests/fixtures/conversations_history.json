@@ -1,0 +1,7 @@
+{"ok":true,"messages":[
+ {"type":"message","user":"U0BOB0001","text":"最新一則 <@U023BECGF>","ts":"1700000300.000300","thread_ts":"1700000300.000300","reply_count":2,"reply_users":["U023BECGF","U0BOB0001"],"reply_users_count":2,"latest_reply":"1700000400.000400","is_locked":false,"subscribed":false,
+  "reactions":[{"name":"thumbsup","users":["U023BECGF","U0BOB0001"],"count":2},{"name":"eyes","users":["U0BOB0001"],"count":1}]},
+ {"type":"message","user":"U023BECGF","text":"看這張圖","ts":"1700000200.000200","edited":{"user":"U023BECGF","ts":"1700000250.000000"},
+  "files":[{"id":"F0123FILE1","name":"diagram.png","title":"diagram","mimetype":"image/png","filetype":"png","size":48211,"url_private":"https://files.slack.com/files-pri/T024BE7LD-F0123FILE1/diagram.png","thumb_160":"https://files.slack.com/files-tmb/T024BE7LD-F0123FILE1-abc/diagram_160.png","thumb_360":"https://files.slack.com/files-tmb/T024BE7LD-F0123FILE1-abc/diagram_360.png","thumb_360_w":360,"thumb_360_h":240,"permalink":"https://acme.slack.com/files/U023BECGF/F0123FILE1/diagram.png"}]},
+ {"type":"message","subtype":"bot_message","bot_id":"B01BOT","username":"CI Bot","text":"build passed","ts":"1700000100.000100"}
+],"has_more":true,"pin_count":0,"response_metadata":{"next_cursor":"bmV4dF90czoxNjAw"}}

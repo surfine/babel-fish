@@ -1,0 +1,20 @@
+// 圖示沿用設計稿的內嵌 SVG
+export const ICON = {
+  spark: '<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5l1.4 4.1 4.1 1.4-4.1 1.4L8 12.5 6.6 8.4 2.5 7l4.1-1.4z"/></svg>',
+  reply: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 4 2.5 7.5 6 11"/><path d="M3 7.5h6.5a4 4 0 0 1 4 4V13"/></svg>',
+  book: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 2.5h7.5a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2z"/></svg>',
+  redo: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12.5 5.5A5 5 0 1 0 13 9"/><path d="M13 2.5v3h-3"/></svg>',
+  check: '<svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5.2 4.2 7.3 8 2.8"/></svg>',
+  lock: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>',
+  chevron: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4.5 6 7.5 9 4.5"/></svg>',
+  plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3v10M3 8h10"/></svg>',
+  at: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2.6"/><path d="M10.6 8v1.2a1.9 1.9 0 0 0 3.8 0V8a6.4 6.4 0 1 0-2.5 5"/></svg>',
+  smile: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M5.6 9.6a3 3 0 0 0 4.8 0"/><circle cx="6" cy="6.6" r=".6" fill="currentColor"/><circle cx="10" cy="6.6" r=".6" fill="currentColor"/></svg>',
+  smileSm: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="6"/><path d="M5.6 9.6a3 3 0 0 0 4.8 0"/><circle cx="6" cy="6.6" r=".6" fill="currentColor"/><circle cx="10" cy="6.6" r=".6" fill="currentColor"/></svg>',
+  thread: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>',
+  sliders: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 4h7M12 4h2M2 12h3M8 12h6"/><circle cx="10.5" cy="4" r="1.6"/><circle cx="6.5" cy="12" r="1.6"/></svg>',
+  glossary: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 2.5h7.5a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2z"/><path d="M3 11.5a2 2 0 0 1 2-2h7.5"/></svg>',
+  pencil: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10.5 2.5l3 3L6 13H3v-3z"/></svg>',
+  trash: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.7 9h5.6l.7-9"/></svg>',
+  close: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
+};
