@@ -87,10 +87,10 @@
     <div class="msg mine pending pending-row">
       <Avatar user={app.self?.id} />
       <div class="body">
-        <div class="meta"><b>{app.name(app.self?.id)}</b><time>{timeLabel(String(Date.now() / 1000))}</time></div>
+        <div class="meta"><b data-raw>{app.name(app.self?.id)}</b><time>{timeLabel(String(Date.now() / 1000))}</time></div>
         {#each p.texts as t, i (i)}<div class="en">{t}</div>{/each}
         {#each p.files as f (f.name)}<div class="en">📎 {f.name}</div>{/each}
-        {#if p.draftZh}<div class="zh own"><span class="own-label">你的原稿</span>{p.draftZh}</div>{/if}
+        {#if p.draftZh}<div class="zh own"><span class="own-label">你的原稿</span><span data-raw>{p.draftZh}</span></div>{/if}
         <div class="undo">傳送中…　<button class="link-btn" onclick={() => app.undo(p.id)}>撤回（{p.left}）</button></div>
       </div>
     </div>

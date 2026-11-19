@@ -11,7 +11,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "bench": "tsx bench/run.ts"
+    "bench": "tsx bench/run.ts",
+    "terms": "tsx scripts/terms-doc.ts"
   },
   "engines": {
     "node": ">=20"

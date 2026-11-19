@@ -92,7 +92,7 @@
   <div class="body">
     {#if !cont}
       <div class="meta">
-        <b>{author}</b><time datetime={new Date(Number(m.ts) * 1000).toISOString()}>{timeLabel(m.ts)}</time>
+        <b data-raw>{author}</b><time datetime={new Date(Number(m.ts) * 1000).toISOString()}>{timeLabel(m.ts)}</time>
       </div>
     {/if}
 
@@ -114,11 +114,11 @@
     {:else if autoZh}
       <div class="zh auto" title="這是譯文；上方切到「原文」可以看英文">{@html zhHtml}{#if m.edited}<span class="edited">（已編輯）</span>{/if}</div>
     {:else if m.text}
-      <div class="en">{@html enHtml}{#if m.edited}<span class="edited">（已編輯）</span>{/if}</div>
+      <div class="en" data-raw>{@html enHtml}{#if m.edited}<span class="edited">（已編輯）</span>{/if}</div>
     {/if}
 
     {#if draft}
-      <div class="zh own"><span class="own-label">你的原稿</span>{draft}</div>
+      <div class="zh own"><span class="own-label">你的原稿</span><span data-raw>{draft}</span></div>
     {:else if autoMode}
       {#if tr === null}<div class="zh loading">翻譯中…</div>{/if}
     {:else if tr && mode !== 'original'}

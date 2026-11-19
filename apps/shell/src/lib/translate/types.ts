@@ -3,7 +3,8 @@
 
 export interface GlossaryEntry {
   term: string; // 原文
-  zh: string | null; // null 表示不翻譯、保留原文
+  zh: string | null; // null 表示不翻譯、保留原文（台灣寫法）
+  zhVariants?: Partial<Record<'zh-TW' | 'zh-HK' | 'zh-CN' | 'zh-SG', string>>; // 其他地區的譯名
   note?: string;
 }
 

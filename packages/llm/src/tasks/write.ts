@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import type { LLM } from '../config.js';
 import { describeToneProfile, type ToneProfile } from '../tone.js';
-import { formatConversation, formatGlossary, runJson, TAIWAN_ZH, type ContextMessage, type GlossaryEntry, type TaskMeta } from './shared.js';
+import { formatConversation, formatGlossary, runJson, type ContextMessage, type GlossaryEntry, type TaskMeta } from './shared.js';
+import { DEFAULT_ZH, ZH_LABEL, zhInstruction, type ZhVariant } from '../zh.js';
 
 /* 寫作端：潤色（三種語氣）→ 獨立回譯（只看英文）→ 意思比對。資料形狀對應 design/prototype.html 的審閱卡。 */
 
@@ -31,11 +32,13 @@ export interface PolishInput {
   myVoice?: string[];
   /** 「再調整」：例如「短一點」「熱情一點」。 */
   instruction?: string;
+  /** 使用者讀寫的中文地區；「為什麼這樣寫」、回譯與比對都用它 */
+  variant?: ZhVariant;
   signal?: AbortSignal;
   onText?: (d: string) => void;
 }
 
-export const POLISH_SYSTEM = `You turn a Chinese draft, written by a Taiwanese member of a Slack channel, into the English messages they will send. They will read your output carefully before sending it under their own name, so it must say exactly what they meant, in the way people in this channel actually write.
+export const polishSystem = (v: ZhVariant = DEFAULT_ZH) => `You turn a Chinese draft (written in ${ZH_LABEL[v]} by a member of a Slack channel) into the English messages they will send. They will read your output carefully before sending it under their own name, so it must say exactly what they meant, in the way people in this channel actually write.
 
 Meaning
 - Say everything in the draft and nothing more. Do not add facts, offers, promises ("will report back"), thanks, greetings, praise or opinions that are not in the draft.
@@ -53,13 +56,14 @@ Three variants
 - channel: what a regular in this channel would write. This is the default the user will most likely send.
 - formal: complete sentences, normal capitalization and punctuation, usually one message; for editors or people the user does not know well.
 - bubbles: split the way this channel splits messages (bursts of short messages are normal here); 1–3 bubbles. merged: the same content as a single message, or null if there is one bubble.
-- notes: 2–4 per variant. phrase is a key English phrase from that variant (or a short label for a style choice); why is one sentence in ${TAIWAN_ZH} explaining why it is written that way, so the user learns from it.`;
+- notes: 2–4 per variant. phrase is a key English phrase from that variant (or a short label for a style choice); why is one sentence in ${zhInstruction(v, 6)}, explaining why it is written that way, so the user learns from it.`;
+export const POLISH_SYSTEM = polishSystem();
 
 export function buildPolishPrompt(input: PolishInput): string {
   const parts = [
     `Channel style profile:\n${describeToneProfile(input.tone)}`,
     input.myVoice?.length ? `English messages the user has written before (match their voice):\n${input.myVoice.map((t) => `> ${t}`).join('\n')}` : '',
-    input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary)}` : '',
+    input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary, input.variant)}` : '',
     `Recent conversation (oldest first):\n${formatConversation(input.recent)}`,
     input.replyTo ? `The user is replying to:\n[${input.replyTo.user}] ${input.replyTo.text}` : '',
     `The user's Chinese draft:\n${input.draft}`,
@@ -69,7 +73,7 @@ export function buildPolishPrompt(input: PolishInput): string {
 }
 
 export async function polish(llm: LLM, input: PolishInput): Promise<{ result: PolishResult; meta: TaskMeta }> {
-  const { data, meta } = await runJson(llm, 'polish', 'polish', PolishOut, POLISH_SYSTEM, buildPolishPrompt(input), { signal: input.signal, onText: input.onText });
+  const { data, meta } = await runJson(llm, 'polish', 'polish', PolishOut, polishSystem(input.variant), buildPolishPrompt(input), { signal: input.signal, onText: input.onText });
   for (const t of TONES) {
     const v = data[t];
     v.bubbles = v.bubbles.map((b) => b.trim()).filter(Boolean);
@@ -87,10 +91,11 @@ export interface BacktranslateInput {
   recent?: ContextMessage[];
   /** 讓產品名的中文譯法和使用者原稿一致，比對時才不會把譯名差異當成意思差異。 */
   glossary?: GlossaryEntry[];
+  variant?: ZhVariant;
   signal?: AbortSignal;
 }
 
-export const BACKTRANSLATE_SYSTEM = `You translate English Slack messages into ${TAIWAN_ZH} so a reader can check exactly what the English says.
+export const backtranslateSystem = (v: ZhVariant = DEFAULT_ZH) => `You translate English Slack messages into ${zhInstruction(v)}, so a reader can check exactly what the English says.
 - Be faithful, not nice: keep every added phrase, every hedge at its exact strength (prob = 大概, maybe = 也許, definitely = 一定), every exclamation and the level of politeness.
 - Do not fix, smooth over, or guess what the writer meant to say. If the English is odd, the Chinese should be odd in the same way.
 - Natural Chinese word order is fine; dropping or adding meaning is not.
@@ -98,16 +103,18 @@ export const BACKTRANSLATE_SYSTEM = `You translate English Slack messages into $
 - Follow the glossary for product names.`;
 
 /** 獨立回譯：只給英文，絕不給中文原稿，否則模型會照抄原稿讓檢查失效。 */
+export const BACKTRANSLATE_SYSTEM = backtranslateSystem();
+
 export async function backtranslate(llm: LLM, input: BacktranslateInput): Promise<{ result: Record<string, string>; meta: TaskMeta }> {
   const keys = Object.keys(input.texts);
   const user = [
-    input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary)}` : '',
+    input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary, input.variant)}` : '',
     input.recent?.length ? `Conversation for context (do not translate):\n${formatConversation(input.recent)}` : '',
     `Translate each item (JSON):\n${JSON.stringify(keys.map((key) => ({ key, en: input.texts[key] })))}`,
   ]
     .filter(Boolean)
     .join('\n\n');
-  const { data, meta } = await runJson(llm, 'backtranslate', 'backtranslation', BackOut, BACKTRANSLATE_SYSTEM, user, { signal: input.signal });
+  const { data, meta } = await runJson(llm, 'backtranslate', 'backtranslation', BackOut, backtranslateSystem(input.variant), user, { signal: input.signal });
   const result: Record<string, string> = {};
   for (const item of data.items) if (keys.includes(item.key)) result[item.key] = item.zh;
   return { result, meta };
@@ -123,14 +130,14 @@ const CompareOut = z.strictObject({
 });
 export type MeaningCheck = z.infer<typeof CompareOut>;
 
-export const COMPARE_SYSTEM = `You check whether an English message, seen through its Chinese back-translation, still says what the user meant in their Chinese draft. The user cannot judge the English themselves; your verdict decides whether they feel safe pressing send.
+export const compareSystem = (v: ZhVariant = DEFAULT_ZH) => `You check whether an English message, seen through its Chinese back-translation, still says what the user meant in their Chinese draft. The user cannot judge the English themselves; your verdict decides whether they feel safe pressing send.
 
 Compare the draft with the back-translation and report:
 - added: things the English says that the draft did not (new facts, promises such as "will report back", thanks, opinions).
 - omitted: points in the draft that the English dropped.
 - toneShifts: hedges or intensity that changed (也許 → 大概 is stronger; 一定 → 可能 is weaker), politeness or enthusiasm that changed noticeably.
 - status: "warn" if anything was added, omitted or noticeably shifted that the user might not want; "info" if the only differences are harmless clarifications (spelling out "iOS", making an implied subject explicit, merging sentences); "ok" if the meaning matches.
-- summary: one sentence in ${TAIWAN_ZH} that the user reads first, e.g. 「也許」寫成了 prob（大概），語氣比你的原稿篤定一點 or 意思一致：沒有新增或漏掉資訊.
+- summary: one sentence in ${zhInstruction(v, 6)}, that the user reads first (examples below are in Taiwan form; write yours in the user's region), e.g. 「也許」寫成了 prob（大概），語氣比你的原稿篤定一點 or 意思一致：沒有新增或漏掉資訊.
 - highlights: the exact substrings of the back-translation where a difference shows, so the UI can mark them. Empty when status is ok.
 Not differences (do not list, do not highlight):
 - word order, punctuation, capitalization, casual vs. formal register, unless they change what is being said;
@@ -144,8 +151,11 @@ export interface CompareInput {
   english?: string;
   /** 英文對話脈絡：判斷「補上的資訊」是不是對話早已確立的。 */
   recent?: ContextMessage[];
+  variant?: ZhVariant;
   signal?: AbortSignal;
 }
+
+export const COMPARE_SYSTEM = compareSystem();
 
 export async function compareMeaning(llm: LLM, input: CompareInput): Promise<{ result: MeaningCheck; meta: TaskMeta }> {
   const user = [
@@ -156,7 +166,7 @@ export async function compareMeaning(llm: LLM, input: CompareInput): Promise<{ r
   ]
     .filter(Boolean)
     .join('\n\n');
-  const { data, meta } = await runJson(llm, 'compare', 'meaning_check', CompareOut, COMPARE_SYSTEM, user, { signal: input.signal });
+  const { data, meta } = await runJson(llm, 'compare', 'meaning_check', CompareOut, compareSystem(input.variant), user, { signal: input.signal });
   // 只保留真的出現在回譯裡的片段，介面才能安全地標黃。
   data.highlights = data.highlights.filter((h) => h && input.backtranslation.includes(h));
   if (data.status === 'ok') data.highlights = [];
@@ -180,9 +190,9 @@ export interface ReviewCard {
 export async function reviewDraft(llm: LLM, input: PolishInput): Promise<ReviewCard> {
   const { result, meta: polishMeta } = await polish(llm, input);
   const english = Object.fromEntries(TONES.map((t) => [t, result[t].bubbles.join('\n')])) as Record<Tone, string>;
-  const { result: back, meta: backMeta } = await backtranslate(llm, { texts: english, recent: input.recent, glossary: input.glossary, signal: input.signal });
+  const { result: back, meta: backMeta } = await backtranslate(llm, { texts: english, recent: input.recent, glossary: input.glossary, variant: input.variant, signal: input.signal });
   const checks = await Promise.all(
-    TONES.map((t) => compareMeaning(llm, { draft: input.draft, backtranslation: back[t] ?? '', english: english[t], recent: input.recent, signal: input.signal })),
+    TONES.map((t) => compareMeaning(llm, { draft: input.draft, backtranslation: back[t] ?? '', english: english[t], recent: input.recent, variant: input.variant, signal: input.signal })),
   );
   const variants = Object.fromEntries(
     TONES.map((t, i) => [t, { ...result[t], english: english[t], back: back[t] ?? '', check: checks[i].result }]),

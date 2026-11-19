@@ -18,9 +18,9 @@
     <header class="ch-head">
       <div class="ch-title">
         {#if conv.kind === 'private'}<span class="private">{@html ICON.lock}</span>{:else if conv.kind === 'channel'}#{/if}
-        {app.convLabel(conv.id)}
+        <span data-raw>{app.convLabel(conv.id)}</span>
         {#if conv.member_count}<span class="members">{conv.member_count} 位成員</span>{/if}
-        {#if conv.topic}<span class="ch-topic" title={conv.topic}>{conv.topic}</span>{/if}
+        {#if conv.topic}<span class="ch-topic" data-raw title={conv.topic}>{conv.topic}</span>{/if}
       </div>
       <div class="ch-tools">
         <div class="seg seg-modes" role="tablist" aria-label="閱讀模式">

@@ -2,8 +2,8 @@ import type { GlossaryEntry } from './types';
 
 // 翻譯與潤色共用的術語表；產品名一律照 Apple 官方寫法
 export const GLOSSARY: GlossaryEntry[] = [
-  { term: 'Find My', zh: '「尋找」' },
-  { term: 'Precision Finding', zh: '精確尋找' },
+  { term: 'Find My', zh: '「尋找」', zhVariants: { 'zh-CN': '“查找”', 'zh-SG': '“查找”' } },
+  { term: 'Precision Finding', zh: '精確尋找', zhVariants: { 'zh-CN': '精确查找', 'zh-SG': '精确查找' } },
   { term: 'Control Center', zh: '控制中心' },
   { term: 'Siri Remote', zh: null },
   { term: 'AirPods Pro', zh: null },

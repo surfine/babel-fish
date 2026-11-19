@@ -18,7 +18,7 @@
 
 <aside class="sidebar" aria-label="側欄">
   <div class="ws">
-    {app.team?.name ?? 'Slack'}
+    <span data-raw>{app.team?.name ?? 'Slack'}</span>
     {#if app.source?.kind === 'demo'}<span class="demo-tag">示範</span>{/if}
   </div>
 
@@ -64,7 +64,7 @@
     {:else}
       <span class="hash">#</span>
     {/if}
-    <span class="lbl">{app.convLabel(c.id)}</span>
+    <span class="lbl" data-raw>{app.convLabel(c.id)}</span>
     {#if c.mentions > 0 && c.id !== app.activeId}<span class="count" aria-label="{c.mentions} 則提及你">{c.mentions}</span>{/if}
   </button>
 {/snippet}

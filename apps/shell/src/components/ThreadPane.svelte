@@ -10,7 +10,7 @@
 
 <aside class="thread" aria-label="對話串">
   <div class="th-head">
-    <h3>對話串<small>{app.convLabel(t.channel)}</small></h3>
+    <h3>對話串<small data-raw>{app.convLabel(t.channel)}</small></h3>
     <button class="icon-btn" aria-label="關閉對話串" onclick={() => app.closeThread()}>{@html ICON.close}</button>
   </div>
   {#key t.ts}

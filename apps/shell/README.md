@@ -120,6 +120,15 @@ cd src-tauri && cargo test && cargo check
 - emoji 名稱表只收常用的一批，其他標準 emoji 會顯示成 `:name:`。
 - 啟動時打開上次看的頻道（localStorage `rosetta.lastChannel`），沒有紀錄就開列表第一個。
 
+## 中文地區用字
+
+設定裡的「中文用字」有台灣正體、香港繁體、大陆简体、马新简体（`@rosetta/llm` 的 `ZhVariant`），存在 localStorage `rosetta.zhVariant`，沒設時依 `navigator.languages` 猜。換了會重新載入頁面。
+
+- 模型輸出（譯文、俚語說明、摘要、為什麼這樣寫、回譯、意思比對）：`translate/llm.ts` 把 `variant` 傳給 `packages/llm` 的任務，系統提示改成該地區的中文並附上用詞例子；術語表的譯名可以用 `zhVariants` 指定各地區寫法（例如 Find My 在大陸是「查找」）。
+- 介面文字：`lib/zh.ts` 在畫面上即時轉換（MutationObserver），先照 `TERMS` 換用詞，再用 opencc-js 換字形（香港用 tw→hk，大陸與馬新用 twp→cn），大陸與馬新的「」換成 “”。標了 `data-raw` 的元素不轉：原始訊息、你的原稿、人名、頻道名、工作空間名、地區選單。opencc-js 只在選了非台灣地區時才載入。
+- 用詞對照表：`packages/llm/src/zh.ts` 的 `TERMS`，人看的版本是根目錄 `docs/TERMINOLOGY.md`（`npm --prefix packages/llm run terms` 產生，測試會檢查兩者一致）。
+- 還沒轉：Rust 端的選單列文字（「設定…」）與 macOS 通知。
+
 ## 簽章、公證與自動更新
 
 - `tauri.conf.json` 不寫簽章身分。建置時由環境變數 `APPLE_SIGNING_IDENTITY` 提供；沒有設定就不簽章（本機開發用）。

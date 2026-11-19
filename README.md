@@ -12,6 +12,12 @@ Babel Fish 是 macOS 上的 Slack 閱讀輔助工具。它把頻道裡的英文�
 
 ![中文草稿改寫成英文，附回譯與意思比對](apps/shell/docs/screenshots/demo-review.png)
 
+## 中文用字
+
+譯文、說明和介面可以用四種中文：台灣正體、香港繁體、大陆简体、马新简体。第一次開啟時依系統語言自動選，之後可以在「設定」的「中文用字」換。
+
+譯文、回譯和摘要直接請模型用你選的地區寫。介面文字先照[地區用詞對照表](docs/TERMINOLOGY.md)換用詞，再用 [OpenCC](https://github.com/BYVoid/OpenCC) 換字形。別人寫的訊息、你的中文原稿、人名和頻道名都保持原樣。
+
 ## 使用前要知道的風險
 
 Babel Fish 不是 Slack 官方的 App，也不是工作空間安裝的 App。它借用 Slack 網頁版的登入來讀訊息。

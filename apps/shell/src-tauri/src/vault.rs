@@ -268,6 +268,8 @@ mod mac {
     /// 以及開發版用過的舊式單一項目
     pub struct LegacyItems {
         pub include_file_vault: bool,
+        /// 搬完是否刪掉舊項目。開發版不刪：rosetta-deepseek 也給 packages/llm 的 bench 用
+        pub delete_after: bool,
         /// 也看舊的 Touch ID 項目（只有正式版）
         pub include_touch_id_vault: bool,
     }
@@ -298,6 +300,9 @@ mod mac {
         }
 
         fn delete(&self) {
+            if !self.delete_after {
+                return;
+            }
             if self.include_touch_id_vault {
                 (ProtectedBackend { account: VAULT_ACCOUNT }).delete();
             }
@@ -329,12 +334,12 @@ pub fn global() -> Arc<VaultStore> {
                 let store = if protected {
                     VaultStore::new(
                         Box::new(mac::ProtectedBackend { account: PROTECTED_ACCOUNT }),
-                        Some(Box::new(mac::LegacyItems { include_file_vault: true, include_touch_id_vault: true })),
+                        Some(Box::new(mac::LegacyItems { include_file_vault: true, include_touch_id_vault: true, delete_after: true })),
                     )
                 } else {
                     VaultStore::new(
                         Box::new(mac::FileBackend),
-                        Some(Box::new(mac::LegacyItems { include_file_vault: false, include_touch_id_vault: false })),
+                        Some(Box::new(mac::LegacyItems { include_file_vault: false, include_touch_id_vault: false, delete_after: false })),
                     )
                 };
                 Arc::new(store)

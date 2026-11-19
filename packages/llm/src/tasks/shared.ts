@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DEFAULT_ZH, glossaryZh, zhInstruction, type ZhVariant } from '../zh.js';
 import type { LLM } from '../config.js';
 import { LLMError, type GenerateResult, type JsonSpec, type Step } from '../types.js';
 
@@ -12,7 +13,10 @@ export interface ContextMessage {
 /** 術語表：zh 為 null 代表保留原文不翻（例如 Siri Remote、tvOS 27）。 */
 export interface GlossaryEntry {
   term: string;
+  /** 台灣寫法；null 代表保留原文 */
   zh: string | null;
+  /** 其他地區的譯名，例如 Find My 在大陸是「查找」 */
+  zhVariants?: Partial<Record<ZhVariant, string>>;
   note?: string;
 }
 
@@ -25,9 +29,17 @@ export function formatConversation(messages: ContextMessage[], limit = MAX_CONTE
     .join('\n');
 }
 
-export function formatGlossary(glossary: GlossaryEntry[] = []): string {
+export function formatGlossary(glossary: GlossaryEntry[] = [], variant: ZhVariant = DEFAULT_ZH): string {
   if (!glossary.length) return '';
-  return glossary.map((g) => `- ${g.term} → ${g.zh ?? '(keep in English, exact capitalization)'}${g.note ? ` — ${g.note}` : ''}`).join('\n');
+  const lines = glossary.map((g) => {
+    const zh = glossaryZh(g.zh, g.zhVariants, variant);
+    return `- ${g.term} → ${zh ?? '(keep in English, exact capitalization)'}${g.note ? ` — ${g.note}` : ''}`;
+  });
+  // 沒有該地區譯名的條目給的是台灣寫法，提醒模型換成目標地區的字與用詞
+  if (variant !== 'zh-TW' && glossary.some((g) => g.zh !== null && !g.zhVariants?.[variant])) {
+    lines.push('(Chinese renderings above are given in Taiwan form unless region-specific; write them in the target region\'s characters and usual name.)');
+  }
+  return lines.join('\n');
 }
 
 /** zod → 各供應商都吃的 JSON Schema（去掉 $schema；物件一律 additionalProperties: false）。 */
@@ -87,4 +99,5 @@ export async function runJson<T>(
   throw lastError!;
 }
 
-export const TAIWAN_ZH = 'Traditional Chinese as written in Taiwan (台灣正體中文, Taiwanese vocabulary such as 軟體、影片、訊息、螢幕; never Simplified characters or Mainland terms)';
+/** 舊名：台灣正體的提示詞說明。新程式用 zhInstruction(variant)。 */
+export const TAIWAN_ZH = zhInstruction('zh-TW');

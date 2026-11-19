@@ -2,6 +2,16 @@
   import { app } from '../lib/store.svelte';
   import { GLOSSARY, llmStatus, setLlmKey, type LlmProviderId } from '../lib/translate';
   import SkipLangs from './SkipLangs.svelte';
+  import { ZH_LABEL, ZH_VARIANTS, type ZhVariant } from '@rosetta/llm';
+  import { loadVariant, saveVariant } from '../lib/zh';
+
+  const variant = loadVariant();
+  // 換地區要重新載入：介面文字轉換回不去，記憶體裡的譯文也要用新地區重翻
+  function changeVariant(v: ZhVariant) {
+    if (v === variant) return;
+    saveVariant(v);
+    location.reload();
+  }
 
   let { onclose }: { onclose: () => void } = $props();
 
@@ -75,6 +85,12 @@
     </div>
   {/each}
   <div class="row">
+    <div class="lbl"><label for="zh-variant"><b>中文用字</b></label><small>譯文、說明和介面都改用這種中文；換了會重新載入</small></div>
+    <select id="zh-variant" class="zh-select" data-raw value={variant} onchange={(e) => changeVariant((e.currentTarget as HTMLSelectElement).value as ZhVariant)}>
+      {#each ZH_VARIANTS as v (v)}<option value={v}>{ZH_LABEL[v]}</option>{/each}
+    </select>
+  </div>
+  <div class="row">
     <div class="lbl"><b>不翻譯的語言</b><small>你看得懂的語言就不翻，省錢也比較快</small></div>
     <SkipLangs />
   </div>
@@ -99,6 +115,7 @@
   h4 { margin: 0; font-size: 15px; }
   .slack-sec { margin: 10px 0 4px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
   .slack-sec small { display: block; margin-top: 4px; color: var(--text-3); font-size: 12px; }
+  .zh-select { font: inherit; font-size: 14px; padding: 4px 8px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg); color: var(--text); }
   .ro { display: flex; align-items: center; gap: 8px; cursor: pointer; }
   .ro + small + .ro { margin-top: 12px; }
   .ro input { flex: none; accent-color: var(--accent); }

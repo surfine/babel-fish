@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import type { LLM } from '../config.js';
 import { LLMError } from '../types.js';
-import { formatConversation, formatGlossary, runJson, TAIWAN_ZH, type ContextMessage, type GlossaryEntry, type TaskMeta } from './shared.js';
+import { formatConversation, formatGlossary, runJson, type ContextMessage, type GlossaryEntry, type TaskMeta } from './shared.js';
+import { DEFAULT_ZH, zhInstruction, type ZhVariant } from '../zh.js';
 
 /* 閱讀端：逐則翻譯（附俚語註解）、單則用法解釋、未讀摘要。 */
 
@@ -27,6 +28,8 @@ export interface TranslateInput {
   /** 要翻的訊息之前的對話，只當參考不翻。 */
   context?: ContextMessage[];
   glossary?: GlossaryEntry[];
+  /** 譯文用哪個地區的中文，預設台灣正體 */
+  variant?: ZhVariant;
   signal?: AbortSignal;
 }
 
@@ -36,7 +39,7 @@ export interface Translation {
   idioms: Idiom[];
 }
 
-const TRANSLATE_SYSTEM = `You translate Slack messages from English into ${TAIWAN_ZH} for a reader who finds English hard.
+export const translateSystem = (v: ZhVariant = DEFAULT_ZH) => `You translate Slack messages from English into ${zhInstruction(v)}, for a reader who finds English hard.
 
 - Translate the meaning and the tone, not word by word: a terse, casual message stays terse and casual in Chinese.
 - Follow the glossary exactly. Terms marked "keep in English" stay in English with their exact capitalization.
@@ -54,13 +57,13 @@ export async function translateBatch(llm: LLM, input: TranslateInput, opts: { ba
 
   const once = async (batch: TranslateInput['messages'], earlier: ContextMessage[]) => {
     const user = [
-      input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary)}` : '',
+      input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary, input.variant)}` : '',
       earlier.length ? `Earlier conversation (context only, do not translate):\n${formatConversation(earlier)}` : '',
       `Messages to translate (JSON):\n${JSON.stringify(batch.map((m) => ({ id: m.id, user: m.user, text: m.text })))}`,
     ]
       .filter(Boolean)
       .join('\n\n');
-    const { data, meta: m } = await runJson(llm, 'translate', 'translations', TranslateOut, TRANSLATE_SYSTEM, user, {
+    const { data, meta: m } = await runJson(llm, 'translate', 'translations', TranslateOut, translateSystem(input.variant), user, {
       signal: input.signal,
       lenient: TranslateLoose,
     });
@@ -96,8 +99,8 @@ export async function translateBatch(llm: LLM, input: TranslateInput, opts: { ba
 const AnnotateOut = z.strictObject({ idioms: z.array(Idiom) });
 
 /** 「解釋用法」：對單則訊息做較完整的俚語與片語說明。 */
-export async function annotateIdioms(llm: LLM, input: { message: ContextMessage; context?: ContextMessage[]; signal?: AbortSignal }) {
-  const system = `You explain English slang, abbreviations, idioms and notable phrasing in a Slack message to a learner who reads ${TAIWAN_ZH}. phrase must be an exact substring of the message. meaning: short Chinese gloss. usage: one or two Chinese sentences on when and how people say it, with a short English example. Include anything a learner could misread; skip plain words.`;
+export async function annotateIdioms(llm: LLM, input: { message: ContextMessage; context?: ContextMessage[]; variant?: ZhVariant; signal?: AbortSignal }) {
+  const system = `You explain English slang, abbreviations, idioms and notable phrasing in a Slack message to a learner who reads ${zhInstruction(input.variant)}. phrase must be an exact substring of the message. meaning: short Chinese gloss. usage: one or two Chinese sentences on when and how people say it, with a short English example. Include anything a learner could misread; skip plain words.`;
   const user = [input.context?.length ? `Conversation so far:\n${formatConversation(input.context)}` : '', `Message:\n[${input.message.user}] ${input.message.text}`]
     .filter(Boolean)
     .join('\n\n');
@@ -108,9 +111,9 @@ export async function annotateIdioms(llm: LLM, input: { message: ContextMessage;
 const SummaryOut = z.strictObject({ summary: z.string() });
 
 /** 離開一陣子回來時的中文摘要。 */
-export async function summarizeUnread(llm: LLM, input: { messages: ContextMessage[]; glossary?: GlossaryEntry[]; signal?: AbortSignal }) {
-  const system = `Summarize these Slack messages in ${TAIWAN_ZH} for someone returning after a break: one short paragraph, who said what and what was concluded, concrete names, versions and numbers. Follow the glossary. No headings, no bullet points.`;
-  const user = [input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary)}` : '', `Messages:\n${formatConversation(input.messages, input.messages.length)}`]
+export async function summarizeUnread(llm: LLM, input: { messages: ContextMessage[]; glossary?: GlossaryEntry[]; variant?: ZhVariant; signal?: AbortSignal }) {
+  const system = `Summarize these Slack messages in ${zhInstruction(input.variant)}, for someone returning after a break: one short paragraph, who said what and what was concluded, concrete names, versions and numbers. Follow the glossary. No headings, no bullet points.`;
+  const user = [input.glossary?.length ? `Glossary:\n${formatGlossary(input.glossary, input.variant)}` : '', `Messages:\n${formatConversation(input.messages, input.messages.length)}`]
     .filter(Boolean)
     .join('\n\n');
   const { data, meta } = await runJson(llm, 'summarize', 'summary', SummaryOut, system, user, { signal: input.signal });

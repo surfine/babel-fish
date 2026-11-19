@@ -1,6 +1,7 @@
 // 真實作：把殼的 Translator／Polisher／Verifier／Summarizer 介面接到 packages/llm。
 // 請求一律經 Rust 的 llm_http 代理送出：webview 不受 CORS 限制，金鑰欄位只放佔位字串，由後端從鑰匙圈換上真金鑰。
 import { invoke } from '@tauri-apps/api/core';
+import { loadVariant } from '../zh';
 import {
   backtranslate,
   compareMeaning,
@@ -119,6 +120,7 @@ export class LlmTranslator implements Translator {
       messages: items.map((i) => ({ id: i.id, user: i.author ?? '?', text: i.text })),
       context: ctx.recent.map((r) => ({ user: r.author ?? '?', text: r.text })),
       glossary: ctx.glossary,
+      variant: loadVariant(),
     });
     return translations.map((t) => ({ id: t.id, zh: t.zh, idioms: t.idioms }));
   }
@@ -142,6 +144,7 @@ export class LlmPolisher implements Polisher {
         glossary: req.glossary,
         myVoice: req.myVoice,
         instruction,
+        variant: loadVariant(),
       }).then((r) => r.result);
       p.catch(() => this.cache.delete(key));
       this.cache.set(key, p);
@@ -163,11 +166,11 @@ export class LlmVerifier implements Verifier {
   constructor(private llm: LLM, private glossary: GlossaryEntry[]) {}
   // 刻意不傳中文原稿：回譯看不到原稿，比對才有意義
   async backTranslate(english: string[]): Promise<string> {
-    const { result } = await backtranslate(this.llm, { texts: { en: english.join('\n') }, glossary: this.glossary });
+    const { result } = await backtranslate(this.llm, { texts: { en: english.join('\n') }, glossary: this.glossary, variant: loadVariant() });
     return result.en ?? '';
   }
   async compare(draftZh: string, backZh: string, english: string[]): Promise<{ segments: BackSegment[]; check: MeaningCheck }> {
-    const { result } = await compareMeaning(this.llm, { draft: draftZh, backtranslation: backZh, english: english.join('\n') });
+    const { result } = await compareMeaning(this.llm, { draft: draftZh, backtranslation: backZh, english: english.join('\n'), variant: loadVariant() });
     return { segments: segmentize(backZh, result.highlights), check: { kind: result.status, summary: result.summary } };
   }
 }
@@ -178,6 +181,7 @@ export class LlmSummarizer implements Summarizer {
     const { summary } = await summarizeUnread(this.llm, {
       messages: items.map((i) => ({ user: i.author ?? '?', text: i.text })),
       glossary: this.glossary,
+      variant: loadVariant(),
     });
     return summary;
   }

@@ -8,3 +8,4 @@ export * from './pricing.js';
 export type { ContextMessage, GlossaryEntry, TaskMeta } from './tasks/shared.js';
 export * from './tasks/read.js';
 export * from './tasks/write.js';
+export * from './zh.js';
