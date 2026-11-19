@@ -128,7 +128,7 @@ cd src-tauri && cargo test && cargo check
 
 - 閱讀：譯成 U（`TranslateContext.target`）。「不翻譯的語言」預設跳過 U 本身（`rosetta.skipLangs`，舊設定照用）。
 - 寫作：`PolishRequest` 帶 `userLang`、`channelLang`；回譯 C → U，比對用 U。U 和 C 相同時不回譯，按鈕寫「潤色」。
-- 示範模式多了虛構的中文頻道 `#taipei-office`（預寫英文譯文與俚語說明），英文使用者在那裡會看到預填的英文草稿與預寫的中文潤色。
+- 示範模式多了虛構的中文頻道 `#taichung-team`（預寫英文譯文與俚語說明），英文使用者在那裡會看到預填的英文草稿與預寫的中文潤色。
 
 ## 介面多語言
 

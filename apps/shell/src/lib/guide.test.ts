@@ -17,10 +17,10 @@ describe('guide pref', () => {
 });
 
 describe('matchesCopied', () => {
-  const copied = ['same here, no AirPods on beta 4', 'will try again in a bit'];
+  const copied = ['same here, my sample looks darker', 'will reshoot tomorrow'];
   it('送出其中一則、或合併全文都算；Slack 改了引號和空白也算', () => {
-    expect(matchesCopied(copied, 'same here,  no AirPods on beta 4')).toBe(true);
-    expect(matchesCopied(copied, 'same here, no AirPods on beta 4\n\nwill try again in a bit')).toBe(true);
+    expect(matchesCopied(copied, 'same here,  my sample looks darker')).toBe(true);
+    expect(matchesCopied(copied, 'same here, my sample looks darker\n\nwill reshoot tomorrow')).toBe(true);
     expect(matchesCopied(["it's fine"], 'it’s fine')).toBe(true);
   });
   it('別的訊息、空訊息不算', () => {

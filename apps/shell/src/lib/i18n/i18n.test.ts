@@ -37,7 +37,7 @@ describe('沒有漏翻', () => {
 
   it('示範資料預寫的中文也有各地區版本', () => {
     const { demo } = buildRegions();
-    expect(demo['zh-CN']['對，今天早上起開發者網站上就沒了']).toBe('对，今天早上起开发者网站上就没了');
+    expect(demo['zh-CN']['到了，今天早上送到辦公室']).toBe('到了，今天早上送到办公室');
   });
 });
 
@@ -56,7 +56,7 @@ describe('t()', () => {
     setUserLangForTest('zh-CN');
     expect(t('設定')).toBe('设置');
     expect(t('你不在的時候有 {n} 則新訊息', { n: 4 })).toBe('你不在的时候有 4 则新消息');
-    expect(regional('對，今天早上起開發者網站上就沒了')).toBe('对，今天早上起开发者网站上就没了');
+    expect(regional('到了，今天早上送到辦公室')).toBe('到了，今天早上送到办公室');
   });
 
   it('format 只換認得的參數', () => {

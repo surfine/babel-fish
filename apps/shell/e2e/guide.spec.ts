@@ -2,14 +2,14 @@
 // 每項資訊只能出現一次：要貼的文字、目的地、每個按鍵。
 import { test, expect } from '@playwright/test';
 
-const FIRST_LINE = 'same here, no AirPods showing up on beta 4';
+const FIRST_LINE = 'same here, the green on my sample looks darker';
 
 test('完整版：文字、目的地、⌘V、Return 各出現一次', async ({ page }) => {
   await page.goto('/?guide');
   const card = page.locator('section.guide');
   await expect(card).toBeVisible();
   await expect(card.getByText(FIRST_LINE)).toHaveCount(1);
-  await expect(card.getByText('newsroom', { exact: true })).toHaveCount(1);
+  await expect(card.getByText('product', { exact: true })).toHaveCount(1);
   await expect(card.locator('kbd', { hasText: '⌘ V' })).toHaveCount(1);
   await expect(card.locator('kbd', { hasText: 'Return' })).toHaveCount(1);
   await expect(card.locator('ol > li')).toHaveCount(3);
@@ -28,5 +28,5 @@ test('熟手版：不教步驟，只留目的地和文字', async ({ page }) => 
   const card = page.locator('section.guide');
   await expect(card.locator('ol')).toHaveCount(0);
   await expect(card.getByText(FIRST_LINE, { exact: false })).toHaveCount(1);
-  await expect(card.getByText('newsroom', { exact: true })).toHaveCount(1);
+  await expect(card.getByText('product', { exact: true })).toHaveCount(1);
 });

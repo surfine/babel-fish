@@ -11,8 +11,8 @@ const isGuide = internals?.metadata?.currentWindow?.label === 'guide' || new URL
 const target = document.getElementById('app')!;
 
 const GUIDE_PREVIEW = {
-  text: 'same here, no AirPods showing up on beta 4 for me either\n\nmaybe they only show up after the iPad restarts? will try again in a bit',
-  whereLabel: 'newsroom',
+  text: 'same here, the green on my sample looks darker than the swatch too\n\nmaybe it’s the lighting? will take another photo tomorrow in daylight',
+  whereLabel: 'product',
   whereKind: 'private',
   isThread: new URLSearchParams(location.search).has('thread'),
   compact: new URLSearchParams(location.search).has('compact'),

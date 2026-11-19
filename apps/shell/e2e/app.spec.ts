@@ -41,10 +41,10 @@ test('第一次開啟先看到風險說明，勾選後才能同意；也能直�
 test('示範頻道：原文配譯文、連結預覽卡、圖片與對話串', async ({ page }) => {
   const errors = watchErrors(page);
   await openDemo(page);
-  await expect(msg(page, 'did the beta 4 build get pulled')).toContainText('你們那邊 beta 4 也被下架了嗎？');
+  await expect(msg(page, 'did the frame samples from Taichung')).toContainText('台中寄的車架樣品到了嗎？');
   // 連結預覽：Slack 的 unfurl 畫成卡片，標題是連結
-  await expect(page.getByRole('link', { name: 'iPadOS 27 beta 4 release notes' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '放大預覽 find-my-ipad.png' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Harbor Cycles color standard, rev D' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '放大預覽 sample-vs-swatch.png' })).toBeVisible();
   await page.getByRole('button', { name: /2 則回覆/ }).click();
   await expect(page.locator('.thread-pane, [aria-label*="對話串"]').first()).toBeVisible();
   // 閱讀模式三種都能切
@@ -57,7 +57,7 @@ test('示範頻道：原文配譯文、連結預覽卡、圖片與對話串', as
 
 test('唯讀模式（預設）：不能加表情回應，審閱卡只給「複製並打開 Slack」，沒有傳送', async ({ page }) => {
   await openDemo(page);
-  const m = msg(page, 'yep, gone from the developer site');
+  const m = msg(page, 'yep, landed at the office');
   await m.hover();
   await expect(page.getByRole('button', { name: '新增表情回應' })).toHaveCount(0);
   await expect(m.getByRole('button', { name: /👀/ })).toBeDisabled();
@@ -72,7 +72,7 @@ test('唯讀模式（預設）：不能加表情回應，審閱卡只給「複�
 test('關掉唯讀後：表情選單打得開，選了會出現在訊息下方（曾因點擊冒泡而一打開就關掉）', async ({ page }) => {
   const errors = watchErrors(page);
   await openDemo(page, { readOnly: false });
-  const m = msg(page, 'yep, gone from the developer site');
+  const m = msg(page, 'yep, landed at the office');
 
   const picker = page.getByRole('dialog', { name: '選擇表情' });
   const openFromMessage = async () => {
@@ -97,7 +97,7 @@ test('關掉唯讀後：表情選單打得開，選了會出現在訊息下方�
 
   // 選單開著時，直接按另一則訊息的 ☺：選單要換到那一則，不能被關掉
   await openFromMessage();
-  const other = msg(page, 'did the beta 4 build get pulled');
+  const other = msg(page, 'did the frame samples from Taichung');
   await other.hover();
   await other.getByRole('button', { name: '新增表情回應' }).first().click();
   await expect(picker).toBeVisible();
@@ -146,7 +146,7 @@ test('設定裡的唯讀開關會立刻生效', async ({ page }) => {
   await expect(ro).toBeChecked();
   await ro.uncheck();
   await page.getByRole('button', { name: '關閉' }).click();
-  const m = msg(page, 'yep, gone from the developer site');
+  const m = msg(page, 'yep, landed at the office');
   await m.hover();
   await expect(m.getByRole('button', { name: '新增表情回應' }).first()).toBeVisible();
 });
@@ -155,7 +155,7 @@ test('英文介面：英文使用者讀中文頻道', async ({ page }) => {
   const errors = watchErrors(page);
   await openDemo(page, { lang: 'en' });
   await expect(page.getByRole('tab', { name: 'Translation' })).toBeVisible();
-  await page.getByRole('button', { name: /taipei-office/ }).click();
+  await page.getByRole('button', { name: /taichung-team/ }).click();
   // 中文頻道：潤色的目標語言是中文
   await expect(page.getByRole('button', { name: /Polish into .*Chinese/ })).toBeVisible();
   expect(errors).toEqual([]);
