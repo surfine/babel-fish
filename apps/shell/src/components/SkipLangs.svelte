@@ -1,15 +1,16 @@
 <script lang="ts">
   import { app } from '../lib/store.svelte';
-  import { LANG_LABELS, type LangCode } from '../lib/lang';
+  import { langLabels, type LangCode } from '../lib/lang';
+  import { t } from '../lib/i18n';
 
-  const LANGS = Object.entries(LANG_LABELS) as [Exclude<LangCode, 'unknown'>, string][];
+  const LANGS = Object.entries(langLabels()) as [Exclude<LangCode, 'unknown'>, string][];
 
   function toggle(code: LangCode, on: boolean) {
     app.setSkipLangs(on ? [...app.skipLangs, code] : app.skipLangs.filter((l) => l !== code));
   }
 </script>
 
-<div class="skip" role="group" aria-label="不翻譯的語言">
+<div class="skip" role="group" aria-label={t('不翻譯的語言')}>
   {#each LANGS as [code, label] (code)}
     <label><input type="checkbox" checked={app.skipLangs.includes(code)} onchange={(e) => toggle(code, e.currentTarget.checked)} />{label}</label>
   {/each}

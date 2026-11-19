@@ -1,0 +1,15 @@
+{
+  "id": "08-en-to-zh-cn-thanks",
+  "title": "英文草稿 → 大陆简体频道：道谢加提议",
+  "conversation": [
+    { "user": "王磊", "ts": 1793145360, "text": "安卓那边的包我已经打好了" },
+    { "user": "王磊", "ts": 1793145380, "text": "测试服务器上可以直接下载" },
+    { "user": "刘洋", "ts": 1793145500, "text": "收到 我下午看一下" },
+    { "user": "王磊", "ts": 1793145560, "text": "有问题随时说哈" }
+  ],
+  "replyTo": 1,
+  "userLang": "en",
+  "channelLang": "zh-CN",
+  "draft": "thanks Wang Lei! I can help test the login flow too if that's useful",
+  "watch": "用简体与大陆用词（服务器、登录）；道谢对象的名字要在；「if that's useful」的客气要保留，不能变成「我来测」"
+}

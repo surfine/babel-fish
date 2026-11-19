@@ -16,27 +16,29 @@ import { createLLM, computeToneProfile, reviewDraft, translateBatch } from '@ros
 
 const llm = createLLM(config, { getApiKey: (providerId, envName) => keychain.get(providerId) });
 
-// 閱讀：英→台灣繁中，保留術語表，附俚語註解（phrase 一定是原文的子字串，可直接畫點狀底線）
-const { translations } = await translateBatch(llm, { messages, context, glossary });
+// 語言：'en' | 'zh-TW' | 'zh-HK' | 'zh-CN' | 'zh-SG'（Lang）。U＝使用者語言，C＝頻道語言
+// 閱讀：來源自動判斷 → target（U），保留術語表，附俚語註解（phrase 一定是原文的子字串，可直接畫點狀底線）
+const { translations } = await translateBatch(llm, { messages, context, glossary, target: 'en' });
 
-// 寫作：一次跑完審閱卡（polish → 獨立回譯 → 三個意思比對並行）
-const tone = computeToneProfile(last200Messages);           // 純函式，不用模型
-const card = await reviewDraft(llm, { draft, recent, replyTo, tone, glossary, myVoice });
+// 寫作：一次跑完審閱卡（polish U → C → 獨立回譯 C → U → 三個意思比對並行，摘要用 U）
+const tone = computeToneProfile(last200Messages);           // 純函式，不用模型；英文與中文頻道各有統計
+const card = await reviewDraft(llm, { draft, recent, replyTo, tone, glossary, myVoice, userLang: 'en', channelLang: 'zh-TW' });
 card.variants.channel.bubbles;   // 要送出的訊息陣列（頻道習慣連發就拆）
 card.variants.channel.merged;    // 合併成一則的版本；只有一則時為 null
-card.variants.channel.back;      // 回譯
+card.variants.channel.text;      // 實際會送出的訊息（泡泡用換行連起來）
+card.variants.channel.back;      // 回譯（U 和 C 相同時不回譯，就是訊息本身）
 card.variants.channel.check;     // { status: 'ok'|'warn'|'info', summary, added, omitted, toneShifts, highlights }
 card.variants.channel.notes;     // 為什麼這樣寫：[{ phrase, why }]
 ```
 
 | 函式 | 步驟 | 說明 |
 | --- | --- | --- |
-| `translateBatch` | translate | 每批 20 則（可調），前面的訊息當脈絡；模型漏譯任何一則就丟錯 |
-| `annotateIdioms` | annotate | 「解釋用法」：單則訊息的俚語、片語說明 |
-| `summarizeUnread` | summarize | 回來時的一段中文摘要 |
+| `translateBatch` | translate | 譯成 `target`；每批 20 則（可調），前面的訊息當脈絡；漏譯的單獨重送一次 |
+| `annotateIdioms` | annotate | 「解釋用法」：單則訊息的俚語、片語、網路用語說明，用 `target` 寫 |
+| `summarizeUnread` | summarize | 回來時的一段摘要，用 `target` 寫 |
 | `polish` | polish | 一次回傳 `casual`／`channel`／`formal` 三種語氣，各含 `bubbles`、`merged`、`notes`；`instruction` 欄位接「再調整」 |
-| `backtranslate` | backtranslate | 輸入型別只有英文（`texts`），**沒有放中文原稿的欄位**；測試會檢查請求內容裡沒有草稿 |
-| `compareMeaning` | compare | 原稿 vs 回譯：新增、遺漏、語氣強弱；`highlights` 只保留確實出現在回譯裡的片段 |
+| `backtranslate` | backtranslate | `from`（C）→ `to`（U）；輸入只有要送出的訊息（`texts`），**沒有放原稿的欄位**；測試會檢查請求內容裡沒有草稿 |
+| `compareMeaning` | compare | 原稿 vs 回譯：新增、遺漏、語氣強弱，用 `lang`（U）寫；`highlights` 只保留確實出現在回譯裡的片段 |
 | `reviewDraft` | 以上三步 | 對應設計稿審閱卡的完整資料形狀 |
 
 所有結構化步驟都用 zod 定義輸出、轉成 JSON Schema 交給供應商，回來後再用 zod 驗證；格式不符丟 `LLMError`（`kind: 'bad_json'`），不把壞資料交給介面。錯誤種類：`auth`、`refusal`、`truncated`、`bad_json`、`http`、`config`。
@@ -81,7 +83,7 @@ Anthropic 的組裝規則（見 `src/providers/anthropic.ts`）：不送 `temper
 
 ## 頻道語氣檔案
 
-`computeToneProfile(messages)` 是純函式，統計：小寫開頭比例（只算字母開頭，先去掉提及、網址、表情代碼、引用行）、句尾標點分布（無／句號／問號／驚嘆號／刪節號）、常見縮寫（固定詞表、整詞比對）、平均字數與字元數、連發比例（同一人相鄰且相隔 5 分鐘內）、emoji 比例，並挑 15 則真實訊息當範例。`describeToneProfile` 把它寫成給模型讀的英文描述。殼每天對最近 200 則重算一次即可。
+`computeToneProfile(messages)` 是純函式。中文為主的頻道（`zhRatio` ≥ 0.5）另外統計 `zh`：有句尾標點時用全形的比例、用空格代替標點的比例、句尾語氣詞與笑聲（固定詞表 `KNOWN_PARTICLES`）、夾英文詞的比例、繁體或簡體、平均字數；`describeToneProfile` 這時改寫中文頻道的描述。英文的統計：小寫開頭比例（只算字母開頭，先去掉提及、網址、表情代碼、引用行）、句尾標點分布（無／句號／問號／驚嘆號／刪節號）、常見縮寫（固定詞表、整詞比對）、平均字數與字元數、連發比例（同一人相鄰且相隔 5 分鐘內）、emoji 比例，並挑 15 則真實訊息當範例。`describeToneProfile` 把它寫成給模型讀的英文描述。殼每天對最近 200 則重算一次即可。
 
 ## M0 實驗台（bench）
 
@@ -97,6 +99,31 @@ npm run bench -- --config path/to/config.json         # 預設讀 bench/rosetta.
 ```
 
 缺金鑰的候選會在開跑前列出並跳過；全部都缺時以 exit code 2 結束。輸出到 `bench/reports/<日期-時間>.md`（並排比較）與同名 `.json`（原始資料）。報告每格都留了 ☐ 讓你勾「可以直接送」，總覽表最後一欄填各模型的總數；自動的「意思檢查」只是輔助，M0 的判準是你自己覺得可以直接送的比例。`--mock` 產生的報告檔名帶 `-mock`，不進 git。
+
+### 雙向：只用 DeepSeek（2026-11-20）
+
+case 有方向：`userLang`、`channelLang`（寫作，預設台灣中文 → 英文）；`"kind": "read"` 的 case 改測翻譯，`target` 是譯文語言。新加的 case 用一段虛構的台灣工程團隊對話（`bench/conversations/release-zh.json`）：
+
+| case | 方向 | 測什麼 |
+| --- | --- | --- |
+| 06 | 英文草稿 → 台灣中文頻道 | 兩層保留（not totally sure、I think）、問句 |
+| 07 | 英文草稿 → 台灣中文頻道 | 提問加理由，不能變成決定 |
+| 08 | 英文草稿 → 大陆简体频道 | 简体与大陆用词、道谢对象、客气的提议 |
+| r01 | 台灣中文訊息 → 英文 | 傻眼、卡關、又來、啦 |
+| r02 | 大陆简体消息 → 英文 | 绝了、yyds、卡成 PPT、摸鱼、躺平、收到 |
+
+報告：[2026-11-20-0113](bench/reports/2026-11-20-0113.md)（回譯與比對固定 `deepseek-flash`，不開思考）。
+
+| polish 候選 | 寫作 8 個 case | 「像這個頻道」意思檢查 | polish 平均延遲 |
+| --- | --- | --- | --- |
+| `deepseek-flash@high` | 8 個都成功 | 7 ok／info，1 warn | 11 s |
+| `deepseek-flash`（不思考） | 6 個成功，2 個格式錯 | 5 ok／info，1 warn | 3.5 s |
+
+讀過譯文後的判斷：
+- 英文 → 中文：`@high` 的三個中文 case 都保住保留語氣與問句，台灣 case 用「閃退」「發版」，大陸 case 用简体和「登录」。中文頻道的寫法也照統計走：句尾不加句號、子句之間用空格、夾 QA、sign off、crash 這類英文詞。
+- 中文 → 英文閱讀：兩個模型都翻對每一則，網路用語有英文說明（傻眼、绝了、yyds、卡成 PPT、摸鱼、躺平、收到）。`@high` 另外說明了「卡關」「真的假的」，不思考的版本漏了這兩個。
+- 原本的方向（台灣中文 → 英文，case 01–05）沒有退步：`@high` 5 個都成功，4 個 ok／info。唯一的 warn 是 04：英文漏了「給你們看」，和 2026-11-19 的結果一樣；比對有抓到問題，但給的理由不對（說有一段沒翻）。
+- 不思考的 `deepseek-flash` 常把每種語氣回成一個字串，而不是物件。第一輪（[2026-11-20-0056](bench/reports/2026-11-20-0056.md)）8 個錯 5 個；潤色提示寫明物件的形狀後，降到 8 個錯 2 個。殼只有 DeepSeek 金鑰時潤色用 `@high`，不受影響。
 
 ### 只用 DeepSeek 的結果（2026-11-19，5 個範例 case × 2 輪）
 
@@ -136,7 +163,9 @@ Claude API 暫時不能用，所以比較了全部走 DeepSeek 的組合。回�
 
 `conversation` 也可以直接內嵌陣列；`replyTo` 是對話裡的索引（0 起算），也可以直接給 `{ "user", "text" }`；`toneSamples` 可以額外放更多頻道訊息只給語氣統計用。概念文件的目標是 15–20 則真實草稿。
 
-內附 5 個範例 case 共用一段虛構的編輯部對話（`bench/conversations/newsroom.json`），各測一種容易出錯的地方：帶保留的猜測（「也許」不能變 prob）、問句、道謝加提議、委婉的不同意見、多個數字與產品名。
+寫作 case 可以加 `"userLang"` 與 `"channelLang"` 指定方向；閱讀 case 寫 `"kind": "read"`、`"conversation"` 與 `"target"`，不用 `draft`。
+
+內附 5 個範例 case（01–05）共用一段虛構的編輯部對話（`bench/conversations/newsroom.json`），各測一種容易出錯的地方：帶保留的猜測（「也許」不能變 prob）、問句、道謝加提議、委婉的不同意見、多個數字與產品名。
 
 ## 檔案
 
@@ -145,7 +174,8 @@ Claude API 暫時不能用，所以比較了全部走 DeepSeek 的組合。回�
 | `src/types.ts` | 供應商介面、請求／結果、錯誤、步驟名 |
 | `src/config.ts` | 設定 schema、預設、`parseConfig`、`createLLM` |
 | `src/providers/` | `anthropic.ts`、`openai-compatible.ts`（含 DeepSeek）、`mock.ts`（測試與介面開發用） |
-| `src/tone.ts` | 頻道語氣統計 |
+| `src/lang.ts` | 語言（`Lang`）、給模型讀的語言說明、依系統語言猜使用者語言 |
+| `src/tone.ts` | 頻道語氣統計（英文與中文） |
 | `src/tasks/` | `read.ts`（翻譯、俚語、摘要）、`write.ts`（潤色、回譯、比對、審閱卡）、`shared.ts`（脈絡格式、JSON 驗證） |
 | `src/pricing.ts` | Claude 牌價（2026-10），bench 估成本用；其他供應商未查證不列 |
 | `bench/` | `run.ts`、`cases/`、`conversations/`、`glossary.json`、`reports/` |

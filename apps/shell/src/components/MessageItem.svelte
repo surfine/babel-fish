@@ -11,6 +11,7 @@
   import Reactions from './Reactions.svelte';
   import Files from './Files.svelte';
   import LinkPreviews from './LinkPreviews.svelte';
+  import { t } from '../lib/i18n';
 
   let {
     channel,
@@ -30,7 +31,7 @@
   const idioms = $derived<Idiom[]>(tr?.idioms ?? []);
   const ctx = $derived(app.mrkdwnCtx);
   const enHtml = $derived(renderMrkdwn(m.text, { ...ctx, idioms: idioms.map((i) => i.phrase) }));
-  const zhHtml = $derived(tr ? renderMrkdwn(plainToMrkdwn(tr.zh), ctx) : '');
+  const zhHtml = $derived(tr ? renderMrkdwn(plainToMrkdwn(tr.text), ctx) : '');
   // 自動翻譯模式：有譯文就直接取代原文，除非這個聊天切到「顯示原文」
   const autoMode = $derived(mode === 'auto');
   const autoZh = $derived(autoMode && !!tr);
@@ -55,6 +56,8 @@
     compose.focus[scope] += 1;
   }
   function react(e: MouseEvent) {
+    // 不讓這次點擊冒泡到文件層：Overlays 會把「點在選單外」當成要關閉，選單剛開就被關掉
+    e.stopPropagation();
     ui.picker = { anchor: anchorOf(e.currentTarget as Element), onPick: (name) => app.toggleReaction(channel, m, name) };
   }
   function startEdit() {
@@ -62,9 +65,9 @@
     editing = true;
   }
   async function saveEdit() {
-    const t = editText.trim();
+    const text = editText.trim();
     editing = false;
-    if (t && t !== decodeEntities(m.text)) await app.edit(channel, m, t);
+    if (text && text !== decodeEntities(m.text)) await app.edit(channel, m, text);
   }
   function askDelete() {
     if (confirmDelete) {
@@ -101,31 +104,31 @@
       <div class="edit-box">
         <textarea
           bind:value={editText}
-          aria-label="修改英文訊息"
+          aria-label={t('修改訊息')}
           onkeydown={(e) => {
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && !e.isComposing) saveEdit();
             if (e.key === 'Escape') editing = false;
           }}
         ></textarea>
         <div class="row">
-          <button class="btn ghost" onclick={() => (editing = false)}>取消</button>
-          <button class="btn primary" onclick={saveEdit}>儲存修改</button>
+          <button class="btn ghost" onclick={() => (editing = false)}>{t('取消')}</button>
+          <button class="btn primary" onclick={saveEdit}>{t('儲存修改')}</button>
         </div>
       </div>
     {:else if autoZh}
-      <div class="zh auto" title="這是譯文；上方切到「原文」可以看英文">{@html zhHtml}{#if m.edited}<span class="edited">（已編輯）</span>{/if}</div>
+      <div class="zh auto" title={t('這是譯文；上方切到「原文」可以看原文')}>{@html zhHtml}{#if m.edited}<span class="edited">{t('（已編輯）')}</span>{/if}</div>
     {:else if m.text}
-      <div class="en" data-raw>{@html enHtml}{#if m.edited}<span class="edited">（已編輯）</span>{/if}</div>
+      <div class="en" data-raw>{@html enHtml}{#if m.edited}<span class="edited">{t('（已編輯）')}</span>{/if}</div>
     {/if}
 
     {#if draft}
-      <div class="zh own"><span class="own-label">你的原稿</span><span data-raw>{draft}</span></div>
+      <div class="zh own"><span class="own-label">{t('你的原稿')}</span><span data-raw>{draft}</span></div>
     {:else if autoMode}
-      {#if tr === null}<div class="zh loading">翻譯中…</div>{/if}
+      {#if tr === null}<div class="zh loading">{t('翻譯中…')}</div>{/if}
     {:else if tr && mode !== 'original'}
       <div class="zh">{@html zhHtml}</div>
     {:else if tr === null && mode !== 'original'}
-      <div class="zh loading">翻譯中…</div>
+      <div class="zh loading">{t('翻譯中…')}</div>
     {/if}
 
     <Files files={m.files} />
@@ -135,18 +138,18 @@
     {#if scope === 'main' && m.reply_count > 0}
       <button class="thread-sum" onclick={() => app.openThread(channel, m.ts)}>
         <span class="faces">{#each replyFaces as u (u)}<Avatar user={u} />{/each}</span>
-        {m.reply_count} 則回覆
-        {#if m.latest_reply}<time>最後回覆 {timeLabel(m.latest_reply)}</time>{/if}
+        {t('{n} 則回覆', { n: m.reply_count })}
+        {#if m.latest_reply}<time>{t('最後回覆 {time}', { time: timeLabel(m.latest_reply) })}</time>{/if}
       </button>
     {/if}
   </div>
 
   <div class="actions">
-    {#if !mine}<button onclick={replyTo}>{@html ICON.reply}回覆這則</button>{/if}
-    {#if !mine}<button onclick={() => app.retranslate(channel, m)}>{@html ICON.redo}重譯</button>{/if}
-    {#if !app.readOnly}<button onclick={react} aria-label="新增表情回應">{@html ICON.smileSm}</button>{/if}
-    {#if scope === 'main'}<button onclick={() => app.openThread(channel, m.ts)}>{@html ICON.thread}對話串</button>{/if}
-    {#if !app.readOnly && mine && m.text}<button onclick={startEdit}>{@html ICON.pencil}修改</button>{/if}
-    {#if !app.readOnly && mine}<button onclick={askDelete}>{@html ICON.trash}{confirmDelete ? '確定刪除？' : '刪除'}</button>{/if}
+    {#if !mine}<button onclick={replyTo}>{@html ICON.reply}{t('回覆這則')}</button>{/if}
+    {#if !mine}<button onclick={() => app.retranslate(channel, m)}>{@html ICON.redo}{t('重譯')}</button>{/if}
+    {#if !app.readOnly}<button onclick={react} aria-label={t('新增表情回應')}>{@html ICON.smileSm}</button>{/if}
+    {#if scope === 'main'}<button onclick={() => app.openThread(channel, m.ts)}>{@html ICON.thread}{t('對話串')}</button>{/if}
+    {#if !app.readOnly && mine && m.text}<button onclick={startEdit}>{@html ICON.pencil}{t('修改')}</button>{/if}
+    {#if !app.readOnly && mine}<button onclick={askDelete}>{@html ICON.trash}{confirmDelete ? t('確定刪除？') : t('刪除')}</button>{/if}
   </div>
 </div>

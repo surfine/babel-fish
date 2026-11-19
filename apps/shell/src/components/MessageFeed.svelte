@@ -2,6 +2,7 @@
   import { tick, type Snippet } from 'svelte';
   import { app, type ReadingMode } from '../lib/store.svelte';
   import { dayKey, dayLabel, timeLabel } from '../lib/format';
+  import { t } from '../lib/i18n';
   import { ui, type ComposerScope } from '../lib/ui.svelte';
   import type { Message } from '../lib/slack/types';
   import MessageItem from './MessageItem.svelte';
@@ -71,16 +72,16 @@
 <div bind:this={inner} class="feed-inner">
   {@render head?.()}
   {#if scope === 'main' && app.cursors[channel]}
-    <div class="older"><button class="link-btn" onclick={() => app.loadOlder(channel)}>載入更早的訊息</button></div>
+    <div class="older"><button class="link-btn" onclick={() => app.loadOlder(channel)}>{t('載入更早的訊息')}</button></div>
   {/if}
   {#if !messages.length && !pending.length}
-    <div class="empty">{app.loadingHistory ? '載入中…' : '這裡還沒有訊息'}</div>
+    <div class="empty">{app.loadingHistory ? t('載入中…') : t('這裡還沒有訊息')}</div>
   {/if}
   {#each rows as r, i (r.m.ts)}
     {#if r.day}<div class="daysep"><span>{r.day}</span></div>{/if}
     <MessageItem {channel} m={r.m} cont={r.cont} {scope} {mode} />
     {#if scope === 'thread' && i === 0 && messages.length > 1}
-      <div class="reply-count">{messages.length - 1} 則回覆</div>
+      <div class="reply-count">{t('{n} 則回覆', { n: messages.length - 1 })}</div>
     {/if}
   {/each}
   {#each pending as p (p.id)}
@@ -88,10 +89,10 @@
       <Avatar user={app.self?.id} />
       <div class="body">
         <div class="meta"><b data-raw>{app.name(app.self?.id)}</b><time>{timeLabel(String(Date.now() / 1000))}</time></div>
-        {#each p.texts as t, i (i)}<div class="en">{t}</div>{/each}
+        {#each p.texts as text, i (i)}<div class="en">{text}</div>{/each}
         {#each p.files as f (f.name)}<div class="en">📎 {f.name}</div>{/each}
-        {#if p.draftZh}<div class="zh own"><span class="own-label">你的原稿</span><span data-raw>{p.draftZh}</span></div>{/if}
-        <div class="undo">傳送中…　<button class="link-btn" onclick={() => app.undo(p.id)}>撤回（{p.left}）</button></div>
+        {#if p.draft}<div class="zh own"><span class="own-label">{t('你的原稿')}</span><span data-raw>{p.draft}</span></div>{/if}
+        <div class="undo">{t('傳送中…')}　<button class="link-btn" onclick={() => app.undo(p.id)}>{t('撤回（{n}）', { n: p.left })}</button></div>
       </div>
     </div>
   {/each}

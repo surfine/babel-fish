@@ -2,6 +2,7 @@
   import { app } from '../lib/store.svelte';
   import { ui } from '../lib/ui.svelte';
   import { sizeLabel } from '../lib/format';
+  import { t } from '../lib/i18n';
   import type { SlackFile } from '../lib/slack/types';
 
   let { files }: { files: SlackFile[] } = $props();
@@ -14,7 +15,7 @@
       {#if isImage(f)}
         <button
           class="img-file"
-          aria-label="放大預覽 {f.name}"
+          aria-label={t('放大預覽 {name}', { name: f.name })}
           onclick={() => (ui.lightbox = { src: app.source.fileUrl(f.url_private || f.thumb!), name: f.title || f.name })}
         >
           <img

@@ -3,6 +3,7 @@ mod commands;
 pub mod error;
 pub mod files;
 pub mod guide;
+pub mod i18n;
 pub mod llm;
 pub mod menu;
 pub mod slack;

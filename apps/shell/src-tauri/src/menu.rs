@@ -1,5 +1,6 @@
 //! 選單列：照 macOS 的標準選單排，文字跟著介面語言（台灣、香港、大陆、马新、English）。
 //! 前端啟動時呼叫 set_ui_locale，換語言時重建。
+//! 各語言的用語照 macOS 手寫在這裡，不走 i18n.rs 的目錄（i18n-ignore-file）。
 use tauri::menu::{Menu, MenuItemBuilder, PredefinedMenuItem, Submenu};
 use tauri::{AppHandle, Runtime};
 
@@ -150,9 +151,12 @@ pub fn build<R: Runtime>(app: &AppHandle<R>, locale: &str) -> tauri::Result<Menu
     Menu::with_items(app, &[&app_menu, &edit, &view, &window])
 }
 
-/// 前端告訴 Rust 目前的介面語言，選單列跟著換
+/// 前端告訴 Rust 目前的介面語言：選單列跟著換；strings 是 Rust 要顯示的字串的譯文（見 i18n.rs）
 #[tauri::command]
-pub fn set_ui_locale(app: AppHandle, locale: String) -> Result<(), String> {
+pub fn set_ui_locale(app: AppHandle, locale: String, strings: Option<std::collections::HashMap<String, String>>) -> Result<(), String> {
+    if let Some(s) = strings {
+        crate::i18n::set_strings(s);
+    }
     let menu = build(&app, &locale).map_err(|e| e.to_string())?;
     app.set_menu(menu).map_err(|e| e.to_string())?;
     Ok(())

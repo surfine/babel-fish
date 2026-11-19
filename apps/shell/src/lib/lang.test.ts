@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { detectLang } from './lang';
+import { detectChannelLang, detectLang } from './lang';
 
 describe('detectLang', () => {
   it.each([
@@ -22,5 +22,27 @@ describe('detectLang', () => {
 
   it('中英混雜到不分上下時判成 unknown，寧可多翻也不漏翻', () => {
     expect(detectLang('ok 好 the update 更新了 yes')).toBe('unknown');
+  });
+});
+
+describe('detectChannelLang', () => {
+  const en = ['same here', 'ok it’s updating now', 'ah k', 'yep'];
+  const tw = ['這版好像修好了耶', '那我先 merge 喔', '好 我等等看', '還沒過嗎？'];
+  const cn = ['这个版本还没修好吗', '我这边也是', '收到 我下午看一下', '有问题随时说哈'];
+
+  it('英文為主就是英文；中文為主再分地區', () => {
+    expect(detectChannelLang(en, 'zh-TW')).toBe('en');
+    expect(detectChannelLang(tw, 'en')).toBe('zh-TW');
+    expect(detectChannelLang(cn, 'en')).toBe('zh-CN');
+  });
+
+  it('繁體有粵語字或使用者在香港就是香港；簡體而使用者在馬新就是馬新', () => {
+    expect(detectChannelLang(['我哋今日開會', '佢未覆我', '係咪改咗時間', '好'], 'zh-TW')).toBe('zh-HK');
+    expect(detectChannelLang(tw, 'zh-HK')).toBe('zh-HK');
+    expect(detectChannelLang(cn, 'zh-SG')).toBe('zh-SG');
+  });
+
+  it('訊息太少時不判斷', () => {
+    expect(detectChannelLang(['ok', ':tada:'], 'zh-TW')).toBeNull();
   });
 });

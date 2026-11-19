@@ -26,7 +26,7 @@ pub async fn auth_status(app: AppHandle, state: St<'_>) -> Res<AuthStatus> {
         }),
         Err(SlackError::AuthInvalid) => {
             state.mark_invalid(&app);
-            Ok(AuthStatus::Invalid { reason: "Slack 登入已失效，請重新登入".into() })
+            Ok(AuthStatus::Invalid { reason: crate::i18n::tr("Slack 登入已失效，請重新登入") })
         }
         // 離線等暫時性錯誤：沿用鑰匙圈裡的資料，讓前端先進得去
         Err(_) => Ok(AuthStatus::SignedIn {

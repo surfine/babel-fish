@@ -82,3 +82,48 @@ describe('cleanForTone', () => {
     expect(cleanForTone('see <https://x.com|this>  :eyes:  now')).toBe('see now');
   });
 });
+
+describe('中文頻道的語氣', () => {
+  const zh = [
+    m('mei', '好 我等等看', 0),
+    m('mei', '這版好像修好了耶', 30),
+    m('rita', 'build 過了嗎？', 400),
+    m('sam', '過了啦', 410),
+    m('rita', '那我先 merge 喔～', 900),
+    m('sam', '哈哈好', 905),
+    m('owen', 'ok thanks', 2000),
+  ];
+
+  it('統計全形句尾、空格當標點、語氣詞、夾英文與字形', () => {
+    const p = computeToneProfile(zh);
+    expect(p.zhRatio).toBe(0.86);
+    expect(p.zh).not.toBeNull();
+    const z = p.zh!;
+    expect(z.sampleSize).toBe(6);
+    expect(z.fullWidthEndingRatio).toBe(1); // ？ 和 ～ 都是全形
+    expect(z.spaceAsPunctuationRatio).toBe(0.17);
+    expect(z.codeSwitchRatio).toBe(0.33);
+    expect(z.script).toBe('traditional');
+    expect(z.particles.map((x) => x.particle).sort()).toEqual(['哈哈', '啦', '喔', '嗎', '耶'].sort());
+    expect(p.endings.question).toBe(0.14);
+  });
+
+  it('中文為主時，描述改用中文頻道的寫法，不提小寫開頭', () => {
+    const d = describeToneProfile(computeToneProfile(zh));
+    expect(d).toContain('traditional characters');
+    expect(d).toContain('full-width');
+    expect(d).toContain('啦 (1)');
+    expect(d).not.toContain('lowercase');
+  });
+
+  it('英文頻道照舊：沒有中文訊息時 zh 是 null', () => {
+    const p = computeToneProfile([m('a', 'same here'), m('b', 'ok')]);
+    expect(p.zh).toBeNull();
+    expect(describeToneProfile(p)).toContain('lowercase');
+  });
+
+  it('簡體訊息判斷成簡體', () => {
+    const p = computeToneProfile([m('a', '这个版本还没修好吗'), m('b', '我这边也是')]);
+    expect(p.zh!.script).toBe('simplified');
+  });
+});

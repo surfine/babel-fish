@@ -1,14 +1,16 @@
 import { invoke } from '@tauri-apps/api/core';
 import { hasConsent } from './consent';
 import { aiErrText } from './translate/errors';
-import { GUIDE_PREF_KEY, isCompact, matchesCopied, parseGuidePref, recordDone, type GuidePref } from './guide';
+import { GUIDE_PREF_KEY, isCompact, matchesCopied, parseGuidePref, recordDone, type CopySent, type GuidePref } from './guide';
 import type { SlackSource } from './slack/source';
-import { detectLang, type LangCode } from './lang';
+import { baseLang, detectChannelLang, detectLang, type LangCode } from './lang';
 import type { AuthStatus, Conversation, Message, RealtimeEvent, ShellError, Team, User } from './slack/types';
 import { GLOSSARY, summarizer, translator, type Translation } from './translate';
 import { mentionsUser, mrkdwnToPlain, plainToMrkdwn, type MrkdwnContext } from './mrkdwn';
 import { emojiChar } from './emoji';
 import { appFocused, notify, setBadge } from './notify';
+import { t, userLang } from './i18n';
+import type { Lang } from '@rosetta/llm';
 import { COPY_DRAFT_KEY, lookupCopyDraft, pruneCopyDrafts, recordCopyDraft, type CopyDraftMap } from './copydrafts';
 
 // auto：譯文取代原文（Swiftgram 式）；both：英文下附中文；original：只看原文
@@ -20,7 +22,7 @@ export interface PendingSend {
   channel: string;
   threadTs: string | null;
   texts: string[];
-  draftZh: string;
+  draft: string; // 使用者語言的原稿
   files: File[];
   left: number;
   onUndo: () => void;
@@ -62,6 +64,11 @@ class AppStore {
   phase = $state<'boot' | 'login' | 'ready'>('boot');
   source!: SlackSource;
   authNote = $state<string | null>(null);
+  // 登入失效（要「重新登入」）；鑰匙圈沒解鎖（要「再解鎖一次」）
+  authInvalid = $state(false);
+  get keychainLocked() {
+    return !!this.authNote?.includes(t('沒有解鎖鑰匙圈，讀不到 Slack 登入與 AI 金鑰'));
+  }
   loggingIn = $state(false);
 
   self = $state<User | null>(null);
@@ -80,8 +87,10 @@ class AppStore {
 
   translations = $state<Record<string, Translation | null>>({});
   modes = $state<Record<string, ReadingMode>>(load('rosetta.modes', {}));
-  // 看得懂、不必翻的語言；預設跳過中文
-  skipLangs = $state<LangCode[]>(load('rosetta.skipLangs', ['zh']));
+  // 看得懂、不必翻的語言；預設跳過使用者語言本身
+  skipLangs = $state<LangCode[]>(load('rosetta.skipLangs', [baseLang(userLang())]));
+  // 每個頻道手動指定的語言；沒指定就看最近的訊息自動判斷
+  channelLangs = $state<Record<string, Lang>>(load('rosetta.channelLangs', {}));
   ownDrafts = $state<Record<string, string>>(load('rosetta.ownDrafts', {}));
   // 唯讀模式（預設開）：Rosetta 不寫入 Slack，英文複製後到官方 Slack 自己送
   readOnly = $state<boolean>(load('rosetta.readOnly', true));
@@ -126,11 +135,13 @@ class AppStore {
     if (s.state === 'signed_in') {
       this.loggingIn = false;
       this.authNote = null;
+      this.authInvalid = false;
       await this.enter();
     } else if (s.state === 'invalid') {
       this.stopRealtime?.();
       this.loggingIn = false;
-      this.authNote = 'Slack 登入失效了，重新登入一次就好。';
+      this.authNote = t('Slack 登入失效了，重新登入一次就好。');
+      this.authInvalid = true;
       this.phase = 'login';
     } else if (s.state === 'login_error') {
       this.loggingIn = false;
@@ -196,7 +207,7 @@ class AppStore {
         this.messages[id] = page.items;
         this.cursors[id] = page.next_cursor ?? null;
       } catch (e) {
-        this.toast('載入訊息失敗：' + errText(e));
+        this.toast(t('載入訊息失敗：{error}', { error: errText(e) }));
         this.messages[id] = [];
       } finally {
         this.loadingHistory = false;
@@ -231,7 +242,7 @@ class AppStore {
     try {
       await this.source.setReadOnly(on);
     } catch (e) {
-      this.toast('同步唯讀模式失敗：' + errText(e));
+      this.toast(t('同步唯讀模式失敗：{error}', { error: errText(e) }));
     }
     this.updateBadge();
   }
@@ -245,6 +256,9 @@ class AppStore {
   // ---------- 貼上引導卡（唯讀模式「複製並打開 Slack」之後） ----------
   guidePref: GuidePref = $state(parseGuidePref(safeGet(GUIDE_PREF_KEY)));
   private pendingGuide: { channel: string; texts: string[] } | null = null;
+  // 複製過、還沒在官方 Slack 傳送的英文（最近幾筆）；傳送後輸入框會自動清掉
+  private pendingCopies: Array<{ channel: string; texts: string[]; draftZh: string }> = [];
+  copySent: (CopySent & { at: number }) | null = $state(null);
 
   setGuideEnabled(enabled: boolean) {
     this.guidePref = { ...this.guidePref, enabled };
@@ -269,6 +283,14 @@ class AppStore {
 
   // 使用者在官方 Slack 送出了剛複製的英文：引導卡顯示完成並收起，計一次
   private checkGuideSent(channel: string, m: Message) {
+    if (m.user && m.user === this.self?.id) {
+      const text = this.plain(m.text);
+      const i = this.pendingCopies.findIndex((p) => p.channel === channel && matchesCopied(p.texts, text));
+      if (i >= 0) {
+        const [p] = this.pendingCopies.splice(i, 1);
+        this.copySent = { channel, draftZh: p.draftZh, at: Date.now() };
+      }
+    }
     const g = this.pendingGuide;
     if (!g || channel !== g.channel || !m.user || m.user !== this.self?.id) return;
     if (!matchesCopied(g.texts, this.plain(m.text))) return;
@@ -279,11 +301,12 @@ class AppStore {
   }
 
   // 複製英文時記下原稿；每則泡泡與合併後的全文各記一筆
-  rememberCopy(texts: string[], draftZh: string) {
+  rememberCopy(texts: string[], draft: string, channel?: string) {
     const now = Date.now();
+    if (channel) this.pendingCopies = [...this.pendingCopies.filter((p) => p.draftZh !== draft || p.channel !== channel), { channel, texts, draftZh: draft }].slice(-10);
     let map = this.copyDrafts;
-    for (const t of texts) map = recordCopyDraft(map, t, draftZh, now);
-    if (texts.length > 1) map = recordCopyDraft(map, texts.join('\n\n'), draftZh, now);
+    for (const x of texts) map = recordCopyDraft(map, x, draft, now);
+    if (texts.length > 1) map = recordCopyDraft(map, texts.join('\n\n'), draft, now);
     this.copyDrafts = map;
     save(COPY_DRAFT_KEY, map);
   }
@@ -305,7 +328,7 @@ class AppStore {
 
   private async makeCatchup(id: string, items: Message[]) {
     const plain = items.map((m) => ({ id: m.ts, text: this.plain(m.text), author: this.name(m.user) }));
-    const text = await summarizer.summarize(plain, this.convLabel(id));
+    const text = await summarizer.summarize(plain, this.convLabel(id), userLang());
     this.catchup[id] = { text, count: items.length };
   }
 
@@ -323,6 +346,23 @@ class AppStore {
     const lang = detectLang(this.plain(m.text));
     return lang !== 'unknown' && this.skipLangs.includes(lang);
   }
+  // ---------- 頻道語言 ----------
+  /** 自動判斷的結果（別人的最近訊息）；訊息太少判斷不了時是 null */
+  detectedLang(id: string): Lang | null {
+    const list = (this.messages[id] ?? []).filter((m) => m.user !== this.self?.id && !m.subtype);
+    return detectChannelLang(list.map((m) => this.plain(m.text)), userLang());
+  }
+  /** 這個頻道用的語言：手動指定 > 自動判斷 > 英文 */
+  channelLang(id: string): Lang {
+    return this.channelLangs[id] ?? this.detectedLang(id) ?? 'en';
+  }
+  /** null 改回自動判斷 */
+  setChannelLang(id: string, lang: Lang | null) {
+    if (lang) this.channelLangs[id] = lang;
+    else delete this.channelLangs[id];
+    save('rosetta.channelLangs', this.channelLangs);
+  }
+
   modeOf(id: string | null): ReadingMode {
     const m = id ? this.modes[id] : undefined;
     return (m && (LEGACY_MODES[m] ?? m)) || 'both';
@@ -339,7 +379,7 @@ class AppStore {
       this.resolveUsers(list);
       this.requestTranslations(channel, list);
     } catch (e) {
-      this.toast('對話串沒有載入：' + errText(e));
+      this.toast(t('對話串沒有載入：{error}', { error: errText(e) }));
     }
   }
   closeThread() {
@@ -348,7 +388,7 @@ class AppStore {
 
   // ---------- 名字與渲染脈絡 ----------
   name(id?: string | null): string {
-    if (!id) return '未知';
+    if (!id) return t('未知');
     const u = this.users[id];
     if (!u) {
       this.missingUsers.add(id);
@@ -361,7 +401,7 @@ class AppStore {
     const c = this.conversations.find((x) => x.id === id);
     if (!c) return id;
     if (c.kind === 'im') return this.name(c.user_id);
-    if (c.kind === 'mpim') return c.name.replace(/^mpdm-/, '').replace(/-\d+$/, '').split('--').join('、');
+    if (c.kind === 'mpim') return c.name.replace(/^mpdm-/, '').replace(/-\d+$/, '').split('--').join(t('、'));
     return c.name;
   }
   get mrkdwnCtx(): MrkdwnContext {
@@ -451,7 +491,7 @@ class AppStore {
     try {
       const out = await translator.translate(
         batch.map((b) => ({ id: b.key, text: b.text, author: b.author })),
-        { channel: this.convLabel(channel), recent, glossary: GLOSSARY, quality },
+        { channel: this.convLabel(channel), recent, glossary: GLOSSARY, target: userLang(), quality },
       );
       for (const t of out) this.translations[t.id] = t;
       this.translatedToday += out.length;
@@ -463,7 +503,7 @@ class AppStore {
       // 好幾批同時失敗時只提示一次
       if (Date.now() - this.lastTranslateError > 10_000) {
         this.lastTranslateError = Date.now();
-        this.toast('翻譯沒有完成：' + aiErrText(e));
+        this.toast(t('翻譯沒有完成：{error}', { error: aiErrText(e) }));
       }
     }
   }
@@ -492,7 +532,7 @@ class AppStore {
     if (!p) return;
     this.pending = this.pending.filter((x) => x.id !== id);
     p.onUndo();
-    this.toast('已撤回，草稿還在');
+    this.toast(t('已撤回，草稿還在'));
   }
 
   private async deliver(p: PendingSend) {
@@ -502,16 +542,16 @@ class AppStore {
       for (const f of p.files) await this.source.upload(p.channel, p.threadTs, f);
       const last = sent[sent.length - 1];
       if (last) {
-        this.ownDrafts[last.ts] = p.draftZh;
+        this.ownDrafts[last.ts] = p.draft;
         save('rosetta.ownDrafts', this.ownDrafts);
       }
       for (const m of sent) this.insert(p.channel, m);
       this.polishedToday += 1;
-      this.toast(`已傳送到 ${this.convLabel(p.channel)}（${sent.length} 則）`);
+      this.toast(t('已傳送到 {where}（{n} 則）', { where: this.convLabel(p.channel), n: sent.length }));
     } catch (e) {
       // 送到一半失敗：已送出的留著，其餘還原成草稿
       if (sent.length) for (const m of sent) this.insert(p.channel, m);
-      this.toast(`沒有傳送成功：${errText(e)}` + (sent.length ? `（已傳送 ${sent.length} 則）` : ''));
+      this.toast(t('沒有傳送成功：{error}', { error: errText(e) }) + (sent.length ? t('（已傳送 {n} 則）', { n: sent.length }) : ''));
       if (!sent.length) p.onUndo();
     } finally {
       this.pending = this.pending.filter((x) => x.id !== p.id);
@@ -548,7 +588,7 @@ class AppStore {
       await this.source.update(channel, m.ts, plainToMrkdwn(text));
       this.replace(channel, { ...m, text: plainToMrkdwn(text), edited: true });
     } catch (e) {
-      this.toast('修改失敗：' + errText(e));
+      this.toast(t('修改失敗：{error}', { error: errText(e) }));
     }
   }
   async remove(channel: string, m: Message) {
@@ -556,7 +596,7 @@ class AppStore {
       await this.source.remove(channel, m.ts);
       this.drop(channel, m.ts);
     } catch (e) {
-      this.toast('刪除失敗：' + errText(e));
+      this.toast(t('刪除失敗：{error}', { error: errText(e) }));
     }
   }
   async toggleReaction(channel: string, m: Message, name: string) {
@@ -567,7 +607,7 @@ class AppStore {
       await this.source.react(channel, m.ts, name, !has);
     } catch (e) {
       this.applyReaction(channel, m.ts, name, me, has);
-      this.toast('表情回應失敗：' + errText(e));
+      this.toast(t('表情回應失敗：{error}', { error: errText(e) }));
     }
   }
 
@@ -645,8 +685,8 @@ class AppStore {
     }
     this.updateBadge();
     if (mentioned && !this.readOnly) {
-      const where = conv.kind === 'im' ? '私訊' : '#' + conv.name;
-      notify(`${this.name(m.user)}（${where}）`, this.plain(m.text) || '傳了一個檔案');
+      const where = conv.kind === 'im' ? t('私訊') : '#' + conv.name;
+      notify(t('{name}（{where}）', { name: this.name(m.user), where }), this.plain(m.text) || t('傳了一個檔案'));
     }
   }
 
@@ -664,8 +704,8 @@ class AppStore {
 export function errText(e: unknown): string {
   if (e && typeof e === 'object' && 'message' in e) {
     const se = e as ShellError;
-    if (se.code === 'rate_limited') return 'Slack 暫時限制了請求次數，等一下再試';
-    if (se.code === 'network') return '連不上 Slack，檢查網路後再試';
+    if (se.code === 'rate_limited') return t('Slack 暫時限制了請求次數，等一下再試');
+    if (se.code === 'network') return t('連不上 Slack，檢查網路後再試');
     return se.message;
   }
   return String(e);

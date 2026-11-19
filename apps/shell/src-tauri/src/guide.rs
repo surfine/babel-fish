@@ -151,7 +151,7 @@ pub fn guide_open(app: AppHandle, data: GuideData) -> Result<(), String> {
         return w.emit_to(LABEL, "guide://data", data).map_err(|e| e.to_string());
     }
     let w = WebviewWindowBuilder::new(&app, LABEL, WebviewUrl::App("index.html".into()))
-        .title("貼上提示")
+        .title(&crate::i18n::tr("貼上提示"))
         .inner_size(CARD_W, *app.state::<GuideState>().height.lock().unwrap())
         .position(x, y)
         .resizable(false)

@@ -1,0 +1,21 @@
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  check:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/shell/src-tauri
+      - run: npm --prefix packages/llm ci
+      - run: npm --prefix apps/shell ci
+      - run: npx --prefix apps/shell playwright install webkit
+      - run: scripts/check.sh

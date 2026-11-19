@@ -1,5 +1,7 @@
 import { z } from 'zod';
-import { DEFAULT_ZH, glossaryZh, zhInstruction, type ZhVariant } from '../zh.js';
+import { glossaryZh, zhInstruction } from '../zh.js';
+import { DEFAULT_LANG, type Lang } from '../lang.js';
+import type { ZhVariant } from '../zh.js';
 import type { LLM } from '../config.js';
 import { LLMError, type GenerateResult, type JsonSpec, type Step } from '../types.js';
 
@@ -29,8 +31,23 @@ export function formatConversation(messages: ContextMessage[], limit = MAX_CONTE
     .join('\n');
 }
 
-export function formatGlossary(glossary: GlossaryEntry[] = [], variant: ZhVariant = DEFAULT_ZH): string {
+/**
+ * 術語表給模型讀的樣子。target 是要寫出的語言：
+ * - 中文：英文術語 → 該地區的譯名（null 保留英文）；
+ * - 英文：中文寫法 → 英文正式名稱，讓中文訊息裡的產品名翻回官方寫法。
+ */
+export function formatGlossary(glossary: GlossaryEntry[] = [], target: Lang = DEFAULT_LANG): string {
   if (!glossary.length) return '';
+  if (target === 'en') {
+    return glossary
+      .map((g) => {
+        const zh = [...new Set([g.zh, ...Object.values(g.zhVariants ?? {})].filter((x): x is string => !!x))];
+        return `- ${g.term}${zh.length ? ` (Chinese: ${zh.join(' / ')})` : ' (same in Chinese)'}${g.note ? ` — ${g.note}` : ''}`;
+      })
+      .concat('(Write these terms with the English names and capitalization shown.)')
+      .join('\n');
+  }
+  const variant: ZhVariant = target;
   const lines = glossary.map((g) => {
     const zh = glossaryZh(g.zh, g.zhVariants, variant);
     return `- ${g.term} → ${zh ?? '(keep in English, exact capitalization)'}${g.note ? ` — ${g.note}` : ''}`;

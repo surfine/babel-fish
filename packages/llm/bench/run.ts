@@ -7,8 +7,9 @@
  *   npm run bench -- --mock                        # 不打網路，驗證流程與報告格式
  *   npm run bench -- --dry-run                     # 只印出第一個 case 的潤色提示
  *
- * 讀 bench/cases/*.json，對每個候選模型跑 polish → backtranslate → compare，
- * 輸出並排比較的 markdown（與原始 JSON）到 bench/reports/。
+ * 讀 bench/cases/*.json。寫作 case 對每個候選模型跑 polish → backtranslate → compare；
+ * 閱讀 case（"kind": "read"）讓候選模型做 translate。輸出並排比較的 markdown（與原始 JSON）到 bench/reports/。
+ * 方向由 case 決定：userLang／channelLang（寫作，預設台灣中文 → 英文）、target（閱讀，預設台灣中文）。
  */
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -21,9 +22,12 @@ import {
   parseModelRef,
   reviewDraft,
   buildPolishPrompt,
-  POLISH_SYSTEM,
+  polishSystem,
   TONES,
+  translateBatch,
   type ContextMessage,
+  type Lang,
+  type Translation,
   type GlossaryEntry,
   type LLM,
   type RawConfig,
@@ -41,7 +45,14 @@ const TONE_ORDER: Tone[] = ['channel', 'casual', 'formal'];
 interface BenchCase {
   id: string;
   title: string;
-  draft: string;
+  /** 預設 write：潤色＋回譯＋比對；read：翻譯對話裡的每一則 */
+  kind?: 'write' | 'read';
+  /** 寫作：使用者語言（草稿）與頻道語言（送出），預設台灣中文 → 英文 */
+  userLang?: Lang;
+  channelLang?: Lang;
+  /** 閱讀：譯文語言，預設台灣中文 */
+  target?: Lang;
+  draft?: string;
   /** 對話：內嵌陣列，或 bench/conversations/<名字>.json。 */
   conversation: string | ContextMessage[];
   /** 回應對象：對話中的索引（0 起算），或直接給訊息。 */
@@ -56,8 +67,12 @@ interface BenchCase {
 interface Cell {
   model: string;
   card?: ReviewCard;
+  translations?: Translation[];
+  ms?: number;
   error?: string;
 }
+
+const isRead = (c: BenchCase) => c.kind === 'read';
 
 function parseArgs(argv: string[]) {
   const args: Record<string, string | boolean> = {};
@@ -92,7 +107,7 @@ function polishInput(c: BenchCase, glossary: GlossaryEntry[]) {
   const recent = resolveConversation(c);
   const replyTo = typeof c.replyTo === 'number' ? recent[c.replyTo] : c.replyTo;
   const tone = computeToneProfile([...(c.toneSamples ?? []), ...recent]);
-  return { draft: c.draft, recent, replyTo, tone, glossary, myVoice: c.myVoice };
+  return { draft: c.draft ?? '', recent, replyTo, tone, glossary, myVoice: c.myVoice, userLang: c.userLang, channelLang: c.channelLang };
 }
 
 /** 沒有金鑰的供應商列出來，對應的候選直接跳過（而不是跑到一半才失敗）。 */
@@ -116,7 +131,11 @@ function mockLLM(config: RawConfig): LLM {
         };
       case 'backtranslation': {
         const items = JSON.parse(user.slice(user.lastIndexOf('[')));
-        return { items: items.map((i: { key: string }) => ({ key: i.key, zh: i.key === 'casual' ? '對啊我也是。大概要等 Apple TV 更新完吧' : '我這邊也一樣。也許要等 Apple TV 更新完？' })) };
+        return { items: items.map((i: { key: string }) => ({ key: i.key, text: i.key === 'casual' ? '對啊我也是。大概要等 Apple TV 更新完吧' : '我這邊也一樣。也許要等 Apple TV 更新完？' })) };
+      }
+      case 'translations': {
+        const batch = JSON.parse(user.slice(user.lastIndexOf('['))) as { id: string; text: string }[];
+        return { translations: batch.map((m) => ({ id: m.id, text: `(mock) ${m.text}`, idioms: [] })) };
       }
       case 'meaning_check':
         return user.includes('大概')
@@ -141,20 +160,43 @@ function highlight(back: string, marks: string[]): string {
 }
 
 function cardCost(card: ReviewCard): { polish?: number; total?: number } {
-  const all: TaskMeta[] = [card.meta.polish, card.meta.backtranslate, ...card.meta.compare];
+  const all: TaskMeta[] = [card.meta.polish, ...(card.meta.backtranslate ? [card.meta.backtranslate] : []), ...card.meta.compare];
   const costs = all.map((m) => estimateCost(m.model, m.usage));
   return { polish: costs[0], total: costs.every((c) => c !== undefined) ? costs.reduce((a, b) => a! + b!, 0) : undefined };
 }
 
+const LANG_LABEL: Record<Lang, string> = { en: '英文', 'zh-TW': '台灣中文', 'zh-HK': '香港中文', 'zh-CN': '大陆中文', 'zh-SG': '马新中文' };
+
+function renderRead(c: BenchCase, cells: Cell[]): string[] {
+  const lines = [`## ${c.id}　${c.title}（閱讀：翻成${LANG_LABEL[c.target ?? 'zh-TW']}）`, ''];
+  if (c.watch) lines.push(`**要看的地方**：${c.watch}`, '');
+  const conv = resolveConversation(c);
+  lines.push(`| 原文 | ${cells.map((x) => `\`${x.model}\``).join(' | ')} |`, `| --- | ${cells.map(() => '---').join(' | ')} |`);
+  conv.forEach((m, i) => {
+    const row = cells.map((cell) => {
+      if (!cell.translations) return i === 0 ? `失敗：${esc(cell.error ?? '')}` : '';
+      const t = cell.translations.find((x) => x.id === String(i));
+      if (!t) return '（漏譯）';
+      const idioms = t.idioms.map((d) => `<br>〔${esc(d.phrase)}〕${esc(d.meaning)}`).join('');
+      return esc(t.text) + idioms;
+    });
+    lines.push(`| [${esc(m.user)}] ${esc(m.text)} | ${row.join(' | ')} |`);
+  });
+  lines.push('', `延遲：${cells.map((x) => `\`${x.model}\` ${x.ms !== undefined ? `${(x.ms / 1000).toFixed(1)} s` : '—'}`).join('、')}`, '');
+  return lines;
+}
+
 function renderReport(opts: { cases: BenchCase[]; models: string[]; skipped: string[]; results: Map<string, Cell[]>; steps: Record<Step, string>; sameModel: boolean; mock: boolean }): string {
-  const { cases, models, results } = opts;
+  const { models, results } = opts;
+  const cases = opts.cases.filter((c) => !isRead(c));
+  const reads = opts.cases.filter(isRead);
   const now = new Date();
   const lines: string[] = [];
   lines.push(`# M0 潤色比較　${now.toLocaleString('zh-TW', { hour12: false })}${opts.mock ? '（mock，非真實模型輸出）' : ''}`, '');
   lines.push(`- 候選（只換 polish${opts.sameModel ? '，回譯與比對也用同一模型' : ''}）：${models.map((m) => `\`${m}\``).join('、')}`);
   if (!opts.sameModel) lines.push(`- 回譯：\`${opts.steps.backtranslate}\`；意思比對：\`${opts.steps.compare}\`（固定，避免評分者跟著換）`);
   if (opts.skipped.length) lines.push(`- 跳過：${opts.skipped.join('；')}`);
-  lines.push(`- case 數：${cases.length}；每個候選各跑一次 polish → backtranslate → compare`, '');
+  lines.push(`- 寫作 case：${cases.length}（每個候選各跑一次 polish → backtranslate → compare）；閱讀 case：${reads.length}（候選模型做 translate）`, '');
 
   lines.push('## 總覽', '', '「頻道語氣 ok」指預設語氣的意思檢查為 ok 或 info。延遲與 token 只算 polish 一步；成本含回譯與比對。最後一欄留給你：讀完下面每個 case，數一數這個模型「可以直接送」的則數。', '');
   lines.push('| 模型 | 成功 | 頻道語氣 ok | 三語氣 warn 數 | polish 平均延遲 | polish 平均輸出 token | 每次審閱約 | 你判斷可直接送 |', '| --- | --- | --- | --- | --- | --- | --- | --- |');
@@ -173,13 +215,14 @@ function renderReport(opts: { cases: BenchCase[]; models: string[]; skipped: str
 
   for (const c of cases) {
     const input = polishInput(c, []);
-    lines.push(`## ${c.id}　${c.title}`, '');
-    lines.push(`**中文草稿**：${c.draft}`, '');
+    const dir = `${LANG_LABEL[c.userLang ?? 'zh-TW']} → ${LANG_LABEL[c.channelLang ?? 'en']}`;
+    lines.push(`## ${c.id}　${c.title}（${dir}）`, '');
+    lines.push(`**草稿**：${c.draft}`, '');
     if (input.replyTo) lines.push(`**回應**：[${input.replyTo.user}] ${esc(input.replyTo.text)}`, '');
     if (c.watch) lines.push(`**要看的地方**：${c.watch}`, '');
     const cells = results.get(c.id)!;
     for (const tone of TONE_ORDER) {
-      lines.push(`### ${TONE_LABEL[tone]}`, '', '| 模型 | 會送出的英文 | 回譯（粗體＝差異） | 意思檢查 | 可直接送？ |', '| --- | --- | --- | --- | --- |');
+      lines.push(`### ${TONE_LABEL[tone]}`, '', '| 模型 | 會送出的訊息 | 回譯（粗體＝差異） | 意思檢查 | 可直接送？ |', '| --- | --- | --- | --- | --- |');
       for (const cell of cells) {
         if (!cell.card) {
           lines.push(`| \`${cell.model}\` | 失敗：${esc(cell.error ?? '')} | | | |`);
@@ -198,6 +241,7 @@ function renderReport(opts: { cases: BenchCase[]; models: string[]; skipped: str
     }
     lines.push('', '</details>', '');
   }
+  for (const c of reads) lines.push(...renderRead(c, results.get(c.id)!));
   return lines.join('\n');
 }
 
@@ -213,8 +257,10 @@ async function main() {
   if (!cases.length) throw new Error('bench/cases 裡沒有符合的 case');
 
   if (args['dry-run']) {
-    const input = polishInput(cases[0], glossary);
-    console.log(`=== system ===\n${POLISH_SYSTEM}\n\n=== user（${cases[0].id}）===\n${buildPolishPrompt(input)}`);
+    const first = cases.find((c) => !isRead(c));
+    if (!first) throw new Error('--dry-run 需要至少一個寫作 case');
+    const input = polishInput(first, glossary);
+    console.log(`=== system ===\n${polishSystem(first.userLang, first.channelLang)}\n\n=== user（${first.id}）===\n${buildPolishPrompt(input)}`);
     return;
   }
 
@@ -223,7 +269,7 @@ async function main() {
   const skipped: string[] = [];
   const runnable: Array<{ model: string; llm: LLM }> = [];
   for (const model of models) {
-    let llm = base.withStep('polish', model);
+    let llm = base.withStep('polish', model).withStep('translate', model);
     if (sameModel) llm = llm.withStep('backtranslate', model).withStep('compare', model);
     const needed = new Set([parseModelRef(model).provider, llm.config.steps.backtranslate.provider, llm.config.steps.compare.provider]);
     const reason = mock ? undefined : [...needed].map((p) => missingKey(llm, p)).find(Boolean);
@@ -238,18 +284,24 @@ async function main() {
 
   const results = new Map<string, Cell[]>();
   for (const c of cases) {
-    const input = polishInput(c, glossary);
     const cells = await Promise.all(
       runnable.map(async ({ model, llm }): Promise<Cell> => {
+        const started = Date.now();
         try {
-          return { model, card: await reviewDraft(llm, input) };
+          if (isRead(c)) {
+            const messages = resolveConversation(c).map((m, i) => ({ ...m, id: String(i) }));
+            const { translations } = await translateBatch(llm, { messages, glossary, target: c.target ?? 'zh-TW' });
+            return { model, translations, ms: Date.now() - started };
+          }
+          return { model, card: await reviewDraft(llm, polishInput(c, glossary)), ms: Date.now() - started };
         } catch (err) {
           return { model, error: err instanceof Error ? err.message : String(err) };
         }
       }),
     );
     results.set(c.id, cells);
-    console.log(`${c.id}：${cells.map((x) => `${x.model} ${x.card ? x.card.variants.channel.check.status : '失敗'}`).join('，')}`);
+    const status = (x: Cell) => (x.error ? '失敗' : x.card ? x.card.variants.channel.check.status : `${x.translations!.length} 則`);
+    console.log(`${c.id}：${cells.map((x) => `${x.model} ${status(x)}`).join('，')}`);
   }
 
   const outDir = typeof args.out === 'string' ? args.out : join(HERE, 'reports');

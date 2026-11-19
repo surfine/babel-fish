@@ -27,10 +27,10 @@ export const polisher: Polisher = {
   refine: (req, prev, instruction) => impl.polisher.refine(req, prev, instruction),
 };
 export const verifier: Verifier = {
-  backTranslate: (english, channel) => impl.verifier.backTranslate(english, channel),
-  compare: (draft, back, english) => impl.verifier.compare(draft, back, english),
+  backTranslate: (texts, from, to) => impl.verifier.backTranslate(texts, from, to),
+  compare: (draft, back, texts, lang) => impl.verifier.compare(draft, back, texts, lang),
 };
-export const summarizer: Summarizer = { summarize: (items, channel) => impl.summarizer.summarize(items, channel) };
+export const summarizer: Summarizer = { summarize: (items, channel, target) => impl.summarizer.summarize(items, channel, target) };
 
 const inTauri = () => typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 

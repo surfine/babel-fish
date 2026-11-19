@@ -102,7 +102,7 @@ fn backoff_secs(failures: u32) -> u64 {
 /// 一次 websocket 連線；正常斷線回 Ok，連不上回 Err。
 async fn session(api: &Arc<dyn SlackApi>, emit: &Emit, tracker: &Tracker, self_id: &str) -> Result<(), SlackError> {
     let url = api.rtm_connect().await?;
-    let mut req = url.as_str().into_client_request().map_err(|_| SlackError::Network("rtm: 網址無效".into()))?;
+    let mut req = url.as_str().into_client_request().map_err(|_| SlackError::Network(crate::i18n::tr("即時連線的網址無效")))?;
     if let Some(c) = api.cookie_header() {
         if let Ok(h) = c.parse() {
             req.headers_mut().insert("Cookie", h);
@@ -110,7 +110,7 @@ async fn session(api: &Arc<dyn SlackApi>, emit: &Emit, tracker: &Tracker, self_i
     }
     let (ws, _) = tokio::time::timeout(Duration::from_secs(20), tokio_tungstenite::connect_async(req))
         .await
-        .map_err(|_| SlackError::Network("rtm: 連線逾時".into()))?
+        .map_err(|_| SlackError::Network(crate::i18n::tr("即時連線逾時")))?
         .map_err(|e| SlackError::Network(format!("rtm: {e}")))?;
     connection(emit, ConnectionState::Live);
     let (mut tx, mut rx) = ws.split();
@@ -125,7 +125,7 @@ async fn session(api: &Arc<dyn SlackApi>, emit: &Emit, tracker: &Tracker, self_i
             }
             frame = tokio::time::timeout(Duration::from_secs(90), rx.next()) => {
                 match frame {
-                    Err(_) => return Err(SlackError::Network("rtm: 太久沒有資料".into())),
+                    Err(_) => return Err(SlackError::Network(crate::i18n::tr("即時連線太久沒有資料"))),
                     Ok(None) => return Ok(()),
                     Ok(Some(Err(e))) => return Err(SlackError::Network(format!("rtm: {e}"))),
                     Ok(Some(Ok(WsMessage::Text(t)))) => {

@@ -15,13 +15,13 @@ function capture() {
   const mock = createMockProvider('mock', (req) => {
     seen.push(req);
     const name = req.json!.name;
-    if (name === 'translations') return { translations: [{ id: '1', zh: '你好', idioms: [] }] };
+    if (name === 'translations') return { translations: [{ id: '1', text: '你好', idioms: [] }] };
     if (name === 'summary') return { summary: '摘要' };
     if (name === 'polish') {
       const v = { bubbles: ['hi'], merged: null, notes: [] };
       return { casual: v, channel: v, formal: v };
     }
-    if (name === 'backtranslation') return { items: [{ key: 'casual', zh: '嗨' }, { key: 'channel', zh: '嗨' }, { key: 'formal', zh: '嗨' }] };
+    if (name === 'backtranslation') return { items: [{ key: 'casual', text: '嗨' }, { key: 'channel', text: '嗨' }, { key: 'formal', text: '嗨' }] };
     return { status: 'ok', summary: 'ok', added: [], omitted: [], toneShifts: [], highlights: [] };
   });
   return { seen, llm: createLLM({}, { providerOverrides: { anthropic: mock, deepseek: mock } }) };
@@ -39,9 +39,9 @@ describe('地區用字', () => {
 
   it('翻譯、摘要、潤色說明、回譯、比對的系統提示都換成選的地區；沒選就是台灣', async () => {
     const { seen, llm } = capture();
-    await translateBatch(llm, { messages: [{ id: '1', user: 'a', text: 'hi' }], variant: 'zh-CN' });
-    await summarizeUnread(llm, { messages: [{ user: 'a', text: 'hi' }], variant: 'zh-HK' });
-    await reviewDraft(llm, { draft: '你好', recent: [], tone: computeToneProfile([]), variant: 'zh-SG' });
+    await translateBatch(llm, { messages: [{ id: '1', user: 'a', text: 'hi' }], target: 'zh-CN' });
+    await summarizeUnread(llm, { messages: [{ user: 'a', text: 'hi' }], target: 'zh-HK' });
+    await reviewDraft(llm, { draft: '你好', recent: [], tone: computeToneProfile([]), userLang: 'zh-SG' });
     await translateBatch(llm, { messages: [{ id: '1', user: 'a', text: 'hi' }] });
     const sys = seen.map((r) => r.system ?? '');
     expect(sys[0]).toContain('mainland China');

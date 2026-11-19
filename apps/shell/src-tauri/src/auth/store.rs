@@ -48,7 +48,7 @@ impl SessionStore for KeychainStore {
             Ok(json) => serde_json::from_str(&json)
                 .map(Some)
                 // 內容壞掉就當作沒登入，不把內容放進錯誤訊息
-                .map_err(|_| SlackError::Internal("keychain: 已存的登入資料格式不正確".into())),
+                .map_err(|_| SlackError::Internal(crate::i18n::tr("鑰匙圈裡存的登入資料格式不正確"))),
             Err(keyring::Error::NoEntry) => Ok(None),
             Err(e) => Err(SlackError::Internal(format!("keychain: {e}"))),
         }

@@ -2,22 +2,22 @@
   import { app } from '../lib/store.svelte';
   import { GLOSSARY, llmStatus, setLlmKey, type LlmProviderId } from '../lib/translate';
   import SkipLangs from './SkipLangs.svelte';
-  import { ZH_LABEL, ZH_VARIANTS, type ZhVariant } from '@rosetta/llm';
-  import { loadVariant, saveVariant } from '../lib/zh';
+  import { LANGS, LANG_NATIVE, glossaryZh, isZh, type Lang } from '@rosetta/llm';
+  import { saveUserLang, t, userLang } from '../lib/i18n';
 
-  const variant = loadVariant();
-  // 換地區要重新載入：介面文字轉換回不去，記憶體裡的譯文也要用新地區重翻
-  function changeVariant(v: ZhVariant) {
-    if (v === variant) return;
-    saveVariant(v);
+  const lang = userLang();
+  // 換語言要重新載入：介面目錄在啟動時選定，記憶體裡的譯文也要用新語言重翻
+  function changeLang(l: Lang) {
+    if (l === lang) return;
+    saveUserLang(l);
     location.reload();
   }
 
   let { onclose }: { onclose: () => void } = $props();
 
   const ROWS: { id: LlmProviderId; name: string; use: string; placeholder: string }[] = [
-    { id: 'anthropic', name: 'Anthropic（Claude）', use: '潤色、回譯、意思比對', placeholder: 'sk-ant-…' },
-    { id: 'deepseek', name: 'DeepSeek', use: '逐則翻譯、俚語、未讀摘要', placeholder: 'sk-…' },
+    { id: 'anthropic', name: t('Anthropic（Claude）'), use: t('潤色、回譯、意思比對'), placeholder: 'sk-ant-…' },
+    { id: 'deepseek', name: 'DeepSeek', use: t('逐則翻譯、俚語、未讀摘要'), placeholder: 'sk-…' },
   ];
 
   let values = $state<Record<LlmProviderId, string>>({ anthropic: '', deepseek: '' });
@@ -25,12 +25,12 @@
 
   const modeText = $derived(
     llmStatus.fake
-      ? '還沒填金鑰，翻譯和潤色只是示範'
+      ? t('還沒填金鑰，翻譯和潤色只是示範')
       : llmStatus.keys.anthropic && llmStatus.keys.deepseek
-        ? '翻譯用 DeepSeek，潤色與檢查用 Claude'
+        ? t('翻譯用 DeepSeek，潤色與檢查用 Claude')
         : llmStatus.keys.anthropic
-          ? '只有 Claude 金鑰：所有步驟都用 Claude'
-          : '只有 DeepSeek 金鑰：所有步驟都用 DeepSeek',
+          ? t('只有 Claude 金鑰：所有步驟都用 Claude')
+          : t('只有 DeepSeek 金鑰：所有步驟都用 DeepSeek'),
   );
 
   async function save(id: LlmProviderId, key: string | null) {
@@ -38,9 +38,9 @@
     try {
       await setLlmKey(id, key);
       values[id] = '';
-      app.toast(key ? '金鑰已存進鑰匙圈' : '金鑰已刪除');
+      app.toast(key ? t('金鑰已存進鑰匙圈') : t('金鑰已刪除'));
     } catch (e) {
-      app.toast('存金鑰失敗：' + String((e as { message?: string })?.message ?? e));
+      app.toast(t('存金鑰失敗：{error}', { error: String((e as { message?: string })?.message ?? e) }));
     } finally {
       busy = null;
     }
@@ -50,55 +50,55 @@
 <div class="backdrop" role="presentation" onclick={onclose}></div>
 <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="llm-title" tabindex="-1" onkeydown={(e) => e.key === 'Escape' && onclose()}>
   <div class="head">
-    <h4 id="llm-title">設定</h4>
-    <button class="link-btn" onclick={onclose}>關閉</button>
+    <h4 id="llm-title">{t('設定')}</h4>
+    <button class="link-btn" onclick={onclose}>{t('關閉')}</button>
   </div>
   <div class="slack-sec">
     <label class="ro">
       <input type="checkbox" checked={app.readOnly} onchange={(e) => app.setReadOnly((e.currentTarget as HTMLInputElement).checked)} />
-      <b>唯讀模式</b>
+      <b>{t('唯讀模式')}</b>
     </label>
-    <small>Babel Fish 只讀訊息，英文複製後到官方 Slack 自己傳送。關掉後可以直接在 Babel Fish 傳送、修改、刪除、加表情回應和上傳檔案。</small>
+    <small>{t('Babel Fish 只讀訊息，回覆複製後到官方 Slack 自己傳送。關掉後可以直接在 Babel Fish 傳送、修改、刪除、加表情回應和上傳檔案。')}</small>
     {#if app.readOnly}
       <label class="ro">
         <input type="checkbox" checked={app.guidePref.enabled} onchange={(e) => app.setGuideEnabled((e.currentTarget as HTMLInputElement).checked)} />
-        <b>打開 Slack 後顯示貼上提示</b>
+        <b>{t('打開 Slack 後顯示貼上提示')}</b>
       </label>
     {/if}
   </div>
-  <p class="sub">金鑰存在這台 Mac 的鑰匙圈，只在呼叫 AI 服務時取用。</p>
+  <p class="sub">{t('金鑰存在這台 Mac 的鑰匙圈，只在呼叫 AI 服務時取用。')}</p>
   <p class="mode">{modeText}</p>
   {#each ROWS as r (r.id)}
     <div class="row">
       <div class="lbl">
         <b>{r.name}</b>
-        <span class="state" class:on={llmStatus.keys[r.id]}>{llmStatus.keys[r.id] ? '已設定' : '未設定'}</span>
+        <span class="state" class:on={llmStatus.keys[r.id]}>{llmStatus.keys[r.id] ? t('已設定') : t('未設定')}</span>
         <small>{r.use}</small>
       </div>
       <form class="field" onsubmit={(e) => { e.preventDefault(); if (values[r.id].trim()) save(r.id, values[r.id]); }}>
-        <input type="password" autocomplete="off" spellcheck="false" placeholder={llmStatus.keys[r.id] ? '貼上新金鑰會取代舊的' : r.placeholder} bind:value={values[r.id]} aria-label="{r.name} API 金鑰" />
-        <button class="btn primary" type="submit" disabled={!values[r.id].trim() || busy === r.id}>儲存</button>
+        <input type="password" autocomplete="off" spellcheck="false" placeholder={llmStatus.keys[r.id] ? t('貼上新金鑰會取代舊的') : r.placeholder} bind:value={values[r.id]} aria-label={t('{name} API 金鑰', { name: r.name })} />
+        <button class="btn primary" type="submit" disabled={!values[r.id].trim() || busy === r.id}>{t('儲存')}</button>
         {#if llmStatus.keys[r.id]}
-          <button class="btn" type="button" disabled={busy === r.id} onclick={() => save(r.id, null)}>刪除</button>
+          <button class="btn" type="button" disabled={busy === r.id} onclick={() => save(r.id, null)}>{t('刪除')}</button>
         {/if}
       </form>
     </div>
   {/each}
   <div class="row">
-    <div class="lbl"><label for="zh-variant"><b>中文用字</b></label><small>譯文、說明和介面都改用這種中文；換了會重新載入</small></div>
-    <select id="zh-variant" class="zh-select" data-raw value={variant} onchange={(e) => changeVariant((e.currentTarget as HTMLSelectElement).value as ZhVariant)}>
-      {#each ZH_VARIANTS as v (v)}<option value={v}>{ZH_LABEL[v]}</option>{/each}
+    <div class="lbl"><label for="user-lang"><b>{t('我的語言')}</b></label><small>{t('介面、譯文、說明和回譯都用這個語言；別的語言的訊息會翻成它。換了會重新載入')}</small></div>
+    <select id="user-lang" class="zh-select" value={lang} onchange={(e) => changeLang((e.currentTarget as HTMLSelectElement).value as Lang)}>
+      {#each LANGS as l (l)}<option value={l}>{LANG_NATIVE[l]}</option>{/each}
     </select>
   </div>
   <div class="row">
-    <div class="lbl"><b>不翻譯的語言</b><small>你看得懂的語言就不翻，省錢也比較快</small></div>
+    <div class="lbl"><b>{t('不翻譯的語言')}</b><small>{t('你看得懂的語言就不翻，省錢也比較快')}</small></div>
     <SkipLangs />
   </div>
   <details class="row">
-    <summary class="lbl"><b>術語表</b><small>翻譯與潤色都照這張表；產品名保留官方寫法</small></summary>
+    <summary class="lbl"><b>{t('術語表')}</b><small>{t('翻譯與潤色都照這張表；產品名保留官方寫法')}</small></summary>
     <table class="gloss">
       <tbody>
-        {#each GLOSSARY as g (g.term)}<tr><td>{g.term}</td><td>{g.zh ?? '不翻譯'}</td></tr>{/each}
+        {#each GLOSSARY as g (g.term)}<tr><td>{g.term}</td><td>{(isZh(lang) ? glossaryZh(g.zh, g.zhVariants, lang) : g.zh) ?? t('不翻譯')}</td></tr>{/each}
       </tbody>
     </table>
   </details>

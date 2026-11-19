@@ -2,7 +2,7 @@
 
 對外名稱是 Babel Fish（2026-11-19 改名，避免和 Apple 的 Rosetta 2 混淆）；Rosetta 是內部代號。只有使用者看得到的地方用 Babel Fish：`productName`、視窗標題、介面文字、圖示（`src-tauri/icons/source/babel-fish.svg`）。識別碼 `app.rosetta.shell`、鑰匙圈服務名稱、localStorage 鍵名、套件名稱都不改，改了會讓已登入的使用者失去登入與設定。
 
-自製的 Slack 桌面客戶端第一版：頻道訊息中英對照、中文起草 → 潤色成英文 → 審閱 → 親手送出。Tauri 2 + Svelte 5 + TypeScript，介面直接沿用 [`design/prototype.html`](../../design/prototype.html) 的配色 token 與元件樣式。
+自製的 Slack 桌面客戶端：頻道訊息與譯文對照；用自己的語言起草 → 潤色成頻道的語言 → 審閱 → 親手送出（中英雙向，見「語言」）。Tauri 2 + Svelte 5 + TypeScript，介面直接沿用 [`design/prototype.html`](../../design/prototype.html) 的配色 token 與元件樣式。
 
 翻譯、潤色、回譯接 `packages/llm`（`src/lib/translate/llm.ts`），請求經 Rust 的 `llm_http` 代理送出，金鑰由 Rust 從鑰匙圈補上。鑰匙圈沒有任何 AI 金鑰時改用假實作（`fake.ts`，示範資料用預寫的譯文）。只有 DeepSeek 金鑰時，所有步驟都用 DeepSeek，潤色開思考模式（`deepseek-flash@high`，理由見 `packages/llm/README.md`）。
 
@@ -108,7 +108,7 @@ cd src-tauri && cargo test && cargo check
 
 **還沒驗證**：送出（chat.postMessage）、修改與刪除、表情回應、討論串、檔案上傳與 `slackfile://` 取私有圖片、`client.counts` 未讀數是否正確、收到即時事件後的通知與徽章、權杖失效後的重新登入流程、429 限流的實際行為。這些都有單元測試或示範模式涵蓋，但沒對真 Slack 跑過；送出類操作要使用者自己決定何時試。
 
-截圖（示範資料，公司、人名與對話都是虛構的；2026-11-19 用 WebKit 1280×820 @2x 拍）：`docs/screenshots/`，`login.png`、`demo-feed.png`、`demo-zh.png`、`demo-review.png`、`demo-thread.png`。
+截圖（示範資料，公司、人名與對話都是虛構的；用 WebKit 1280×820 @2x 拍）：`docs/screenshots/`，`login.png`、`demo-feed.png`、`demo-zh.png`、`demo-review.png`、`demo-thread.png`；英文介面 `demo-en-feed.png`、`demo-en-review.png`（2026-11-20）。
 
 ## 已知風險與限制
 
@@ -120,14 +120,32 @@ cd src-tauri && cargo test && cargo check
 - emoji 名稱表只收常用的一批，其他標準 emoji 會顯示成 `:name:`。
 - 啟動時打開上次看的頻道（localStorage `rosetta.lastChannel`），沒有紀錄就開列表第一個。
 
-## 中文地區用字
+## 語言：使用者語言與頻道語言
 
-設定裡的「中文用字」有台灣正體、香港繁體、大陆简体、马新简体（`@rosetta/llm` 的 `ZhVariant`），存在 localStorage `rosetta.zhVariant`，沒設時依 `navigator.languages` 猜。換了會重新載入頁面。
+使用者語言 U（`@rosetta/llm` 的 `Lang`：`en`、`zh-TW`、`zh-HK`、`zh-CN`、`zh-SG`）是設定裡的「我的語言」，存在 localStorage `rosetta.userLang`；舊版的 `rosetta.zhVariant` 讀得到就沿用，都沒有就依 `navigator.languages` 猜（中文依地區，其他語言一律英文）。換了會重新載入頁面。
 
-- 模型輸出（譯文、俚語說明、摘要、為什麼這樣寫、回譯、意思比對）：`translate/llm.ts` 把 `variant` 傳給 `packages/llm` 的任務，系統提示改成該地區的中文並附上用詞例子；術語表的譯名可以用 `zhVariants` 指定各地區寫法（例如 Find My 在大陸是「查找」）。
-- 介面文字：`lib/zh.ts` 在畫面上即時轉換（MutationObserver），先照 `TERMS` 換用詞，再用 opencc-js 換字形（香港用 tw→hk，大陸與馬新用 twp→cn），大陸與馬新的「」換成 “”。標了 `data-raw` 的元素不轉：原始訊息、你的原稿、人名、頻道名、工作空間名、地區選單。opencc-js 只在選了非台灣地區時才載入。
+頻道語言 C：`store.channelLang(id)`，順序是手動指定（`rosetta.channelLangs`，頻道標題列「這個頻道用」）＞ `lib/lang.ts` 的 `detectChannelLang`（最近 50 則別人的訊息：中文比英文多就是中文；繁體有粵語字或 U 是香港就判香港，否則台灣；簡體而 U 是馬新就判馬新，否則大陸）＞ 英文。
+
+- 閱讀：譯成 U（`TranslateContext.target`）。「不翻譯的語言」預設跳過 U 本身（`rosetta.skipLangs`，舊設定照用）。
+- 寫作：`PolishRequest` 帶 `userLang`、`channelLang`；回譯 C → U，比對用 U。U 和 C 相同時不回譯，按鈕寫「潤色」。
+- 示範模式多了虛構的中文頻道 `#taipei-office`（預寫英文譯文與俚語說明），英文使用者在那裡會看到預填的英文草稿與預寫的中文潤色。
+
+## 介面多語言
+
+介面文字寫成 `t('台灣正體原文', { 參數 })`（`src/lib/i18n/index.ts`），原文就是鍵。
+
+| 語言 | 目錄 |
+| --- | --- |
+| 台灣正體 | 不查表，直接用原文 |
+| 英文 | 手寫：`src/lib/i18n/en.ts` |
+| 香港、大陆、马新 | 建置時產生：vite 外掛 `scripts/i18n-plugin.ts` 抽出所有鍵，先照 `packages/llm` 的 `TERMS` 換用詞，再用 opencc-js 換字形（香港 tw→hk，大陸與馬新 twp→cn），大陸與馬新的「」換成 “”；以虛擬模組 `virtual:i18n` 提供。自動轉換不對的地方寫在 `src/lib/i18n/overrides.ts` |
+
+- 參數寫 `{name}`；英文的單複數寫 `{n:reply|replies}`。
+- 抽取與檢查：`node scripts/i18n.mjs` 列出缺英文的鍵、英文目錄裡沒人用的鍵、參數不一致的鍵，以及沒包進 `t()` 的中文；`--stub` 把缺的鍵加到 `en.ts`。`src/lib/i18n/i18n.test.ts` 用同一份函式，有任何一項就失敗。不是介面文字的中文（正規表示式、比對用的字）在行尾加 `// i18n-ignore`。
+- Rust 端給人看的字串（錯誤訊息、登入與引導卡的視窗標題、鑰匙圈提示）寫成 `tr("…")`／`trf("…{0}", &[..])`（`src-tauri/src/i18n.rs`）。前端啟動時先呼叫 `set_ui_locale`，傳入語言和這些鍵的譯文，再掛上畫面。選單列照各地區 macOS 的用語手寫在 `menu.rs`。
+- 示範資料預寫的中文（譯文、回譯、說明）也在建置時產生各地區版本，`regional()` 取用。
+- opencc-js 只在建置與測試時用，不打包進 App。
 - 用詞對照表：`packages/llm/src/zh.ts` 的 `TERMS`，人看的版本是根目錄 `docs/TERMINOLOGY.md`（`npm --prefix packages/llm run terms` 產生，測試會檢查兩者一致）。
-- 還沒轉：Rust 端的選單列文字（「設定…」）與 macOS 通知。
 
 ## 簽章、公證與自動更新
 

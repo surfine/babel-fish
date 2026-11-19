@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ui, place } from '../lib/ui.svelte';
   import { app } from '../lib/store.svelte';
+  import { t } from '../lib/i18n';
   import { QUICK_REACTIONS, allEmojiNames, emojiChar } from '../lib/emoji';
 
   let tipEl = $state<HTMLElement>();
@@ -45,8 +46,8 @@
 {#if ui.tip}<div class="tip" role="tooltip" bind:this={tipEl}>{@html ui.tip.html}</div>{/if}
 
 {#if ui.picker}
-  <div class="picker" bind:this={pickerEl} role="dialog" aria-label="選擇表情">
-    <input bind:value={q} placeholder="搜尋表情，例如 thumbsup" aria-label="搜尋表情" />
+  <div class="picker" bind:this={pickerEl} role="dialog" aria-label={t('選擇表情')}>
+    <input bind:value={q} placeholder={t('搜尋表情，例如 thumbsup')} aria-label={t('搜尋表情')} />
     <div class="grid">
       {#each names as n (n)}
         <button title=":{n}:" onclick={() => choose(n)}>{emojiChar(n)}</button>
@@ -60,7 +61,7 @@
   <div class="lightbox" onclick={() => (ui.lightbox = null)}>
     <figure style="margin:0">
       <img src={ui.lightbox.src} alt={ui.lightbox.name} />
-      <figcaption>{ui.lightbox.name}（點一下關閉）</figcaption>
+      <figcaption>{ui.lightbox.name}{t('（點一下關閉）')}</figcaption>
     </figure>
   </div>
 {/if}

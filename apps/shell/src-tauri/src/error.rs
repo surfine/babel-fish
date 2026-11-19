@@ -1,21 +1,34 @@
 use serde::Serialize;
+use std::fmt;
 
-/// 內部錯誤。`ShellError`（序列化給前端）由它轉換。
-#[derive(Debug, thiserror::Error, Clone, PartialEq)]
+use crate::i18n::{tr, trf};
+
+/// 內部錯誤。`ShellError`（序列化給前端）由它轉換。訊息跟著介面語言（i18n.rs）。
+#[derive(Debug, Clone, PartialEq)]
 pub enum SlackError {
-    #[error("Slack 登入已失效")]
     AuthInvalid,
-    #[error("尚未登入")]
     NotSignedIn,
-    #[error("Slack 請求過於頻繁，請稍後再試")]
     RateLimited,
-    #[error("Slack API 錯誤：{0}")]
     Api(String),
-    #[error("網路錯誤：{0}")]
     Network(String),
-    #[error("內部錯誤：{0}")]
     Internal(String),
 }
+
+impl fmt::Display for SlackError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s = match self {
+            SlackError::AuthInvalid => tr("Slack 登入已失效"),
+            SlackError::NotSignedIn => tr("尚未登入"),
+            SlackError::RateLimited => tr("Slack 請求過於頻繁，請稍後再試"),
+            SlackError::Api(e) => trf("Slack API 錯誤：{0}", &[e]),
+            SlackError::Network(e) => trf("網路錯誤：{0}", &[e]),
+            SlackError::Internal(e) => trf("內部錯誤：{0}", &[e]),
+        };
+        f.write_str(&s)
+    }
+}
+
+impl std::error::Error for SlackError {}
 
 /// 命令回傳給前端的錯誤，形狀見 types.ts 的 ShellError。
 #[derive(Debug, Clone, Serialize, PartialEq)]

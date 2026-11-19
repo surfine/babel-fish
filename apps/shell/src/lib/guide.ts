@@ -36,3 +36,15 @@ export function matchesCopied(copied: string[], sentText: string): boolean {
   const candidates = [...copied, copied.join('\n\n')].map(normalizeEnglish);
   return candidates.includes(sent);
 }
+
+export interface CopySent {
+  channel: string;
+  draftZh: string;
+}
+
+/** 在官方 Slack 傳送了剛複製的英文後，這個輸入框要不要清掉：同一個頻道、還是同一份草稿才清 */
+export function shouldClearComposer(sent: CopySent | null, here: { channel: string; draft: string; reviewDraft: string | null }): boolean {
+  if (!sent || sent.channel !== here.channel) return false;
+  const d = sent.draftZh.trim();
+  return here.reviewDraft?.trim() === d || here.draft.trim() === d;
+}

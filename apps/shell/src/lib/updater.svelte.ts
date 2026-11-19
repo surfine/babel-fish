@@ -2,6 +2,7 @@
 import { check, type Update } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 import { isTauri } from './slack/source';
+import { t } from './i18n';
 
 export const updater = $state({
   available: null as { version: string } | null,
@@ -30,6 +31,6 @@ export async function installUpdate() {
     await relaunch();
   } catch {
     updater.installing = false;
-    updater.error = '更新沒有裝好。等一下再試，或到 GitHub 下載新版。';
+    updater.error = t('更新沒有裝好。等一下再試，或到 GitHub 下載新版。');
   }
 }

@@ -81,7 +81,7 @@ pub fn begin(app: &AppHandle) -> Result<(), String> {
     let nav_app = app.clone();
     // 未登入時 app.slack.com 會轉到行銷首頁，所以直接開登入頁；登入完成後 Slack 會導回 app.slack.com，擷取腳本在那裡執行
     WebviewWindowBuilder::new(app, LOGIN_LABEL, WebviewUrl::External("https://slack.com/signin".parse().unwrap()))
-        .title("登入 Slack")
+        .title(&crate::i18n::tr("登入 Slack"))
         .user_agent(crate::slack::transport::SAFARI_UA)
         .inner_size(1000.0, 760.0)
         .initialization_script(INIT_SCRIPT)
@@ -93,7 +93,7 @@ pub fn begin(app: &AppHandle) -> Result<(), String> {
                 tauri::async_runtime::spawn(async move {
                     match parsed {
                         Ok(capture) => complete(app, capture).await,
-                        Err(()) => login_error(&app, "擷取到的登入資料格式不正確，請再試一次"),
+                        Err(()) => login_error(&app, &crate::i18n::tr("擷取到的登入資料格式不正確，請再試一次")),
                     }
                 });
                 false
@@ -101,7 +101,7 @@ pub fn begin(app: &AppHandle) -> Result<(), String> {
         })
         .build()
         .map(|_| ())
-        .map_err(|e| format!("無法開啟登入視窗：{e}"))
+        .map_err(|e| crate::i18n::trf("無法開啟登入視窗：{0}", &[&e.to_string()]))
 }
 
 async fn find_d_cookie(app: &AppHandle) -> Option<String> {
@@ -136,7 +136,7 @@ async fn complete(app: AppHandle, capture: Capture) {
 }
 
 async fn verify_and_store(app: &AppHandle, state: &AppState, c: Capture) -> Result<AuthStatus, String> {
-    let cookie = find_d_cookie(app).await.ok_or("找不到登入 cookie（d），請確認已在視窗中完成登入後再試")?;
+    let cookie = find_d_cookie(app).await.ok_or_else(|| crate::i18n::tr("找不到登入 cookie（d），請確認已在視窗中完成登入後再試"))?;
     let mut session = StoredSession {
         team_id: c.team_id,
         team_name: c.team_name,
@@ -147,7 +147,7 @@ async fn verify_and_store(app: &AppHandle, state: &AppState, c: Capture) -> Resu
     };
     let api = build_api(&session);
     let info = api.auth_test().await.map_err(|e| match e {
-        SlackError::AuthInvalid => "Slack 拒絕了這組登入資訊，請重新登入".to_string(),
+        SlackError::AuthInvalid => crate::i18n::tr("Slack 拒絕了這組登入資訊，請重新登入"),
         other => other.to_string(),
     })?;
     session.user_id = info.user_id.clone();

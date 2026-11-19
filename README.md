@@ -2,9 +2,11 @@
 
 <img src="apps/shell/src-tauri/icons/128x128@2x.png" width="128" alt="Babel Fish 圖示：深藍底上的黃色小魚吐出對話泡泡">
 
-Babel Fish 是 macOS 上的 Slack 閱讀輔助工具。它把頻道裡的英文訊息翻成中文。你用中文寫回覆，它把草稿潤色成這個頻道的人會寫的英文，再附上回譯，讓你確認意思沒有跑掉。中文可以選台灣正體、香港繁體、大陆简体或马新简体。
+Babel Fish 是 macOS 上的 Slack 閱讀輔助工具，讓說中文和說英文的同事互相看懂。不是你的語言的訊息，它翻成你的語言。你用自己的語言寫回覆，它把草稿潤色成這個頻道的人會寫的樣子，再翻回你的語言，讓你確認意思沒有跑掉。
 
-*Babel Fish is an unofficial macOS reader for Slack. It translates English messages into Chinese (Taiwan, Hong Kong, mainland China or Singapore/Malaysia usage) and turns your Chinese drafts into natural English replies. The interface is in Chinese.*
+你的語言可以選英文、台灣正體、香港繁體、大陆简体或马新简体。介面也跟著換。
+
+*English: see [Babel Fish in English](#babel-fish-in-english) below.*
 
 名字取自《銀河便車指南》裡的巴別魚：塞進耳朵，就聽得懂任何語言。
 
@@ -36,7 +38,7 @@ Babel Fish 不是 Slack 官方的 App，也不是工作空間安裝的 App。它
 Babel Fish 不附 AI 服務。你要自己申請金鑰：
 
 - [DeepSeek](https://platform.deepseek.com)：只填這一把就能用全部功能，也比較便宜。
-- [Anthropic](https://console.anthropic.com)：兩把都填時，翻譯用 DeepSeek，潤色英文用 Claude。
+- [Anthropic](https://console.anthropic.com)：兩把都填時，翻譯用 DeepSeek，潤色用 Claude。
 
 在側欄左下按「設定」（或選單列的 Babel Fish › 設定…，⌘,），貼上金鑰，按「儲存」。金鑰存在這台 Mac 的鑰匙圈。
 
@@ -44,15 +46,37 @@ Babel Fish 不附 AI 服務。你要自己申請金鑰：
 
 ## 唯讀模式
 
-Babel Fish 預設是唯讀模式。它只讀訊息，不會替你傳送任何東西。英文改好後，按「複製並打開 Slack」，到官方 Slack 貼上，自己傳送。
+Babel Fish 預設是唯讀模式。它只讀訊息，不會替你傳送任何東西。回覆改好後，按「複製並打開 Slack」，到官方 Slack 貼上，自己傳送。
 
 在設定裡關掉唯讀模式後，可以直接在 Babel Fish 傳送、修改、刪除訊息，也可以加表情回應和上傳檔案。
 
-## 中文用字
+## 我的語言與頻道語言
 
-譯文、說明和介面可以用四種中文：台灣正體、香港繁體、大陆简体、马新简体。第一次開啟時依系統語言自動選，之後可以在「設定」的「中文用字」換。
+「我的語言」是你讀和寫的語言：英文、台灣正體、香港繁體、大陆简体或马新简体。第一次開啟時依系統語言自動選，之後可以在「設定」換。介面、譯文、俚語說明、摘要、回譯和意思比對都用它。
 
-譯文、回譯和摘要直接請模型用你選的地區寫。介面文字先照[地區用詞對照表](docs/TERMINOLOGY.md)換用詞，再用 [OpenCC](https://github.com/BYVoid/OpenCC) 換字形。別人寫的訊息、你的中文原稿、人名和頻道名都保持原樣。
+「頻道語言」是這個頻道的人用的語言。Babel Fish 看最近的訊息自動判斷，中文會再分繁體或簡體。判斷錯了，在頻道標題列右邊的「這個頻道用」改。
+
+- 閱讀：不是你的語言的訊息，會翻成你的語言。設定裡「不翻譯的語言」預設跳過你自己的語言。
+- 寫作：草稿潤色成頻道語言，照這個頻道的語氣寫。英文頻道看小寫開頭、縮寫和標點；中文頻道看全形或半形標點、語氣詞（啦、喔、吧）、夾不夾英文詞。
+- 檢查：潤色結果另外翻回你的語言，再和你的草稿比對，標出多出來的話、漏掉的話和語氣變強變弱的地方。
+- 你的語言和頻道語言相同時，潤色只調語氣，不翻譯。
+
+中文的地區用字照[地區用詞對照表](docs/TERMINOLOGY.md)。介面的香港、大陆、马新版本由這張表加 [OpenCC](https://github.com/BYVoid/OpenCC) 從台灣正體轉成；英文介面是另外寫的。
+
+## Babel Fish in English
+
+Babel Fish is an unofficial macOS reader for Slack. It helps people who read English and people who read Chinese work in the same Slack.
+
+![A Chinese channel with English translations](apps/shell/docs/screenshots/demo-en-feed.png)
+
+![An English draft polished into Chinese, with a back-translation](apps/shell/docs/screenshots/demo-en-review.png)
+
+- Messages that are not in your language are translated into it. Slang and internet expressions get a short note.
+- You write in your own language. Babel Fish rewrites the draft in the channel's language and style, translates the result back for you, and marks anything it added, left out or made stronger or weaker.
+- Babel Fish detects the language of each channel. To change it, use "Channel language" at the top of the channel.
+- Set "My language" in Settings. You can pick English or four kinds of written Chinese: Taiwan, Hong Kong, mainland China, Singapore/Malaysia.
+
+Read the risks before you use it. Babel Fish uses the Slack web sign-in, which may break Slack's terms of service. Slack can end the sign-in, and it may warn your workspace admins. The messages you translate go to the AI service you set up (DeepSeek or Anthropic). Babel Fish starts in read-only mode: you copy each reply and send it yourself in the Slack app.
 
 ## 從原始碼建置
 
@@ -78,19 +102,13 @@ npm --prefix apps/shell run dev
 
 然後打開 http://localhost:1420/?demo 。
 
-檢查：
+檢查（套件測試、型別、端到端、Rust）：
 
 ```bash
-npm --prefix packages/llm test
+scripts/check.sh
 ```
 
-```bash
-npm --prefix apps/shell run build && npm --prefix apps/shell test
-```
-
-```bash
-cd apps/shell/src-tauri && cargo test
-```
+端到端測試第一次要先裝 WebKit：`npx --prefix apps/shell playwright install webkit`。改程式前請讀 [docs/INVARIANTS.md](docs/INVARIANTS.md)。
 
 要自己簽章、公證並打包成 `.dmg`，見 [docs/RELEASING.md](docs/RELEASING.md)。
 

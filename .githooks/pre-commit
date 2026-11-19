@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# 提交前跑快速檢查（不含端到端與 Rust，那兩項在 scripts/check.sh 與 CI）。
+# 啟用：git config core.hooksPath .githooks
+# 真的要跳過（例如只改文件）：git commit --no-verify
+exec "$(git rev-parse --show-toplevel)/scripts/check.sh" --fast

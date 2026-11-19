@@ -59,7 +59,7 @@ impl AppState {
     /// 寫入類命令的入口：唯讀模式下直接拒絕，連 API 都不取。
     pub fn write_api(&self) -> Result<Arc<dyn SlackApi>, ShellError> {
         if self.is_read_only() {
-            return Err(ShellError { code: "read_only", message: "唯讀模式已開啟，Babel Fish 不會對 Slack 寫入。到設定關掉唯讀模式才能傳送、修改或刪除。".into() });
+            return Err(ShellError { code: "read_only", message: crate::i18n::tr("唯讀模式已開啟，Babel Fish 不會對 Slack 寫入。到設定關掉唯讀模式才能傳送、修改或刪除。") });
         }
         self.api().map_err(ShellError::from)
     }
@@ -85,7 +85,7 @@ impl AppState {
     pub fn mark_invalid(&self, app: &AppHandle) {
         self.set_api(None);
         self.set_realtime(None);
-        let _ = app.emit("auth://invalid", serde_json::json!({ "reason": "Slack 登入已失效，請重新登入" }));
+        let _ = app.emit("auth://invalid", serde_json::json!({ "reason": crate::i18n::tr("Slack 登入已失效，請重新登入") }));
     }
 
     pub async fn with_api<T, F, Fut>(&self, app: &AppHandle, f: F) -> Result<T, ShellError>

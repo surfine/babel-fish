@@ -3,6 +3,7 @@
   import { onMount, untrack } from 'svelte';
   import { invoke } from '@tauri-apps/api/core';
   import { listen } from '@tauri-apps/api/event';
+  import { t } from '../lib/i18n';
 
   interface GuideData {
     text: string;
@@ -72,52 +73,47 @@
       <div class="g-done">
         <svg class="g-check" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" /><path d="m6 10.2 2.6 2.6L14 7.4" /></svg>
         <div>
-          <b>已傳送</b>
-          <p>Babel Fish 會在這則訊息下方附上你的中文原稿。</p>
+          <b>{t('已傳送')}</b>
+          <p>{t('Babel Fish 會在這則訊息下方附上你的原稿。')}</p>
         </div>
       </div>
     {:else}
       <header>
-        <b>{data.compact ? '到 Slack 按 ⌘V 貼上' : '到 Slack 貼上並傳送'}</b>
-        <button class="g-x" aria-label="關閉提示" onclick={close}>
+        <b>{data.compact ? t('到 Slack 按 ⌘V 貼上') : t('到 Slack 貼上並傳送')}</b>
+        <button class="g-x" aria-label={t('關閉提示')} onclick={close}>
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5.5 5.5 9 9m0-9-9 9" /></svg>
         </button>
       </header>
 
+      {#snippet where(d: GuideData)}<span class="g-where">{#if d.whereKind === 'private'}<svg class="g-lock" viewBox="0 0 20 20" aria-label={t('私人頻道')}><rect x="4.5" y="9" width="11" height="8" rx="1.5" /><path d="M7 9V6.5a3 3 0 0 1 6 0V9" /></svg>{:else if d.whereKind === 'channel'}#{/if}{d.whereLabel.replace(/^#/, '')}</span>{/snippet}
+
       {#if !data.compact}
-        <!-- 縮小版的 Slack 訊息輸入框：⌘V 後文字出現，Return 時傳送鈕亮一下 -->
-        <div class="g-demo" aria-hidden="true">
-          <div class="g-composer">
-            <div class="g-line"><span class="g-typed">{data.text.split('\n')[0]}</span><span class="g-caret"></span></div>
-            <div class="g-bar">
-              <span class="g-keys"><kbd class="k-paste">⌘ V</kbd><kbd class="k-send">Return</kbd></span>
-              <span class="g-send"><svg viewBox="0 0 20 20"><path d="M3 10.2 16.5 4l-3.6 12.2-3-4.6L3 10.2Zm6.9 1.4 6.6-7.6" /></svg></span>
-            </div>
-          </div>
+        <!-- 要貼的文字只出現在這裡：畫成 Slack 的訊息輸入框，讓人一眼對上 -->
+        <div class="g-composer">
+          <p class="g-msg">{data.text.replace(/\n{2,}/g, '\n')}</p>
+          <span class="g-send" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10.2 16.5 4l-3.6 12.2-3-4.6L3 10.2Zm6.9 1.4 6.6-7.6" /></svg></span>
         </div>
         <ol>
           {#if data.isThread}
-            <li>在 Slack 打開那則訊息的對話串</li>
-            <li>點對話串的訊息輸入框，按 <kbd>⌘ V</kbd></li>
+            {@const [a, b] = t('在 Slack 打開 {where} 裡那則訊息的對話串', { where: '\u0000' }).split('\u0000')}
+            <li>{a}{@render where(data)}{b}</li>
+            <li>{@html t('點對話串的訊息輸入框，按 {key}', { key: '<kbd>⌘ V</kbd>' })}</li>
           {:else}
-            <li>點 Slack 下方的訊息輸入框</li>
-            <li>按 <kbd>⌘ V</kbd> 貼上</li>
+            {@const [a, b] = t('確認 Slack 開的是 {where}，點下方的訊息輸入框', { where: '\u0000' }).split('\u0000')}
+            <li>{a}{@render where(data)}{b}</li>
+            <li>{@html t('按 {key} 貼上', { key: '<kbd>⌘ V</kbd>' })}</li>
           {/if}
-          <li>看過一遍，按 <kbd>Return</kbd> 傳送</li>
+          <li>{@html t('看過一遍，按 {key} 傳送', { key: '<kbd>Return</kbd>' })}</li>
         </ol>
-      {:else if data.isThread}
-        <p class="g-note">這是對話串的回覆，先在 Slack 打開那個對話串。</p>
+      {:else}
+        <!-- 熟手版：不教步驟，只留目的地和文字 -->
+        <div class="g-text">
+          <small>{t('要貼到')} {#if data.isThread}{@const [a, b] = t('{name} 的對話串', { name: '\u0000' }).split('\u0000')}{a}{@render where(data)}{b}{:else}{@render where(data)}{/if}</small>
+          <p class="g-msg">{data.text.replace(/\n{2,}/g, '\n')}</p>
+        </div>
       {/if}
-
-      <div class="g-text">
-        <small>
-          要貼到
-          {#if data.whereKind === 'private'}<svg class="g-lock" viewBox="0 0 20 20" aria-label="私人頻道"><rect x="4.5" y="9" width="11" height="8" rx="1.5" /><path d="M7 9V6.5a3 3 0 0 1 6 0V9" /></svg>{:else if data.whereKind === 'channel'}#{/if}{data.whereLabel.replace(/^#/, '')}{data.isThread ? ' 的對話串' : ''}
-        </small>
-        <p>{data.text.replace(/\n{2,}/g, '\n')}</p>
-      </div>
       <div class="g-row">
-        <button class="g-sbtn" onclick={copyAgain}>{copiedAgain ? '已複製' : '再複製一次'}</button>
+        <button class="g-sbtn" onclick={copyAgain}>{copiedAgain ? t('已複製') : t('再複製一次')}</button>
       </div>
     {/if}
   </section>
@@ -190,53 +186,28 @@
     background: var(--s-hover);
     color: var(--s-text);
   }
-  .g-demo {
-    margin: 10px 0 2px;
-  }
   .g-composer {
+    margin-top: 12px;
     border: 1px solid var(--s-line-strong);
     border-radius: 8px;
-    padding: 8px 8px 6px 10px;
-  }
-  .g-line {
-    height: 22px;
+    padding: 8px 8px 8px 10px;
     display: flex;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
+    align-items: flex-end;
+    gap: 8px;
   }
-  .g-typed {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 0;
-    animation: paste 6s cubic-bezier(0.23, 1, 0.32, 1) infinite;
-  }
-  .g-caret {
-    width: 1px;
-    height: 16px;
-    background: var(--s-text);
-    margin-left: 1px;
-    flex: none;
-  }
-  .g-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 6px;
-  }
-  .g-keys {
-    display: flex;
-    gap: 6px;
+  .g-composer .g-msg {
+    flex: 1;
+    margin: 0;
   }
   .g-send {
     width: 28px;
     height: 24px;
+    flex: none;
     border-radius: 4px;
     display: grid;
     place-items: center;
-    background: var(--s-fill);
-    color: var(--s-text-2);
-    animation: armed 6s infinite;
+    background: var(--s-green);
+    color: var(--s-on-green);
   }
   .g-send svg {
     width: 14px;
@@ -246,7 +217,7 @@
     stroke-width: 1;
     stroke-linejoin: round;
   }
-  kbd {
+  .guide :global(kbd) {
     font: inherit;
     font-size: 12px;
     font-weight: 700;
@@ -257,83 +228,12 @@
     background: var(--s-fill);
     color: var(--s-text);
   }
-  .k-paste {
-    animation: press 6s infinite;
-  }
-  .k-send {
-    animation: press 6s 2.4s infinite;
-  }
-  /* 0.6 秒按下 ⌘V，文字出現；2.4 秒按 Return，傳送鈕亮；之後清空重來 */
-  @keyframes paste {
-    0%,
-    10% {
-      max-width: 0;
-    }
-    14%,
-    85% {
-      max-width: 100%;
-    }
-    92%,
-    100% {
-      max-width: 0;
-    }
-  }
-  @keyframes press {
-    0%,
-    8%,
-    16%,
-    100% {
-      background: var(--s-fill);
-      color: var(--s-text);
-      border-color: var(--s-line-strong);
-    }
-    10%,
-    14% {
-      background: var(--s-green);
-      color: var(--s-on-green);
-      border-color: var(--s-green);
-    }
-  }
-  /* 文字貼上後傳送鈕變綠（和 Slack 一樣：有內容才亮），Return 之後清空就變回灰 */
-  @keyframes armed {
-    0%,
-    12%,
-    90%,
-    100% {
-      background: var(--s-fill);
-      color: var(--s-text-2);
-    }
-    14%,
-    85% {
-      background: var(--s-green);
-      color: var(--s-on-green);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .g-typed {
-      animation: none;
-      max-width: 100%;
-    }
-    .k-paste,
-    .k-send {
-      animation: none;
-    }
-    .g-send {
-      animation: none;
-      background: var(--s-green);
-      color: var(--s-on-green);
-    }
-  }
   ol {
     margin: 12px 0 0;
     padding-left: 20px;
   }
   li {
     margin: 0 0 4px;
-  }
-  .g-note {
-    margin: 8px 0 0;
-    color: var(--s-text-2);
   }
   .g-text {
     margin-top: 12px;
@@ -353,7 +253,14 @@
     stroke-width: 1.6;
     margin-left: 2px;
   }
-  .g-text p {
+  .g-where {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .g-text .g-where {
+    font-weight: inherit;
+  }
+  .g-msg {
     margin: 2px 0 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;

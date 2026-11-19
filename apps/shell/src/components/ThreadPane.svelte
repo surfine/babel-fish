@@ -1,20 +1,21 @@
 <script lang="ts">
   import { app } from '../lib/store.svelte';
   import { ICON } from '../lib/icons';
+  import { t } from '../lib/i18n';
   import MessageFeed from './MessageFeed.svelte';
   import Composer from './Composer.svelte';
 
-  const t = $derived(app.thread!);
-  const mode = $derived(app.modeOf(t.channel));
+  const th = $derived(app.thread!);
+  const mode = $derived(app.modeOf(th.channel));
 </script>
 
-<aside class="thread" aria-label="對話串">
+<aside class="thread" aria-label={t('對話串')}>
   <div class="th-head">
-    <h3>對話串<small data-raw>{app.convLabel(t.channel)}</small></h3>
-    <button class="icon-btn" aria-label="關閉對話串" onclick={() => app.closeThread()}>{@html ICON.close}</button>
+    <h3>{t('對話串')}<small data-raw>{app.convLabel(th.channel)}</small></h3>
+    <button class="icon-btn" aria-label={t('關閉對話串')} onclick={() => app.closeThread()}>{@html ICON.close}</button>
   </div>
-  {#key t.ts}
-    <MessageFeed channel={t.channel} messages={app.threadMessages} scope="thread" threadTs={t.ts} {mode} />
-    <Composer channel={t.channel} threadTs={t.ts} scope="thread" />
+  {#key th.ts}
+    <MessageFeed channel={th.channel} messages={app.threadMessages} scope="thread" threadTs={th.ts} {mode} />
+    <Composer channel={th.channel} threadTs={th.ts} scope="thread" />
   {/key}
 </aside>

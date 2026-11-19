@@ -12,12 +12,16 @@ export const DEMO_USERS: User[] = [
   { id: 'U01DANA', name: 'dana', real_name: 'Dana Brooks', color: '6d28d9', is_bot: false },
   { id: 'U01RITA', name: 'rita', real_name: 'Rita Alvarez', color: 'be185d', is_bot: false },
   { id: 'U01SAM', name: 'sam', real_name: 'Sam Keller', color: '1d4ed8', is_bot: false },
+  // 台北辦公室（同樣是虛構的人）
+  { id: 'U01JIA', name: 'jiahao', real_name: '張家豪', color: '0e7490', is_bot: false },
+  { id: 'U01YI', name: 'yijun', real_name: '陳怡君', color: 'a16207', is_bot: false },
 ];
 export const DEMO_SELF = DEMO_USERS[0];
 
 export const DEMO_CONVERSATIONS: Conversation[] = [
   { id: 'C0NEWS', name: 'newsroom', kind: 'private', is_member: true, unread: 0, mentions: 0, member_count: 14 },
   { id: 'C0GENERAL', name: 'general', kind: 'channel', is_member: true, unread: 2, mentions: 0, member_count: 41 },
+  { id: 'C0TAIPEI', name: 'taipei-office', kind: 'channel', is_member: true, unread: 0, mentions: 0, member_count: 9 },
   { id: 'D0DANA', name: 'U01DANA', kind: 'im', user_id: 'U01DANA', is_member: true, unread: 1, mentions: 1 },
   { id: 'D0OWEN', name: 'U01OWEN', kind: 'im', user_id: 'U01OWEN', is_member: true, unread: 0, mentions: 0 },
   { id: 'D0RITA', name: 'U01RITA', kind: 'im', user_id: 'U01RITA', is_member: true, unread: 0, mentions: 0 },
@@ -53,7 +57,8 @@ const file = (f: Partial<SlackFile> & { id: string; name: string }): SlackFile =
   ...f,
 });
 
-type DemoMsg = Partial<Message> & { ts: string; user: string; text: string; zh: string; idioms?: Idiom[] };
+// zh：英文訊息給中文使用者的譯文；en：中文訊息給英文使用者的譯文
+type DemoMsg = Partial<Message> & { ts: string; user: string; text: string; zh?: string; idioms?: Idiom[]; en?: string; enIdioms?: Idiom[] };
 
 const r = (name: string, users: string[]): Reaction => ({ name, count: users.length, users, me: users.includes('U01ME') });
 
@@ -134,6 +139,22 @@ const GENERAL: DemoMsg[] = [
   { ts: ts(27, 9, 14), user: 'U01RITA', text: 'ty! see everyone then :wave:', zh: '謝啦！到時見 👋' },
 ];
 
+// 中文頻道：英文使用者看的是預寫的英文譯文
+const SLANG = {
+  stunned: { phrase: '傻眼', meaning: 'stunned, speechless', usage: 'Taiwanese slang for being so surprised or let down that you have nothing to say.' },
+  again: { phrase: '又來', meaning: '"here we go again"', usage: 'Said with a sigh when a known problem shows up one more time.' },
+  stuck: { phrase: '卡關', meaning: 'stuck, blocked', usage: 'From video games (stuck on a level); at work it means a task cannot move forward.' },
+  la: { phrase: '啦', meaning: 'softening particle', usage: 'Makes a suggestion sound relaxed rather than pushy, like "I mean, …".' },
+} satisfies Record<string, Idiom>;
+
+const TAIPEI: DemoMsg[] = [
+  { ts: ts(27, 10, 2), user: 'U01JIA', text: 'iOS 27.2 beta 4 的 build 剛跑完', en: 'The iOS 27.2 beta 4 build just finished' },
+  { ts: ts(27, 10, 3), user: 'U01JIA', text: 'Find My 那頁還是會閃退，我傻眼', en: 'The Find My page still crashes. I’m speechless', enIdioms: [SLANG.stunned] },
+  { ts: ts(27, 10, 6), user: 'U01YI', text: '又來 這個 bug 卡關兩週了吧', en: 'Not again. This bug has had us stuck for two weeks now, right?', enIdioms: [SLANG.again, SLANG.stuck] },
+  { ts: ts(27, 10, 8), user: 'U01YI', text: '那週四還要發版嗎？還是先延？', en: 'So are we still shipping on Thursday? Or should we push it?' },
+  { ts: ts(27, 10, 9), user: 'U01JIA', text: '我覺得先延比較保險啦', en: 'I think pushing it is the safer call', enIdioms: [SLANG.la], reactions: [r('+1', ['U01YI'])] },
+];
+
 const DM_DANA: DemoMsg[] = [
   { ts: ts(27, 8, 20), user: 'U01DANA', text: 'hey <@U01ME> could you look over the iPadOS 27 device list before it goes live?', zh: '嘿 @mei，上線前可以幫忙看一下 iPadOS 27 的支援機型清單嗎？' },
 ];
@@ -155,6 +176,7 @@ const toMessage = (m: DemoMsg): Message => ({
 export const DEMO_HISTORY: Record<string, Message[]> = {
   C0NEWS: NEWSROOM.map(toMessage),
   C0GENERAL: GENERAL.map(toMessage),
+  C0TAIPEI: TAIPEI.map(toMessage),
   D0DANA: DM_DANA.map(toMessage),
   D0OWEN: DM_OWEN.map(toMessage),
   D0RITA: [],
@@ -164,17 +186,17 @@ export const DEMO_THREADS: Record<string, Message[]> = { [THREAD_ROOT]: THREAD.m
 
 // 譯文表：以「轉成純文字後的原文」為鍵，FakeTranslator 用它回傳設計稿的譯文
 const nameOf = (id: string) => DEMO_USERS.find((u) => u.id === id)?.name;
-export const DEMO_TRANSLATIONS: Record<string, { zh: string; idioms?: Idiom[] }> = Object.fromEntries(
-  [...NEWSROOM, ...THREAD, ...GENERAL, ...DM_DANA, ...DM_OWEN].map((m) => [
+export const DEMO_TRANSLATIONS: Record<string, { zh?: string; idioms?: Idiom[]; en?: string; enIdioms?: Idiom[] }> = Object.fromEntries(
+  [...NEWSROOM, ...THREAD, ...GENERAL, ...TAIPEI, ...DM_DANA, ...DM_OWEN].map((m) => [
     mrkdwnToPlain(m.text, { userName: nameOf }).trim(),
-    { zh: m.zh, idioms: m.idioms },
+    { zh: m.zh, idioms: m.idioms, en: m.en, enIdioms: m.enIdioms },
   ]),
 );
 
 // 示範模式稍後送進來的一則私訊，用來看通知與未讀
 export const DEMO_INCOMING = {
   channel: 'D0DANA',
-  message: toMessage({ ts: '', user: 'U01DANA', text: 'also fwiw the iPad mini 5 is off the iPadOS 27 list :sweat_smile:', zh: '' }),
+  message: toMessage({ ts: '', user: 'U01DANA', text: 'also fwiw the iPad mini 5 is off the iPadOS 27 list :sweat_smile:' }),
   zh: '另外順帶一提，iPadOS 27 不支援 iPad mini 5 了 😅',
 };
 DEMO_TRANSLATIONS[mrkdwnToPlain(DEMO_INCOMING.message.text)] = { zh: DEMO_INCOMING.zh, idioms: [IDIOM.fwiw] };
@@ -224,5 +246,37 @@ export const SAMPLE_VARIANTS: Record<Tone | 'short' | 'warm', Variant> = {
     back: '我這邊也一樣！！beta 4 上也沒看到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試，<mark>有結果再回報</mark>。',
     check: ['warn', '多了一句「有結果再回報」（report back），你的原稿沒有這句'],
     notes: [['!!', '兩個驚嘆號讓語氣更熱絡，這個頻道偶爾會這樣用'], ['report back', '「回報結果」。這句是模型加的，不需要就直接刪掉']],
+  },
+};
+
+// ---------- 英文使用者在中文頻道的潤色範例 ----------
+export const SAMPLE_DRAFT_EN = "I'm not totally sure, but I think it only crashes on the older iPads? I'll try my 10th gen after lunch";
+
+export const SAMPLE_VARIANTS_EN: Record<Tone, Variant> = {
+  casual: {
+    bubbles: ['不太確定欸', '好像只有舊 iPad 會閃退？我吃完飯拿 10 代試試'],
+    merged: '不太確定欸，好像只有舊 iPad 會閃退？我吃完飯拿 10 代試試',
+    back: 'Not too sure. It seems only old iPads crash? I’ll try the 10th gen after eating',
+    check: ['ok', 'Same meaning: nothing added or left out.'],
+    notes: [['欸', 'A soft particle that makes the doubt sound casual; people in this channel use it a lot.'], ['吃完飯', '“After eating.” In chat people rarely say 午餐 (lunch).']],
+  },
+  natural: {
+    bubbles: ['我不太確定，但好像只有舊的 iPad 會閃退？', '我午餐後拿我的 10 代試試看'],
+    merged: '我不太確定，但好像只有舊的 iPad 會閃退？我午餐後拿我的 10 代試試看',
+    back: 'I’m not too sure, but it seems only the old iPads crash?\nI’ll try it on my 10th gen after lunch',
+    check: ['ok', 'Same meaning: nothing added or left out.'],
+    notes: [
+      ['不太確定', 'Keeps “not totally sure” at the same strength.'],
+      ['好像…？', '“I think … ?” becomes 好像 with a question mark, so it still reads as a guess.'],
+      ['試試看', '“Give it a try.” Softer than 測試 (test), and closer to how this channel talks.'],
+      ['No period at the end', 'Most messages here end with no punctuation or with a question mark.'],
+    ],
+  },
+  formal: {
+    bubbles: ['我不太確定，不過閃退似乎只發生在較舊的 iPad 上。我午餐後會用第 10 代 iPad 再測一次。'],
+    merged: null,
+    back: 'I’m not quite sure, but <mark>the crash seems to only happen on older iPads.</mark> I will test again with a 10th-generation iPad after lunch.',
+    check: ['warn', 'Your question became a statement, so it sounds more certain than your draft.'],
+    notes: [['Full sentences', 'Suits a manager or someone you do not know well.'], ['似乎', 'A formal word for “seems”.']],
   },
 };

@@ -8,3 +8,8 @@ release/
 
 # 描述檔綁定開發者帳號（含本名），不進倉庫；scripts/release.sh 會自動嵌進 App
 apps/shell/src-tauri/embedded.provisionprofile
+test-results/
+playwright-report/
+
+# 公開倉庫不能出現的字（scripts/check.sh --privacy 讀它），本身不進倉庫
+.private-patterns

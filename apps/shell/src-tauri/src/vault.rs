@@ -150,7 +150,7 @@ fn to_json(v: &Vault) -> Result<Vec<u8>, SlackError> {
 
 fn from_json(bytes: &[u8]) -> Result<Vault, SlackError> {
     // 內容壞掉就回錯，不把內容放進錯誤訊息
-    serde_json::from_slice(bytes).map_err(|_| SlackError::Internal("keychain: 已存的資料格式不正確".into()))
+    serde_json::from_slice(bytes).map_err(|_| SlackError::Internal(crate::i18n::tr("鑰匙圈裡存的資料格式不正確")))
 }
 
 #[cfg(target_os = "macos")]
@@ -175,7 +175,7 @@ mod mac {
 
     fn keychain_err(e: security_framework::base::Error) -> SlackError {
         match e.code() {
-            ERR_USER_CANCELED | ERR_AUTH_FAILED => SlackError::Internal("沒有解鎖鑰匙圈，讀不到 Slack 登入與 AI 金鑰".into()),
+            ERR_USER_CANCELED | ERR_AUTH_FAILED => SlackError::Internal(crate::i18n::tr("沒有解鎖鑰匙圈，讀不到 Slack 登入與 AI 金鑰")),
             c => SlackError::Internal(format!("keychain: {c}")),
         }
     }
@@ -220,7 +220,7 @@ mod mac {
             #[allow(deprecated)]
             o.query.push((
                 unsafe { CFString::wrap_under_get_rule(kSecUseOperationPrompt) },
-                CFString::new("把 Slack 登入與 AI 金鑰搬到新的位置").into_CFType(),
+                CFString::new(&crate::i18n::tr("把 Slack 登入與 AI 金鑰搬到新的位置")).into_CFType(),
             ));
             match generic_password(o) {
                 Ok(bytes) => from_json(&bytes).map(Some),

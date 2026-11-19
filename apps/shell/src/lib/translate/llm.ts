@@ -1,7 +1,6 @@
 // 真實作：把殼的 Translator／Polisher／Verifier／Summarizer 介面接到 packages/llm。
 // 請求一律經 Rust 的 llm_http 代理送出：webview 不受 CORS 限制，金鑰欄位只放佔位字串，由後端從鑰匙圈換上真金鑰。
 import { invoke } from '@tauri-apps/api/core';
-import { loadVariant } from '../zh';
 import {
   backtranslate,
   compareMeaning,
@@ -11,6 +10,7 @@ import {
   summarizeUnread,
   translateBatch,
   type LLM,
+  type Lang,
   type PolishResult,
   type PolishVariant,
   type RawConfig,
@@ -120,9 +120,9 @@ export class LlmTranslator implements Translator {
       messages: items.map((i) => ({ id: i.id, user: i.author ?? '?', text: i.text })),
       context: ctx.recent.map((r) => ({ user: r.author ?? '?', text: r.text })),
       glossary: ctx.glossary,
-      variant: loadVariant(),
+      target: ctx.target,
     });
-    return translations.map((t) => ({ id: t.id, zh: t.zh, idioms: t.idioms }));
+    return translations.map((t) => ({ id: t.id, text: t.text, idioms: t.idioms }));
   }
 }
 
@@ -132,19 +132,20 @@ export class LlmPolisher implements Polisher {
   constructor(private llm: LLM) {}
 
   private run(req: PolishRequest, instruction?: string): Promise<PolishResult> {
-    const key = JSON.stringify([req.draftZh, req.replyTo?.text ?? null, instruction ?? null, req.recent.at(-1)?.text ?? null]);
+    const key = JSON.stringify([req.draft, req.userLang, req.channelLang, req.replyTo?.text ?? null, instruction ?? null, req.recent.at(-1)?.text ?? null]);
     let p = this.cache.get(key);
     if (!p) {
       const sample: { author: string; text: string; ts?: number }[] = req.sample?.length ? req.sample : req.recent;
       p = polishTask(this.llm, {
-        draft: req.draftZh,
+        draft: req.draft,
         recent: req.recent.map((r) => ({ user: r.author, text: r.text })),
         replyTo: req.replyTo ? { user: req.replyTo.author, text: req.replyTo.text } : undefined,
         tone: computeToneProfile(sample.map((m) => ({ user: m.author, text: m.text, ts: m.ts }))),
         glossary: req.glossary,
         myVoice: req.myVoice,
         instruction,
-        variant: loadVariant(),
+        userLang: req.userLang,
+        channelLang: req.channelLang,
       }).then((r) => r.result);
       p.catch(() => this.cache.delete(key));
       this.cache.set(key, p);
@@ -164,24 +165,25 @@ export class LlmPolisher implements Polisher {
 
 export class LlmVerifier implements Verifier {
   constructor(private llm: LLM, private glossary: GlossaryEntry[]) {}
-  // 刻意不傳中文原稿：回譯看不到原稿，比對才有意義
-  async backTranslate(english: string[]): Promise<string> {
-    const { result } = await backtranslate(this.llm, { texts: { en: english.join('\n') }, glossary: this.glossary, variant: loadVariant() });
-    return result.en ?? '';
+  // 刻意不傳原稿：回譯看不到原稿，比對才有意義。同一種語言不必回譯，直接拿訊息本身比對
+  async backTranslate(texts: string[], from: Lang, to: Lang): Promise<string> {
+    if (from === to) return texts.join('\n');
+    const { result } = await backtranslate(this.llm, { texts: { msg: texts.join('\n') }, glossary: this.glossary, from, to });
+    return result.msg ?? '';
   }
-  async compare(draftZh: string, backZh: string, english: string[]): Promise<{ segments: BackSegment[]; check: MeaningCheck }> {
-    const { result } = await compareMeaning(this.llm, { draft: draftZh, backtranslation: backZh, english: english.join('\n'), variant: loadVariant() });
-    return { segments: segmentize(backZh, result.highlights), check: { kind: result.status, summary: result.summary } };
+  async compare(draft: string, back: string, texts: string[], lang: Lang): Promise<{ segments: BackSegment[]; check: MeaningCheck }> {
+    const { result } = await compareMeaning(this.llm, { draft, backtranslation: back, sent: texts.join('\n'), lang });
+    return { segments: segmentize(back, result.highlights), check: { kind: result.status, summary: result.summary } };
   }
 }
 
 export class LlmSummarizer implements Summarizer {
   constructor(private llm: LLM, private glossary: GlossaryEntry[]) {}
-  async summarize(items: TranslateItem[]): Promise<string> {
+  async summarize(items: TranslateItem[], _channel: string, target: Lang): Promise<string> {
     const { summary } = await summarizeUnread(this.llm, {
       messages: items.map((i) => ({ user: i.author ?? '?', text: i.text })),
       glossary: this.glossary,
-      variant: loadVariant(),
+      target,
     });
     return summary;
   }

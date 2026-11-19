@@ -38,7 +38,7 @@ pub fn is_allowed_llm_url(raw: &str) -> bool {
 pub fn resolve_header(value: &str, lookup: impl Fn(&str) -> Result<Option<String>, SlackError>) -> Result<String, SlackError> {
     let Some(start) = value.find(KEY_PLACEHOLDER) else { return Ok(value.to_string()) };
     let provider = &value[start + KEY_PLACEHOLDER.len()..];
-    let key = lookup(provider)?.ok_or_else(|| SlackError::Internal(format!("還沒設定 {provider} 的 API 金鑰")))?;
+    let key = lookup(provider)?.ok_or_else(|| SlackError::Internal(crate::i18n::trf("還沒設定 {0} 的 API 金鑰", &[provider])))?;
     Ok(format!("{}{}", &value[..start], key))
 }
 
@@ -85,9 +85,9 @@ pub fn request_summary(url: &str, body: Option<&str>) -> String {
 #[tauri::command]
 pub async fn llm_http(req: LlmHttpRequest) -> Result<LlmHttpResponse, ShellError> {
     if !is_allowed_llm_url(&req.url) {
-        return Err(SlackError::Internal("不允許的 LLM 端點".into()).into());
+        return Err(SlackError::Internal(crate::i18n::tr("不允許的 LLM 端點")).into());
     }
-    let method = reqwest::Method::from_bytes(req.method.as_bytes()).map_err(|_| SlackError::Internal("HTTP 方法不正確".into()))?;
+    let method = reqwest::Method::from_bytes(req.method.as_bytes()).map_err(|_| SlackError::Internal(crate::i18n::tr("HTTP 方法不正確")))?;
     let mut builder = client().request(method, &req.url);
     for (name, value) in &req.headers {
         let lower = name.to_ascii_lowercase();
@@ -105,7 +105,7 @@ pub async fn llm_http(req: LlmHttpRequest) -> Result<LlmHttpResponse, ShellError
     let resp = match builder.send().await {
         Ok(r) => r,
         Err(e) => {
-            debug_log(&format!("{summary} -> 連線失敗 {}ms", started.elapsed().as_millis()));
+            debug_log(&format!("{summary} -> connection failed {}ms", started.elapsed().as_millis()));
             return Err(SlackError::Network(e.without_url().to_string()).into());
         }
     };

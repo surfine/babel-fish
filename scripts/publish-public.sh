@@ -15,6 +15,8 @@ AUTHOR_NAME="epiphany42"
 AUTHOR_EMAIL="12213433+surfine@users.noreply.github.com"
 
 [[ -z "$(git status --porcelain)" ]] || { echo "工作區有未提交的改動，先提交再發布"; exit 1; }
+# 公開內容不能有私人資料（清單在不進 git 的 .private-patterns）
+scripts/check.sh --privacy
 
 idx="$(mktemp)"; trap 'rm -f "$idx"' EXIT
 GIT_INDEX_FILE="$idx" git read-tree HEAD

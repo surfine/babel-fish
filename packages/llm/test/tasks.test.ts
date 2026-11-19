@@ -21,7 +21,7 @@ const DRAFT = '我這邊也一樣，也許要等更新完才會出現';
 describe('reviewDraft', () => {
   const { seen, llm } = scripted({
     polish: () => ({ casual: variant(['same', 'prob after the update']), channel: variant(['same here', 'maybe after the update?']), formal: variant(['Same here.']) }),
-    backtranslation: () => ({ items: [{ key: 'casual', zh: '一樣，大概更新後' }, { key: 'channel', zh: '我也是，也許更新後？' }, { key: 'formal', zh: '我也一樣。' }, { key: 'extra', zh: '多的' }] }),
+    backtranslation: () => ({ items: [{ key: 'casual', text: '一樣，大概更新後' }, { key: 'channel', text: '我也是，也許更新後？' }, { key: 'formal', text: '我也一樣。' }, { key: 'extra', text: '多的' }] }),
     meaning_check: (req) => ({ status: 'ok', summary: req.messages[0].content.includes('大概') ? 'warn-ish' : 'same', added: [], omitted: [], toneShifts: [], highlights: ['不存在'] }),
   });
 
@@ -37,7 +37,7 @@ describe('reviewDraft', () => {
     // 單則時 merged 一律為 null；ok 時不留標記；多出來的回譯鍵丟掉
     expect(card.variants.formal.merged).toBeNull();
     expect(card.variants.channel.merged).toBe('merged');
-    expect(card.variants.channel.english).toBe('same here\nmaybe after the update?');
+    expect(card.variants.channel.text).toBe('same here\nmaybe after the update?');
     expect(card.variants.casual.check.highlights).toEqual([]);
     expect(Object.keys(card.variants)).toEqual(['casual', 'channel', 'formal']);
   });
@@ -64,7 +64,7 @@ describe('translateBatch', () => {
       translations: (req) => {
         const batch = JSON.parse(req.messages[0].content.split('(JSON):\n')[1]) as { id: string; text: string }[];
         return {
-          translations: batch.reverse().map((m) => ({ id: m.id, zh: `譯:${m.text}`, idioms: [{ phrase: 'fwiw', meaning: '供參考', usage: 'u' }] })),
+          translations: batch.reverse().map((m) => ({ id: m.id, text: `譯:${m.text}`, idioms: [{ phrase: 'fwiw', meaning: '供參考', usage: 'u' }] })),
         };
       },
     });
@@ -73,7 +73,7 @@ describe('translateBatch', () => {
     expect(seen).toHaveLength(2);
     expect(seen[0].model).toBe('deepseek-flash');
     expect(seen[1].messages[0].content).toContain('[owen] a fwiw');
-    expect(translations.map((t) => t.zh)).toEqual(['譯:a fwiw', '譯:b', '譯:c']);
+    expect(translations.map((t) => t.text)).toEqual(['譯:a fwiw', '譯:b', '譯:c']);
     expect(translations.map((t) => t.idioms.length)).toEqual([1, 0, 0]);
   });
 
@@ -84,29 +84,29 @@ describe('translateBatch', () => {
         calls++;
         const asked = req.messages[0].content;
         return asked.includes('"id":"0"')
-          ? { translations: [{ id: '0', zh: '零', idioms: [] }] } // 第一次只回一則
-          : { translations: [{ id: '1', zh: '一', idioms: [] }] };
+          ? { translations: [{ id: '0', text: '零', idioms: [] }] } // 第一次只回一則
+          : { translations: [{ id: '1', text: '一', idioms: [] }] };
       },
     });
     const { translations } = await translateBatch(llm, { messages: [{ id: '0', user: 'a', text: 'x' }, { id: '1', user: 'a', text: 'y' }] });
     expect(calls).toBe(2);
-    expect(translations.map((t) => t.zh)).toEqual(['零', '一']);
+    expect(translations.map((t) => t.text)).toEqual(['零', '一']);
   });
 
   it('重送後仍漏掉就略過那則，不讓整批失敗', async () => {
-    const { llm } = scripted({ translations: () => ({ translations: [{ id: '0', zh: 'x', idioms: [] }] }) });
+    const { llm } = scripted({ translations: () => ({ translations: [{ id: '0', text: 'x', idioms: [] }] }) });
     const { translations } = await translateBatch(llm, { messages: [{ id: '0', user: 'a', text: 'x' }, { id: '1', user: 'a', text: 'y' }] });
     expect(translations.map((t) => t.id)).toEqual(['0']);
   });
 
   it('多出的欄位、缺少的 idioms 不會讓整批失敗', async () => {
     const { llm } = scripted({
-      translations: () => ({ translations: [{ id: 0, zh: '甲', idioms: [{ phrase: 'x', meaning: 'm', usage_en: 'extra' }] }, { id: '1', zh: '乙' }] }),
+      translations: () => ({ translations: [{ id: 0, text: '甲', idioms: [{ phrase: 'x', meaning: 'm', usage_en: 'extra' }] }, { id: '1', text: '乙' }] }),
     });
     const { translations } = await translateBatch(llm, { messages: [{ id: '0', user: 'a', text: 'x' }, { id: '1', user: 'a', text: 'y' }] });
     expect(translations).toEqual([
-      { id: '0', zh: '甲', idioms: [{ phrase: 'x', meaning: 'm', usage: '' }] },
-      { id: '1', zh: '乙', idioms: [] },
+      { id: '0', text: '甲', idioms: [{ phrase: 'x', meaning: 'm', usage: '' }] },
+      { id: '1', text: '乙', idioms: [] },
     ]);
   });
 });
