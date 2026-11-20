@@ -100,43 +100,37 @@ npm run bench -- --config path/to/config.json         # 預設讀 bench/rosetta.
 
 缺金鑰的候選會在開跑前列出並跳過；全部都缺時以 exit code 2 結束。輸出到 `bench/reports/<日期-時間>.md`（並排比較）與同名 `.json`（原始資料）。報告每格都留了 ☐ 讓你勾「可以直接送」，總覽表最後一欄填各模型的總數；自動的「意思檢查」只是輔助，M0 的判準是你自己覺得可以直接送的比例。`--mock` 產生的報告檔名帶 `-mock`，不進 git。
 
-### 雙向：只用 DeepSeek（2026-11-20）
+### 只用 DeepSeek（2026-11-20）
 
-case 有方向：`userLang`、`channelLang`（寫作，預設台灣中文 → 英文）；`"kind": "read"` 的 case 改測翻譯，`target` 是譯文語言。新加的 case 用一段虛構的台灣工程團隊對話（`bench/conversations/release-zh.json`）：
+範例 case 共用兩段虛構的對話，都是一家自行車品牌在處理車架樣品的色差：英文的產品團隊（`bench/conversations/product.json`）和台中的工廠團隊（`bench/conversations/factory-zh.json`）。case 有方向：`userLang`、`channelLang`（寫作，預設台灣中文 → 英文）；`"kind": "read"` 的 case 改測翻譯，`target` 是譯文語言。
 
 | case | 方向 | 測什麼 |
 | --- | --- | --- |
+| 01–05 | 台灣中文草稿 → 英文頻道 | 帶保留的猜測、問句、道謝加提議、委婉的不同意見、多個數字 |
 | 06 | 英文草稿 → 台灣中文頻道 | 兩層保留（not totally sure、I think）、問句 |
 | 07 | 英文草稿 → 台灣中文頻道 | 提問加理由，不能變成決定 |
 | 08 | 英文草稿 → 大陆简体频道 | 简体与大陆用词、道谢对象、客气的提议 |
 | r01 | 台灣中文訊息 → 英文 | 傻眼、卡關、又來、啦 |
 | r02 | 大陆简体消息 → 英文 | 绝了、yyds、卡成 PPT、摸鱼、躺平、收到 |
 
-報告：[2026-11-20-0113](bench/reports/2026-11-20-0113.md)（回譯與比對固定 `deepseek-flash`，不開思考）。
+報告：[2026-11-20-0759](bench/reports/2026-11-20-0759.md)（回譯與比對固定 `deepseek-flash`，不開思考）。
 
 | polish 候選 | 寫作 8 個 case | 「像這個頻道」意思檢查 | polish 平均延遲 |
 | --- | --- | --- | --- |
-| `deepseek-flash@high` | 8 個都成功 | 7 ok／info，1 warn | 11 s |
-| `deepseek-flash`（不思考） | 6 個成功，2 個格式錯 | 5 ok／info，1 warn | 3.5 s |
+| `deepseek-flash@high` | 8 個都成功 | 8 ok／info | 7.8 s |
+| `deepseek-flash`（不思考） | 7 個成功，1 個格式錯 | 6 ok／info，1 warn | 3.7 s |
 
 讀過譯文後的判斷：
-- 英文 → 中文：`@high` 的三個中文 case 都保住保留語氣與問句，台灣 case 用「閃退」「發版」，大陸 case 用简体和「登录」。中文頻道的寫法也照統計走：句尾不加句號、子句之間用空格、夾 QA、sign off、crash 這類英文詞。
-- 中文 → 英文閱讀：兩個模型都翻對每一則，網路用語有英文說明（傻眼、绝了、yyds、卡成 PPT、摸鱼、躺平、收到）。`@high` 另外說明了「卡關」「真的假的」，不思考的版本漏了這兩個。
-- 原本的方向（台灣中文 → 英文，case 01–05）沒有退步：`@high` 5 個都成功，4 個 ok／info。唯一的 warn 是 04：英文漏了「給你們看」，和 2026-11-19 的結果一樣；比對有抓到問題，但給的理由不對（說有一段沒翻）。
-- 不思考的 `deepseek-flash` 常把每種語氣回成一個字串，而不是物件。第一輪（[2026-11-20-0056](bench/reports/2026-11-20-0056.md)）8 個錯 5 個；潤色提示寫明物件的形狀後，降到 8 個錯 2 個。殼只有 DeepSeek 金鑰時潤色用 `@high`，不受影響。
+- `@high` 保住了保留語氣、問句和數字（20 分鐘、ΔE 2.0、3.1）。英文 → 中文時，台灣 case 用「消光」「品管」「簽核」，大陸 case 用简体和「登录」。
+- 不思考的版本在 04 把「好像還看到」寫成 pretty sure（比原稿篤定），比對有抓到。02 回錯格式：把每種語氣回成一個字串，而不是物件。
+- 兩個模型在 04 都漏掉「給你們看」，只寫 will grab a photo later。這個問題和換對話之前一樣，比對沒有抓到。
+- 閱讀兩個 case，兩個模型都翻對每一則，網路用語都有英文說明。
 
-### 只用 DeepSeek 的結果（2026-11-19，5 個範例 case × 2 輪）
+更早的結果（報告用的是舊範例對話，已移除，只留結論）：
+- 2026-11-19，5 個範例 case × 2 輪，比較全部走 DeepSeek 的組合：`deepseek-flash@high` 保留語氣最穩、沒有格式錯誤；`deepseek-flash@low` 會加原稿沒有的話；`deepseek-v4-pro` 常把「好像」寫成肯定句，最差。比對開不開思考，抓到的問題差不多，開了每張卡多 3–5 秒，所以不開。
+- 2026-11-20 第一輪雙向測試：不思考的 `deepseek-flash` 8 個錯 5 個格式；潤色提示寫明物件的形狀後降到 2 個。
 
-Claude API 暫時不能用，所以比較了全部走 DeepSeek 的組合。回譯固定 `deepseek-flash`（不開思考）；比對第一輪不開思考、第二輪開 `@medium`。報告：[第一輪](bench/reports/2026-11-19-1836.md)、[第二輪](bench/reports/2026-11-19-1839.md)。
-
-| polish 候選 | 讀過「像這個頻道」版本後的判斷（10 則） | polish 平均延遲 | 整張審閱卡平均 |
-| --- | --- | --- | --- |
-| `deepseek-flash`（不思考） | case 04 兩輪都漏掉「給你們看」；1 次重試後仍回錯格式，整張卡失敗 | 4 s | 6–10 s |
-| `deepseek-flash@low` | case 04 兩輪都漏掉「給你們看」，還加了原稿沒有的 tbh 或把「不太確定」寫成「不確定」 | 12 s | 15–18 s |
-| `deepseek-flash@high` | 第一輪 5 則都對；第二輪漏掉道謝對象的名字 1 次、case 04 漏掉「給你們看」1 次 | 9 s | 11–15 s |
-| `deepseek-v4-pro` | 「好像」常被寫成肯定句、會漏名字與承諾，最差 | 8–10 s | 13–14 s |
-
-結論：只有 DeepSeek 金鑰時，潤色用 `deepseek-flash@high`（殼的 `configFor()`）。它保留語氣最穩，兩輪都沒有格式錯誤，polish 速度接近 Sonnet 5.5（約 8 s）。比對開不開思考，抓到的問題差不多，開了每張卡多 3–5 秒，所以不開。這只是 5 個範例 case，最後還是要用真實草稿判斷。
+結論：只有 DeepSeek 金鑰時，潤色用 `deepseek-flash@high`（殼的 `configFor()`），回譯與比對不開思考。這只是範例 case，最後還是要用真實草稿判斷。
 
 **DeepSeek 的思考模式**：供應商預設關閉（`extraBody.thinking.type = disabled`，翻譯要快）。步驟的模型寫法加上 effort（例如 `deepseek:deepseek-flash@high`）就對那一步開思考，送出 `thinking: {type: enabled}` 與 `reasoning_effort`（見 `src/providers/openai-compatible.ts` 的 `effortParam`）。DeepSeek 接受的 effort：`low`、`medium`、`high`、`xhigh`、`max`。
 
@@ -152,7 +146,7 @@ Claude API 暫時不能用，所以比較了全部走 DeepSeek 的組合。回�
 ```json
 {
   "id": "private-07-deadline",
-  "title": "跟編輯確認截稿時間",
+  "title": "跟主管確認截止時間",
   "conversation": "team-1030",
   "replyTo": 4,
   "draft": "你的中文草稿",
@@ -165,7 +159,7 @@ Claude API 暫時不能用，所以比較了全部走 DeepSeek 的組合。回�
 
 寫作 case 可以加 `"userLang"` 與 `"channelLang"` 指定方向；閱讀 case 寫 `"kind": "read"`、`"conversation"` 與 `"target"`，不用 `draft`。
 
-內附 5 個範例 case（01–05）共用一段虛構的編輯部對話（`bench/conversations/newsroom.json`），各測一種容易出錯的地方：帶保留的猜測（「也許」不能變 prob）、問句、道謝加提議、委婉的不同意見、多個數字與產品名。
+內附的範例 case 見上面「只用 DeepSeek」一節。
 
 ## 檔案
 

@@ -1,7 +1,7 @@
 {
   "id": "05-report-facts",
   "title": "多個事實與數字的回報",
-  "conversation": "newsroom",
-  "draft": "我剛把 iPad 升到 iPadOS 27 beta 4 了，大概花了 15 分鐘。第二代 AirPods Pro 現在有出現在「尋找」裡，但第一代沒有，跟細則寫的一樣",
-  "watch": "15 分鐘、第二代／第一代不能錯；「大概」要保留；Find My 不能寫成 Find"
+  "conversation": "product",
+  "draft": "我剛把第二批樣品量完了，大概花了 20 分鐘。消光黑那支在 ΔE 2.0 以內，但綠色那支是 3.1，照細則來看不合格",
+  "watch": "20 分鐘、ΔE 2.0、3.1 不能錯；「大概」要保留；不能把「不合格」寫得更重或更輕"
 }

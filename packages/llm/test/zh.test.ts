@@ -51,11 +51,11 @@ describe('地區用字', () => {
   });
 
   it('術語表的中文譯名：有地區譯名就用，沒有就提醒模型換成該地區寫法', () => {
-    const g = [{ term: 'Find My', zh: '「尋找」', zhVariants: { 'zh-CN': '“查找”' } }, { term: 'Control Center', zh: '控制中心' }, { term: 'iOS 27', zh: null }];
-    expect(formatGlossary(g, 'zh-CN')).toContain('Find My → “查找”');
+    const g = [{ term: 'chainring', zh: '大盤', zhVariants: { 'zh-CN': '牙盘' } }, { term: 'swatch', zh: '色卡' }, { term: 'D65', zh: null }];
+    expect(formatGlossary(g, 'zh-CN')).toContain('chainring → 牙盘');
     expect(formatGlossary(g, 'zh-CN')).toContain('Taiwan form');
     expect(formatGlossary(g, 'zh-TW')).not.toContain('Taiwan form');
-    expect(formatGlossary(g, 'zh-TW')).toContain('Find My → 「尋找」');
+    expect(formatGlossary(g, 'zh-TW')).toContain('chainring → 大盤');
   });
 
   it('術語表每一列四個地區都有填，台灣詞不重複', () => {

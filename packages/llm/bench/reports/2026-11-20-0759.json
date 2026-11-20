@@ -1,0 +1,2830 @@
+{
+  "steps": {
+    "translate": "deepseek:deepseek-flash",
+    "annotate": "deepseek:deepseek-flash",
+    "summarize": "deepseek:deepseek-flash",
+    "polish": "deepseek:deepseek-flash@high",
+    "backtranslate": "deepseek:deepseek-flash",
+    "compare": "deepseek:deepseek-flash"
+  },
+  "sameModel": false,
+  "mock": false,
+  "cases": [
+    {
+      "id": "01-same-here",
+      "title": "附和＋帶保留的猜測（設計稿範例）",
+      "conversation": "product",
+      "replyTo": 3,
+      "draft": "我這邊也一樣，樣品的綠色比色卡深。也許是燈光的關係？我明天白天再拍一次",
+      "watch": "「也許」不能變成 prob；不能自己加 report back",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我這邊也一樣，樣品的綠色比色卡深。也許是燈光的關係？我明天白天再拍一次",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, sample green's darker than the swatch",
+                  "maybe it's the lighting?",
+                  "gonna shoot another one tomorrow daytime"
+                ],
+                "merged": "same here, sample green's darker than the swatch. maybe it's the lighting? gonna shoot another one tomorrow daytime",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "用 same here 表達「我這邊也一樣」，是英文母語者最自然的說法，直譯成 I also have the same situation 會很生硬。"
+                  },
+                  {
+                    "phrase": "sample green's darker",
+                    "why": "口語把 the sample green is 縮成 sample green's，符合這個頻道偏短、偏鬆的節奏。"
+                  },
+                  {
+                    "phrase": "gonna shoot another one",
+                    "why": "gonna、shoot 都是日常口語用法，比 I will take another photograph 更貼近閒聊語氣。"
+                  },
+                  {
+                    "phrase": "tomorrow daytime",
+                    "why": "用 daytime 表達「白天」，避開 daylight 這個字，因為前面才剛把 daylight 定義成 D65 燈，用 daylight 會讓人以為是同一件事。"
+                  }
+                ],
+                "text": "same here, sample green's darker than the swatch\nmaybe it's the lighting?\ngonna shoot another one tomorrow daytime",
+                "back": "我這邊也一樣，樣品的綠色比色卡深\n也許是燈光的關係？\n明天白天再拍一張",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也和你原稿的「也許」相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, the sample green is darker than the swatch",
+                  "maybe it's the lighting? i'll take another photo tomorrow during the day"
+                ],
+                "merged": "same here, the sample green is darker than the swatch. maybe it's the lighting? i'll take another photo tomorrow during the day",
+                "notes": [
+                  {
+                    "phrase": "same here, the sample green is darker than the swatch",
+                    "why": "開頭小寫、句尾不加句點，跟這個頻道 100% 小寫開頭、幾乎不用句號的習慣一致。"
+                  },
+                  {
+                    "phrase": "swatch",
+                    "why": "依 glossary 保留 swatch 原文，不翻成 color card，頻道裡的人就是這樣稱呼。"
+                  },
+                  {
+                    "phrase": "maybe it's the lighting?",
+                    "why": "保留問號，讓它還是個問句，對應原稿的「也許是燈光的關係？」，不把「也許」寫成 definitely。"
+                  },
+                  {
+                    "phrase": "tomorrow during the day",
+                    "why": "用 during the day 講「白天」，避免和前面剛定義的 daylight（D65 燈）混淆。"
+                  }
+                ],
+                "text": "same here, the sample green is darker than the swatch\nmaybe it's the lighting? i'll take another photo tomorrow during the day",
+                "back": "我這邊也一樣，樣品的綠色比色卡深\n也許是燈光的關係？我明天白天再拍一張照片",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相同。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Same here: the green on the sample is darker than the swatch. Could it be the lighting? I'll take another photo tomorrow during the day."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Same here:",
+                    "why": "正式版用完整句並補上冒號，語氣比口語版正式，但仍保留「我這邊也一樣」的意思。"
+                  },
+                  {
+                    "phrase": "Could it be the lighting?",
+                    "why": "用 could 保留原稿「也許」的不確定程度，問句形式也完整對應原文的問號。"
+                  },
+                  {
+                    "phrase": "I'll take another photo tomorrow during the day",
+                    "why": "寫成完整句子、正常大小寫與標點；用 during the day 表達「白天」，不與 D65 的 daylight 混淆。"
+                  },
+                  {
+                    "phrase": "swatch",
+                    "why": "專有名詞依 glossary 保留英文原文，正式版本也一樣不另外翻譯。"
+                  }
+                ],
+                "text": "Same here: the green on the sample is darker than the swatch. Could it be the lighting? I'll take another photo tomorrow during the day.",
+                "back": "我這邊也一樣：樣品上的綠色比色卡深。會不會是燈光的關係？我明天白天再拍一張照片。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1744,
+                  "outputTokens": 1621
+                },
+                "ms": 9882
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 802,
+                  "outputTokens": 109
+                },
+                "ms": 853
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1011,
+                    "outputTokens": 50
+                  },
+                  "ms": 545
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1016,
+                    "outputTokens": 43
+                  },
+                  "ms": 510
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1020,
+                    "outputTokens": 43
+                  },
+                  "ms": 532
+                }
+              ]
+            }
+          },
+          "ms": 11325
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我這邊也一樣，樣品的綠色比色卡深。也許是燈光的關係？我明天白天再拍一次",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "same here, green on the sample is darker than the swatch",
+                  "maybe it’s the light?",
+                  "gonna shoot it again tomorrow in daylight"
+                ],
+                "merged": "same here, green on the sample is darker than the swatch. maybe it’s the light? gonna shoot it again tomorrow in daylight",
+                "notes": [
+                  {
+                    "phrase": "same here",
+                    "why": "英文常用的簡短附和，比 \"I also have the same situation\" 自然很多，也符合這個頻道簡短的風格。"
+                  },
+                  {
+                    "phrase": "maybe it’s the light?",
+                    "why": "保留原文「也許」的推測語氣，用問號結尾讓它維持不確定的疑問感。"
+                  },
+                  {
+                    "phrase": "gonna shoot it again",
+                    "why": "gonna 是口語縮寫，對應 casual 版本比較鬆的語氣；\"shoot\" 在攝影情境指拍照。"
+                  }
+                ],
+                "text": "same here, green on the sample is darker than the swatch\nmaybe it’s the light?\ngonna shoot it again tomorrow in daylight",
+                "back": "我這邊也一樣，樣品上的綠色比色卡深\n也許是光線的關係？\n明天日光下再拍一次",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "same here, the green on the sample is darker than the swatch",
+                  "maybe it’s the lighting?",
+                  "i’ll shoot it again tomorrow in daylight"
+                ],
+                "merged": "same here, the green on the sample is darker than the swatch. maybe it’s the lighting? i’ll shoot it again tomorrow in daylight",
+                "notes": [
+                  {
+                    "phrase": "the green on the sample is darker than the swatch",
+                    "why": "沿用 Owen 的用詞順序（sample、swatch），讓回覆讀起來像直接接話；swatch 依名詞表保留原樣。"
+                  },
+                  {
+                    "phrase": "maybe it’s the lighting?",
+                    "why": "「也許」用 maybe 而不是 probably，維持原本的保留程度，並保留問句形式。"
+                  },
+                  {
+                    "phrase": "i’ll shoot it again tomorrow in daylight",
+                    "why": "「白天」在這個情境指的是自然日光，用 daylight 呼應前面討論的 D65 與日光；句首小寫、不加句點符合頻道習慣。"
+                  }
+                ],
+                "text": "same here, the green on the sample is darker than the swatch\nmaybe it’s the lighting?\ni’ll shoot it again tomorrow in daylight",
+                "back": "我這邊也一樣，樣品上的綠色比色卡深\n也許是燈光的關係？\n明天日光下我再拍一次",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只有「白天」寫成「日光下」這種無害的明確化。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I see the same thing here: the green on the sample is darker than the swatch. Maybe it’s the lighting? I’ll take another photo tomorrow in daylight."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I see the same thing here",
+                    "why": "正式版本用完整句子表達「我這邊也一樣」，語氣比 same here 客氣但意思不變。"
+                  },
+                  {
+                    "phrase": "Maybe it’s the lighting?",
+                    "why": "保留「也許」的推測強度與問句，不改成 definitely 或 probably。"
+                  },
+                  {
+                    "phrase": "take another photo tomorrow in daylight",
+                    "why": "「白天再拍一次」用 take another photo 表達，daylight 與前文討論的光源一致；正式版本用完整句與標點。"
+                  }
+                ],
+                "text": "I see the same thing here: the green on the sample is darker than the swatch. Maybe it’s the lighting? I’ll take another photo tomorrow in daylight.",
+                "back": "我這邊看到的情況也一樣：樣品上的綠色比色卡深。也許是燈光的關係？我明天日光下再拍一張照片。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1719,
+                  "outputTokens": 574
+                },
+                "ms": 5752
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 814,
+                  "outputTokens": 117
+                },
+                "ms": 790
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1018,
+                    "outputTokens": 39
+                  },
+                  "ms": 809
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1019,
+                    "outputTokens": 56
+                  },
+                  "ms": 851
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1028,
+                    "outputTokens": 43
+                  },
+                  "ms": 754
+                }
+              ]
+            }
+          },
+          "ms": 7414
+        }
+      ]
+    },
+    {
+      "id": "02-confirm-wording",
+      "title": "向同事確認寫法（問句）",
+      "conversation": "product",
+      "replyTo": 7,
+      "draft": "了解，所以我們給工廠的說明裡統一寫 D65 light 就好？不用特別寫成 daylight 之類的",
+      "watch": "要保持問句；D65 大小寫照原樣；不要變成命令語氣",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "了解，所以我們給工廠的說明裡統一寫 D65 light 就好？不用特別寫成 daylight 之類的",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "got it, so we just say D65 light in the factory docs?",
+                  "no need to write daylight or whatever"
+                ],
+                "merged": "got it, so we just say D65 light in the factory docs? no need to write daylight or whatever",
+                "notes": [
+                  {
+                    "phrase": "got it",
+                    "why": "用 got it 比 understand 更口語，也符合這個頻道短句開場的習慣。"
+                  },
+                  {
+                    "phrase": "factory docs",
+                    "why": "用 docs 這種縮寫代替 instructions，語氣更隨性，符合 casual 版本。"
+                  },
+                  {
+                    "phrase": "or whatever",
+                    "why": "把「之類的」寫成 or whatever，比 or anything similar 更鬆，但保留原本不確定的語氣。"
+                  }
+                ],
+                "text": "got it, so we just say D65 light in the factory docs?\nno need to write daylight or whatever",
+                "back": "了解，所以我們在工廠文件裡就只寫 D65 光線？\n不用寫 daylight 還是什麼的",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "got it, so in the instructions for the factory we just write D65 light?",
+                  "no need to spell out daylight or anything"
+                ],
+                "merged": "got it, so in the instructions for the factory we just write D65 light? no need to spell out daylight or anything",
+                "notes": [
+                  {
+                    "phrase": "got it",
+                    "why": "頻道裡的回覆常用 got it 這類短語開頭，簡潔又自然。"
+                  },
+                  {
+                    "phrase": "D65 light",
+                    "why": "D65 是光源名稱，依術語表保留原樣與大寫，不翻譯成中文。"
+                  },
+                  {
+                    "phrase": "spell out daylight",
+                    "why": "spell out 表達「特別寫明」，比 write 更貼近原句「特別寫成」的意思。"
+                  },
+                  {
+                    "phrase": "no need to ... or anything",
+                    "why": "用片段句收尾且不加句號，符合這個頻道多數訊息不帶標點結尾的風格。"
+                  }
+                ],
+                "text": "got it, so in the instructions for the factory we just write D65 light?\nno need to spell out daylight or anything",
+                "back": "了解，所以在給工廠的說明裡我們就只寫 D65 光線？\n不用把 daylight 或其他類似的寫出來",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Understood. Should we just use D65 light consistently in the instructions we give the factory, rather than writing daylight or something similar?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Understood.",
+                    "why": "用完整的 Understood 取代口語的 got it，語氣較正式但仍簡短。"
+                  },
+                  {
+                    "phrase": "consistently",
+                    "why": "把「統一寫」明確翻成 consistently，讓正式版本意思完整不含糊。"
+                  },
+                  {
+                    "phrase": "rather than writing",
+                    "why": "用 rather than 表達「不用特別寫成」，比 no need to 更書面。"
+                  },
+                  {
+                    "phrase": "D65 light",
+                    "why": "D65 依術語表保留原文與大寫，避免寫成中文或小寫而失真。"
+                  }
+                ],
+                "text": "Understood. Should we just use D65 light consistently in the instructions we give the factory, rather than writing daylight or something similar?",
+                "back": "了解。我們在給工廠的說明裡是否就統一使用 D65 光線，而不要寫 daylight 或類似的說法？",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只是把「D65 light」寫成「D65 光線」，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1731,
+                  "outputTokens": 838
+                },
+                "ms": 4591
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 794,
+                  "outputTokens": 115
+                },
+                "ms": 983
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1008,
+                    "outputTokens": 43
+                  },
+                  "ms": 528
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1014,
+                    "outputTokens": 39
+                  },
+                  "ms": 700
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1018,
+                    "outputTokens": 55
+                  },
+                  "ms": 574
+                }
+              ]
+            }
+          },
+          "ms": 6279
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "error": "polish 回傳格式不符：casual Invalid input: expected object, received string; channel Invalid input: expected object, received string; formal Invalid input: expected object, received string;  Unrecognized key: \"notes\""
+        }
+      ]
+    },
+    {
+      "id": "03-suggest-mention",
+      "title": "道謝＋提建議（建議而非決定）",
+      "conversation": "product",
+      "replyTo": 5,
+      "draft": "謝謝 Owen 貼細則。所以誤差只看 D65 光源下的結果，這點我們要不要在給工廠的說明裡特別提一下？",
+      "watch": "道謝要保留但不能誇張；「要不要」是提議，不能寫成 we should",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以誤差只看 D65 光源下的結果，這點我們要不要在給工廠的說明裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so tolerance is only measured under D65 then",
+                  "should we call that out in the factory notes?"
+                ],
+                "merged": "thanks for the fine print owen, so tolerance is only measured under D65 then, should we call that out in the factory notes?",
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print owen",
+                    "why": "口語用 thanks 就好，開頭小寫、不加句點，符合這個頻道一貫的寫法。"
+                  },
+                  {
+                    "phrase": "so tolerance is only measured under D65 then",
+                    "why": "句尾的 then 帶出「所以是這樣嗎」的確認語氣，保留原稿的疑問而不是直接斷定。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "call out 是口語常用的「特別提出來講」，比 mention 更貼近「特別提一下」的意思。"
+                  },
+                  {
+                    "phrase": "factory notes",
+                    "why": "notes 簡短口語，對應「給工廠的說明」，也符合頻道偏好短句的習慣。"
+                  }
+                ],
+                "text": "thanks for the fine print owen\nso tolerance is only measured under D65 then\nshould we call that out in the factory notes?",
+                "back": "謝謝你提供細則，owen\n所以公差只有在 D65 下才會測量是吧\n我們應該在工廠備註裡把這點寫出來嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so the tolerance is only judged under D65",
+                  "should we call that out in the instructions we send the factory?"
+                ],
+                "merged": "thanks for the fine print owen, so the tolerance is only judged under D65, should we call that out in the instructions we send the factory?",
+                "notes": [
+                  {
+                    "phrase": "the tolerance is only judged under D65",
+                    "why": "用 judged 對應「只看…的結果」，比 measured 更接近原稿講的判定依據。"
+                  },
+                  {
+                    "phrase": "call that out",
+                    "why": "片語動詞，指把某個重點特別指出來，語氣自然又不生硬。"
+                  },
+                  {
+                    "phrase": "the instructions we send the factory",
+                    "why": "instructions 對應「說明」，避開 spec 以免和上面講的 spec sheet 混淆。"
+                  },
+                  {
+                    "phrase": "should we ...?",
+                    "why": "原稿是「要不要…？」，英文保留成問句，句尾用問號符合頻道 11% 問句的習慣。"
+                  }
+                ],
+                "text": "thanks for the fine print owen\nso the tolerance is only judged under D65\nshould we call that out in the instructions we send the factory?",
+                "back": "謝謝你提供細則，owen\n所以公差只有在 D65 下才會判定是吧\n我們應該在寄給工廠的說明裡把這點寫出來嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for posting the fine print, Owen. So the tolerance is only judged by the results under D65 light; should we call this out specifically in the instructions we send to the factory?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Thanks for posting the fine print, Owen",
+                    "why": "正式版本用完整句並把稱呼放在句尾，語氣禮貌但不多加原稿沒有的客套。"
+                  },
+                  {
+                    "phrase": "the tolerance is only judged by the results under D65 light",
+                    "why": "補回 results 與 light，讓「只看 D65 光源下的結果」在正式書寫中清楚無歧義。"
+                  },
+                  {
+                    "phrase": "should we call this out specifically",
+                    "why": "specifically 對應「特別」，並維持原稿詢問對方意見的問句形式。"
+                  },
+                  {
+                    "phrase": "the instructions we send to the factory",
+                    "why": "正式版用完整關係子句修飾 instructions，比口語的 factory notes 更精確。"
+                  }
+                ],
+                "text": "Thanks for posting the fine print, Owen. So the tolerance is only judged by the results under D65 light; should we call this out specifically in the instructions we send to the factory?",
+                "back": "謝謝你貼出細則，Owen。所以公差只會依據 D65 光源下的結果來判定；我們應該在寄給工廠的說明中特別把這點寫出來嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1771,
+                  "outputTokens": 1310
+                },
+                "ms": 8303
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 813,
+                  "outputTokens": 142
+                },
+                "ms": 1330
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1030,
+                    "outputTokens": 43
+                  },
+                  "ms": 756
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1034,
+                    "outputTokens": 43
+                  },
+                  "ms": 1040
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1046,
+                    "outputTokens": 43
+                  },
+                  "ms": 813
+                }
+              ]
+            }
+          },
+          "ms": 10690
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "謝謝 Owen 貼細則。所以誤差只看 D65 光源下的結果，這點我們要不要在給工廠的說明裡特別提一下？",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "thanks for the fine print owen. so tolerance only counts under D65? should we call that out in the notes for the factory"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print",
+                    "why": "用 fine print 直接回指 Owen 貼的細則，語氣像頻道裡的口語回覆，不用整句謝謝。"
+                  },
+                  {
+                    "phrase": "tolerance only counts under D65?",
+                    "why": "把「誤差只看 D65 光源下的結果」縮成問句，保留原本詢問的語氣，符合頻道愛用短問句的習慣。"
+                  },
+                  {
+                    "phrase": "call that out in the notes for the factory",
+                    "why": "call out 是頻道常見說法，指特別提出來；notes for the factory 比 instructions 更口語、更短。"
+                  }
+                ],
+                "text": "thanks for the fine print owen. so tolerance only counts under D65? should we call that out in the notes for the factory",
+                "back": "謝謝你提供的小字說明，Owen。所以公差只有在 D65 下才算數嗎？我們應該在給工廠的備註裡把這點寫清楚嗎",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：只有把「細則」換成「小字說明」這類無害的同義詞，沒有新增或漏掉資訊。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "thanks for the fine print owen",
+                  "so tolerance only counts under D65? should we spell that out in the notes we send the factory"
+                ],
+                "merged": "thanks for the fine print owen. so tolerance only counts under D65? should we spell that out in the notes we send the factory",
+                "notes": [
+                  {
+                    "phrase": "thanks for the fine print owen",
+                    "why": "先簡短回應 Owen 的貼文，符合頻道一次只講一件事、分則送出的節奏。"
+                  },
+                  {
+                    "phrase": "so tolerance only counts under D65?",
+                    "why": "用 so 開頭帶出推論，並保留問號，因為原稿是在詢問確認，不能變成肯定句。"
+                  },
+                  {
+                    "phrase": "spell that out",
+                    "why": "spell out 是英文母語者表達「特別說明清楚」的常用片語，比 mention specifically 自然。"
+                  },
+                  {
+                    "phrase": "the notes we send the factory",
+                    "why": "把「給工廠的說明」寫成 the notes we send the factory，避開 instructions 這種較生硬的用字。"
+                  }
+                ],
+                "text": "thanks for the fine print owen\nso tolerance only counts under D65? should we spell that out in the notes we send the factory",
+                "back": "謝謝你提供的小字說明，Owen\n所以公差只有在 D65 下才算數嗎？我們應該在寄給工廠的備註裡把這點寫清楚嗎",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "Thanks for posting the fine print, Owen. Just to confirm, the tolerance is only measured under D65 light, correct? Should we call that out specifically in the instructions we send to the factory?"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "Just to confirm ... correct?",
+                    "why": "用 Just to confirm 開頭把原稿的確認語氣保留下來，正式但不冗長。"
+                  },
+                  {
+                    "phrase": "the tolerance is only measured under D65 light",
+                    "why": "被動語態讓句子完整清楚，適合對不熟的人或不確定對方會仔細讀的場合。"
+                  },
+                  {
+                    "phrase": "call that out specifically in the instructions",
+                    "why": "call out 在正式書寫也通用，加 specifically 對應原稿「特別提一下」的意思。"
+                  },
+                  {
+                    "phrase": "Thanks for posting the fine print, Owen",
+                    "why": "把稱呼移到句尾並用 posting 取代貼，較符合英文正式訊息的自然語序。"
+                  }
+                ],
+                "text": "Thanks for posting the fine print, Owen. Just to confirm, the tolerance is only measured under D65 light, correct? Should we call that out specifically in the instructions we send to the factory?",
+                "back": "謝謝你貼出小字說明，Owen。想確認一下，公差只有在 D65 光源下測量才算數，對嗎？我們應該在寄給工廠的指示裡特別把這點寫出來嗎？",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1746,
+                  "outputTokens": 608
+                },
+                "ms": 3897
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 813,
+                  "outputTokens": 150
+                },
+                "ms": 989
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1031,
+                    "outputTokens": 60
+                  },
+                  "ms": 605
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1033,
+                    "outputTokens": 43
+                  },
+                  "ms": 676
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1054,
+                    "outputTokens": 43
+                  },
+                  "ms": 610
+                }
+              ]
+            }
+          },
+          "ms": 5564
+        }
+      ]
+    },
+    {
+      "id": "04-unsure-disagree",
+      "title": "委婉的不同意見（不確定語氣）",
+      "conversation": "product",
+      "replyTo": 8,
+      "draft": "我不太確定舊工作室那個燈箱是不是真的拿掉了，我上週好像還看到，晚點拍照給你們看",
+      "watch": "「不太確定」「好像」兩層保留都要在；不能變成直接反駁",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我不太確定舊工作室那個燈箱是不是真的拿掉了，我上週好像還看到，晚點拍照給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not sure the old studio lightbox actually got taken out",
+                  "i think i saw it there last week",
+                  "will grab a photo later"
+                ],
+                "merged": "not sure the old studio lightbox actually got taken out, i think i saw it there last week, will grab a photo later",
+                "notes": [
+                  {
+                    "phrase": "not sure ... actually got taken out",
+                    "why": "用 not sure 對應「不太確定」，保留原本的猶豫程度，不會講成 definitely 或 I'm certain。"
+                  },
+                  {
+                    "phrase": "i think i saw it there",
+                    "why": "「好像還看到」是弱化的推測，用 i think 比 I saw 更貼近原意，也符合這裡一貫的低調語氣。"
+                  },
+                  {
+                    "phrase": "will grab a photo later",
+                    "why": "「晚點拍照給你們看」在這裡用 grab a photo 更口語，will 省略主詞是頻道常見的短句寫法。"
+                  },
+                  {
+                    "phrase": "lightbox",
+                    "why": "依照術語表保留 lightbox 原文，不翻成中文，也和先前訊息中的用法一致。"
+                  }
+                ],
+                "text": "not sure the old studio lightbox actually got taken out\ni think i saw it there last week\nwill grab a photo later",
+                "back": "不確定舊工作室的燈箱是不是真的被拿走了\n我上週好像還在那裡看到它\n之後會拍張照片",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致一致，但原稿的「晚點拍照給你們看」變成「之後會拍張照片」，沒說是拍給你們看，也少了「不太」的保留語氣。",
+                  "added": [],
+                  "omitted": [
+                    "拍照給你們看的對象不見了，只說會拍張照片"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "我不太確定",
+                      "now": "不確定",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "不確定",
+                    "之後會拍張照片"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure the old studio lightbox actually got taken out",
+                  "i think i saw it there last week, will grab a photo later"
+                ],
+                "merged": "not sure the old studio lightbox actually got taken out, i think i saw it there last week, will grab a photo later",
+                "notes": [
+                  {
+                    "phrase": "not sure ... got taken out",
+                    "why": "「是不是真的拿掉了」是確認語氣，用 not sure 加被動式保留不確定的感覺，句首小寫、不加句號符合頻道風格。"
+                  },
+                  {
+                    "phrase": "i think i saw it there last week",
+                    "why": "「好像還看到」對應 i think，比直接說 I saw 更保守，不會把話說死。"
+                  },
+                  {
+                    "phrase": "will grab a photo later",
+                    "why": "「晚點拍照給你們看」用 will grab a photo later 表達，簡短、省略主詞，是這個頻道常見的 burst 寫法。"
+                  },
+                  {
+                    "phrase": "lightbox",
+                    "why": "術語表指定沿用 lightbox，指的就是舊工作室那個燈箱，不另作翻譯。"
+                  }
+                ],
+                "text": "not sure the old studio lightbox actually got taken out\ni think i saw it there last week, will grab a photo later",
+                "back": "不確定舊工作室的燈箱是不是真的被拿走了\n我上週好像還在那裡看到它，之後會拍張照片",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只是把「晚點拍照給你們看」說得更明確為之後會拍照。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm not sure the lightbox in the old studio was actually removed. I think I saw it there last week, and I'll take a photo later to show you."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm not sure ... was actually removed",
+                    "why": "正式版本用完整句子與正常大小寫，I'm not sure 對應「不太確定」，語氣強度與原文一致。"
+                  },
+                  {
+                    "phrase": "I think I saw it there last week",
+                    "why": "「好像還看到」用 I think 表達推測，避免寫成肯定句而改變原意。"
+                  },
+                  {
+                    "phrase": "I'll take a photo later to show you",
+                    "why": "「晚點拍照給你們看」補回主詞與完整動詞，符合正式書寫，也沒有加入原文沒有的承諾。"
+                  },
+                  {
+                    "phrase": "lightbox",
+                    "why": "依術語表保留 lightbox 英文原名，正式版本同樣不翻譯。"
+                  }
+                ],
+                "text": "I'm not sure the lightbox in the old studio was actually removed. I think I saw it there last week, and I'll take a photo later to show you.",
+                "back": "我不確定舊工作室的燈箱是不是真的被移除了。我上週好像還在那裡看到它，之後我會拍張照片給你看。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只有把不確定語氣照原樣保留。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1745,
+                  "outputTokens": 875
+                },
+                "ms": 5043
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 805,
+                  "outputTokens": 116
+                },
+                "ms": 837
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1017,
+                    "outputTokens": 110
+                  },
+                  "ms": 992
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1017,
+                    "outputTokens": 57
+                  },
+                  "ms": 814
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1028,
+                    "outputTokens": 49
+                  },
+                  "ms": 680
+                }
+              ]
+            }
+          },
+          "ms": 6874
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我不太確定舊工作室那個燈箱是不是真的拿掉了，我上週好像還看到，晚點拍照給你們看",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "not sure the old lightbox is actually gone tbh",
+                  "pretty sure i saw it last week, will grab a photo later"
+                ],
+                "merged": "not sure the old lightbox is actually gone tbh, pretty sure i saw it last week, will grab a photo later",
+                "notes": [
+                  {
+                    "phrase": "not sure ... actually gone",
+                    "why": "用 not sure 對應「不太確定」，保留原本的不確定程度，沒有加強成 definitely 或 weaken 成 maybe。"
+                  },
+                  {
+                    "phrase": "tbh",
+                    "why": "頻道本來就會用 fwiw、k 這類縮寫，tbh 符合這種口語節奏，也讓語氣不那麼嚴肅。"
+                  },
+                  {
+                    "phrase": "pretty sure i saw it",
+                    "why": "「好像還看到」用 pretty sure 表達，比 I saw 保留一點保留語氣，貼近原意。"
+                  },
+                  {
+                    "phrase": "will grab a photo later",
+                    "why": "「晚點拍照給你們看」用 grab a photo 是台灣頻道常見的自然說法，不用 take a photograph 這種書面用語。"
+                  }
+                ],
+                "text": "not sure the old lightbox is actually gone tbh\npretty sure i saw it last week, will grab a photo later",
+                "back": "不太確定舊的燈箱是不是真的不見了，老實說\n蠻確定我上週還有看到，之後再拍張照",
+                "check": {
+                  "status": "warn",
+                  "summary": "語氣比你原稿篤定：原本「好像還看到」變成「蠻確定還有看到」，另外沒提到要拍照「給你們看」，只說之後再拍。",
+                  "added": [
+                    "蠻確定"
+                  ],
+                  "omitted": [
+                    "拍照是要給對方看的對象（給你們看）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "我上週好像還看到",
+                      "now": "蠻確定我上週還有看到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "蠻確定我上週還有看到"
+                  ]
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "not sure the old lightbox is actually gone",
+                  "pretty sure i saw it last week, will grab a photo later"
+                ],
+                "merged": "not sure the old lightbox is actually gone, pretty sure i saw it last week, will grab a photo later",
+                "notes": [
+                  {
+                    "phrase": "not sure the old lightbox is actually gone",
+                    "why": "直接回應 Owen 說的 streamlined，針對「燈箱是不是真的拿掉了」提出疑問，符合回覆脈絡。"
+                  },
+                  {
+                    "phrase": "lightbox",
+                    "why": "依 glossary 保留 lightbox 這個英文詞，不翻成中文或改用別的說法。"
+                  },
+                  {
+                    "phrase": "pretty sure i saw it last week",
+                    "why": "「好像還看到」用 pretty sure 加 last week，語氣比 I saw 保留，符合原本的遲疑。"
+                  },
+                  {
+                    "phrase": "will grab a photo later",
+                    "why": "「晚點拍照給你們看」用 grab a photo 這種頻道慣用的短句，不寫成正式完整句。"
+                  }
+                ],
+                "text": "not sure the old lightbox is actually gone\npretty sure i saw it last week, will grab a photo later",
+                "back": "不確定舊的燈箱是不是真的不見了\n蠻確定我上週還有看到，之後再拍張照",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致相同，但「好像還看到」變成「蠻確定還有看到」，語氣比你的原稿篤定不少，而且原稿的「晚點」變成「之後」。",
+                  "added": [],
+                  "omitted": [
+                    "「晚點」拍照的時間點變得比較模糊（之後）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "好像還看到",
+                      "now": "蠻確定還有看到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "蠻確定我上週還有看到"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I'm not sure the old lightbox was actually removed. I think I saw it last week, and I'll take a photo later to show you."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I'm not sure the old lightbox was actually removed",
+                    "why": "「不太確定……是不是真的拿掉了」用 I'm not sure 保留原本的不確定，沒有說成 definitely removed。"
+                  },
+                  {
+                    "phrase": "lightbox",
+                    "why": "依 glossary 保留 lightbox，正式版本也不需要改成其他描述。"
+                  },
+                  {
+                    "phrase": "I think I saw it last week",
+                    "why": "「好像還看到」用 I think 表達，語氣比 I saw 委婉，符合正式場合。"
+                  },
+                  {
+                    "phrase": "I'll take a photo later to show you",
+                    "why": "「晚點拍照給你們看」寫成完整句子，take a photo 是正式但自然的說法。"
+                  }
+                ],
+                "text": "I'm not sure the old lightbox was actually removed. I think I saw it last week, and I'll take a photo later to show you.",
+                "back": "我不確定舊的燈箱是不是真的被移除了。我想我上週有看到，之後我會拍張照給你們看。",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致一致，但「好像還看到」變成「我想我有看到」，不確定感變弱，還多了「之後我會」這種明確承諾。",
+                  "added": [
+                    "之後我會拍張照給你們看（把「晚點拍照」說成明確的未來承諾）"
+                  ],
+                  "omitted": [
+                    "「好像」的不確定語氣（原稿是隱約看到，譯回變成「我想我有看到」）"
+                  ],
+                  "toneShifts": [
+                    {
+                      "original": "我上週好像還看到",
+                      "now": "我想我上週有看到",
+                      "direction": "stronger"
+                    }
+                  ],
+                  "highlights": [
+                    "我想我上週有看到",
+                    "之後我會拍張照給你們看"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1720,
+                  "outputTokens": 625
+                },
+                "ms": 4811
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 797,
+                  "outputTokens": 109
+                },
+                "ms": 993
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1016,
+                    "outputTokens": 114
+                  },
+                  "ms": 938
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1010,
+                    "outputTokens": 109
+                  },
+                  "ms": 1312
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1021,
+                    "outputTokens": 150
+                  },
+                  "ms": 1289
+                }
+              ]
+            }
+          },
+          "ms": 7119
+        }
+      ]
+    },
+    {
+      "id": "05-report-facts",
+      "title": "多個事實與數字的回報",
+      "conversation": "product",
+      "draft": "我剛把第二批樣品量完了，大概花了 20 分鐘。消光黑那支在 ΔE 2.0 以內，但綠色那支是 3.1，照細則來看不合格",
+      "watch": "20 分鐘、ΔE 2.0、3.1 不能錯；「大概」要保留；不能把「不合格」寫得更重或更輕",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "我剛把第二批樣品量完了，大概花了 20 分鐘。消光黑那支在 ΔE 2.0 以內，但綠色那支是 3.1，照細則來看不合格",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just measured the second batch of samples, took like 20 min",
+                  "matte black's within ΔE 2.0, green's 3.1",
+                  "so out of tolerance per the fine print"
+                ],
+                "merged": "just measured the second batch of samples, took like 20 min, matte black's within ΔE 2.0, green's 3.1, so out of tolerance per the fine print",
+                "notes": [
+                  {
+                    "phrase": "took like 20 min",
+                    "why": "用 like 表示「大概」，比 about 更口語，也保留原本的不精確感。"
+                  },
+                  {
+                    "phrase": "matte black's within",
+                    "why": "用所有格縮寫讓句子更短，符合這個頻道短促的節奏。"
+                  },
+                  {
+                    "phrase": "out of tolerance per the fine print",
+                    "why": "把「照細則來看不合格」寫成規格語境的常見說法，沒有加重或減弱。"
+                  }
+                ],
+                "text": "just measured the second batch of samples, took like 20 min\nmatte black's within ΔE 2.0, green's 3.1\nso out of tolerance per the fine print",
+                "back": "剛量完第二批樣品，大概花了20分鐘\n消光黑在 ΔE 2.0 以內，綠色是 3.1\n所以照細則來說是超出公差",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just finished measuring the second batch of samples, took about 20 min",
+                  "matte black is within ΔE 2.0, green is 3.1",
+                  "so out of tolerance per the fine print"
+                ],
+                "merged": "just finished measuring the second batch of samples, took about 20 min, matte black is within ΔE 2.0, green is 3.1, so out of tolerance per the fine print",
+                "notes": [
+                  {
+                    "phrase": "just finished measuring",
+                    "why": "用 just 對應「剛」，完成式自然表達「量完了」。"
+                  },
+                  {
+                    "phrase": "took about 20 min",
+                    "why": "保留「大概」用 about，不寫成 exactly，維持原本的模糊程度。"
+                  },
+                  {
+                    "phrase": "matte black is within ΔE 2.0, green is 3.1",
+                    "why": "用逗號並列兩個量測結果，簡短像頻道裡的即時回報。"
+                  },
+                  {
+                    "phrase": "out of tolerance per the fine print",
+                    "why": "對應「照細則來看不合格」，沿用規格與細則的語彙。"
+                  }
+                ],
+                "text": "just finished measuring the second batch of samples, took about 20 min\nmatte black is within ΔE 2.0, green is 3.1\nso out of tolerance per the fine print",
+                "back": "剛量完第二批樣品，花了大概20分鐘\n消光黑在 ΔE 2.0 以內，綠色是 3.1\n所以照細則來說是超出公差",
+                "check": {
+                  "status": "info",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只是把「照細則來看不合格」換成「照細則來說是超出公差」。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": [
+                    "超出公差"
+                  ]
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just finished measuring the second batch of samples; it took about 20 minutes. The matte black sample is within ΔE 2.0, but the green sample is 3.1, so it is out of tolerance according to the fine print."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "I just finished measuring the second batch of samples; it took about 20 minutes.",
+                    "why": "正式版用完整句和分號串接兩個資訊，並保留「大概」用 about。"
+                  },
+                  {
+                    "phrase": "The matte black sample is within ΔE 2.0, but the green sample is 3.1",
+                    "why": "補上 sample 讓主語清楚，轉折用 but 表達兩支樣品結果不同。"
+                  },
+                  {
+                    "phrase": "out of tolerance according to the fine print",
+                    "why": "將「不合格」譯為規格語境的 out of tolerance，並保留「照細則」的依據。"
+                  }
+                ],
+                "text": "I just finished measuring the second batch of samples; it took about 20 minutes. The matte black sample is within ΔE 2.0, but the green sample is 3.1, so it is out of tolerance according to the fine print.",
+                "back": "我剛量完第二批樣品；花了大概20分鐘。消光黑樣品在 ΔE 2.0 以內，但綠色樣品是 3.1，所以照細則來說是超出公差。",
+                "check": {
+                  "status": "warn",
+                  "summary": "意思大致相符，但「不合格」在回譯中變成「超出公差」，語氣比原稿中性一些，而且「照細則」被寫成「照細則來說」。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [
+                    {
+                      "original": "不合格",
+                      "now": "超出公差",
+                      "direction": "weaker"
+                    }
+                  ],
+                  "highlights": [
+                    "超出公差"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1732,
+                  "outputTokens": 3219
+                },
+                "ms": 15884
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 854,
+                  "outputTokens": 159
+                },
+                "ms": 1033
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1067,
+                    "outputTokens": 43
+                  },
+                  "ms": 517
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1068,
+                    "outputTokens": 63
+                  },
+                  "ms": 780
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1085,
+                    "outputTokens": 86
+                  },
+                  "ms": 843
+                }
+              ]
+            }
+          },
+          "ms": 17766
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "我剛把第二批樣品量完了，大概花了 20 分鐘。消光黑那支在 ΔE 2.0 以內，但綠色那支是 3.1，照細則來看不合格",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "just measured the second batch of samples, took like 20 min",
+                  "matte black one's within ΔE 2.0 but the green one's 3.1, fails per the fine print"
+                ],
+                "merged": "just measured the second batch of samples, took like 20 min. matte black one's within ΔE 2.0 but the green one's 3.1, fails per the fine print",
+                "notes": [
+                  {
+                    "phrase": "took like 20 min",
+                    "why": "用 like 帶出大約時間，是口語常見的模糊用法，比 about 更隨性。"
+                  },
+                  {
+                    "phrase": "matte black one's",
+                    "why": "glossary 指定 matte 不譯，one's 是口語省略 of the samples 的說法。"
+                  },
+                  {
+                    "phrase": "fails per the fine print",
+                    "why": "per 對應「照細則」，fine print 呼應先前對話對規格細則的稱呼，語感一致。"
+                  }
+                ],
+                "text": "just measured the second batch of samples, took like 20 min\nmatte black one's within ΔE 2.0 but the green one's 3.1, fails per the fine print",
+                "back": "剛量完第二批樣品，大概花了 20 分鐘\n消光黑那個在 ΔE 2.0 以內，但綠色那個是 3.1，照細則來看不合格",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，語氣也相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "just finished measuring the second batch of samples, took about 20 min",
+                  "the matte black one is within ΔE 2.0 but the green one is 3.1, out of spec per the fine print"
+                ],
+                "merged": "just finished measuring the second batch of samples, took about 20 min. the matte black one is within ΔE 2.0 but the green one is 3.1, out of spec per the fine print",
+                "notes": [
+                  {
+                    "phrase": "the second batch of samples",
+                    "why": "批次指第二批樣品，用 second batch 承接前文第一批的脈絡。"
+                  },
+                  {
+                    "phrase": "within ΔE 2.0",
+                    "why": "ΔE 2.0 依 glossary 保留原樣，within 對應「以內」。"
+                  },
+                  {
+                    "phrase": "out of spec per the fine print",
+                    "why": "out of spec 是這個頻道談規格時的自然說法，per 對應「照細則」。"
+                  }
+                ],
+                "text": "just finished measuring the second batch of samples, took about 20 min\nthe matte black one is within ΔE 2.0 but the green one is 3.1, out of spec per the fine print",
+                "back": "剛量完第二批樣品，花了大概 20 分鐘\n消光黑那個在 ΔE 2.0 以內，但綠色那個是 3.1，照細則來看超出規格",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，只是把「細則」說成「細則」、「不合格」說成「超出規格」，語意相同。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "I just finished measuring the second batch of samples, which took about 20 minutes. The matte black sample is within ΔE 2.0, but the green one measured 3.1, which is out of spec according to the fine print."
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "which took about 20 minutes",
+                    "why": "正式版用完整關係子句，把花費時間說清楚，語氣較書面。"
+                  },
+                  {
+                    "phrase": "measured 3.1",
+                    "why": "補上 measured 讓數值來源明確，避免正式語境下主詞不清。"
+                  },
+                  {
+                    "phrase": "out of spec according to the fine print",
+                    "why": "according to 比 per 正式，fine print 沿用頻道既有用語。"
+                  }
+                ],
+                "text": "I just finished measuring the second batch of samples, which took about 20 minutes. The matte black sample is within ΔE 2.0, but the green one measured 3.1, which is out of spec according to the fine print.",
+                "back": "我剛量完第二批樣品，大概花了 20 分鐘。消光黑的樣品在 ΔE 2.0 以內，但綠色那個量到 3.1，照細則來看超出規格。",
+                "check": {
+                  "status": "ok",
+                  "summary": "意思一致：沒有新增或漏掉資訊，量測結果與時間都和原稿相符。",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1707,
+                  "outputTokens": 585
+                },
+                "ms": 3520
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 857,
+                  "outputTokens": 166
+                },
+                "ms": 1204
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1070,
+                    "outputTokens": 43
+                  },
+                  "ms": 955
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1075,
+                    "outputTokens": 64
+                  },
+                  "ms": 892
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 1085,
+                    "outputTokens": 49
+                  },
+                  "ms": 698
+                }
+              ]
+            }
+          },
+          "ms": 5681
+        }
+      ]
+    },
+    {
+      "id": "06-en-to-zh-unsure",
+      "title": "英文草稿 → 台灣中文頻道：帶保留的猜測",
+      "conversation": "factory-zh",
+      "replyTo": 3,
+      "userLang": "en",
+      "channelLang": "zh-TW",
+      "draft": "I'm not totally sure, but I think it only happens on the matte finish? I'll check the glossy frames after lunch",
+      "watch": "「not totally sure」「I think」兩層保留都要在，問句還是問句；不能寫成大陸用語（如「哑光」「质量」）",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "I'm not totally sure, but I think it only happens on the matte finish? I'll check the glossy frames after lunch",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "我也不太確定欸 好像只有消光會這樣？",
+                  "午餐後我再去看亮面的車架"
+                ],
+                "merged": "我也不太確定欸 好像只有消光會這樣？午餐後我再去看亮面的車架",
+                "notes": [
+                  {
+                    "phrase": "我也不太確定欸",
+                    "why": "The 欸 softens the admission of doubt the way people actually hedge in chat, where a bare 我不太確定 would sound flatter."
+                  },
+                  {
+                    "phrase": "好像只有消光會這樣？",
+                    "why": "好像 keeps the claim at \"I think\" strength, and the question mark keeps it a question instead of an assertion."
+                  },
+                  {
+                    "phrase": "亮面的車架",
+                    "why": "Pairs with 消光 the way the shop floor talks about finishes, instead of translating \"glossy\" literally."
+                  }
+                ],
+                "text": "我也不太確定欸 好像只有消光會這樣？\n午餐後我再去看亮面的車架",
+                "back": "I'm not really sure either, it seems like only matte ones do this?\nI'll go check the glossy frames after lunch",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "我也不太確定 不過好像只有消光才會這樣？",
+                  "中午吃完飯我去看一下亮面的車架"
+                ],
+                "merged": "我也不太確定 不過好像只有消光才會這樣？中午吃完飯我去看一下亮面的車架",
+                "notes": [
+                  {
+                    "phrase": "不過好像只有消光才會這樣？",
+                    "why": "好像 holds the hedge at \"I think\" level, and the question stays a question so it reads as checking with 張家豪 rather than contradicting him."
+                  },
+                  {
+                    "phrase": "中午吃完飯",
+                    "why": "This is how people here say \"after lunch\" — 午餐後 would sound like a report."
+                  },
+                  {
+                    "phrase": "我去看一下",
+                    "why": "看一下 makes it a quick look rather than a formal inspection, which fits the size of the task."
+                  },
+                  {
+                    "phrase": "用空格斷句",
+                    "why": "The channel separates clauses with spaces and drops ending punctuation, so the message stays one breath long."
+                  }
+                ],
+                "text": "我也不太確定 不過好像只有消光才會這樣？\n中午吃完飯我去看一下亮面的車架",
+                "back": "I'm not sure either, but it seems like only matte ones do this?\nAfter I finish eating at noon I'll go take a look at the glossy frames",
+                "check": {
+                  "status": "info",
+                  "summary": "Same meaning: the hedge and the plan to check the glossy frames after lunch both come through, with only minor wording differences.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "我不太確定，不過我覺得只有消光的才會有這個狀況？午餐後我會去確認亮面的車架。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "我不太確定，不過我覺得",
+                    "why": "Full punctuation and an explicit 我覺得 carry the same hedge without the chat particles."
+                  },
+                  {
+                    "phrase": "才會有這個狀況",
+                    "why": "狀況 is the neutral written word for the problem, avoiding the colloquial 這樣 on its own."
+                  },
+                  {
+                    "phrase": "我會去確認亮面的車架",
+                    "why": "確認 signals a proper check, which is what a complete sentence in a formal register calls for."
+                  }
+                ],
+                "text": "我不太確定，不過我覺得只有消光的才會有這個狀況？午餐後我會去確認亮面的車架。",
+                "back": "I'm not sure, but I think only matte ones have this situation? I will go confirm the glossy frames after lunch.",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1851,
+                  "outputTokens": 1113
+                },
+                "ms": 6427
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 647,
+                  "outputTokens": 116
+                },
+                "ms": 894
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 889,
+                    "outputTokens": 38
+                  },
+                  "ms": 759
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 896,
+                    "outputTokens": 54
+                  },
+                  "ms": 570
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 891,
+                    "outputTokens": 38
+                  },
+                  "ms": 437
+                }
+              ]
+            }
+          },
+          "ms": 8110
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "I'm not totally sure, but I think it only happens on the matte finish? I'll check the glossy frames after lunch",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "我也不太確定 不過好像只有消光才會這樣？",
+                  "亮面的我等中午過後再看一下"
+                ],
+                "merged": "我也不太確定 不過好像只有消光才會這樣？亮面的我等中午過後再看一下",
+                "notes": [
+                  {
+                    "phrase": "好像只有消光才會這樣",
+                    "why": "好像 keeps the doubt at the same strength as \"I think\"—not confirmed, just a hunch."
+                  },
+                  {
+                    "phrase": "不過",
+                    "why": "A light contrast word that softens the reply without adding a formal tone."
+                  },
+                  {
+                    "phrase": "中午過後",
+                    "why": "How people actually say \"after lunch\" in a work chat; 下午 would shift the timing."
+                  }
+                ],
+                "text": "我也不太確定 不過好像只有消光才會這樣？\n亮面的我等中午過後再看一下",
+                "back": "I'm not too sure either, but it seems like it only happens with matte?\nI'll take another look at the glossy ones after noon",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "我也不太確定 不過我猜只有消光的會這樣？",
+                  "亮面的我中午過後再確認一下"
+                ],
+                "merged": "我也不太確定 不過我猜只有消光的會這樣？亮面的我中午過後再確認一下",
+                "notes": [
+                  {
+                    "phrase": "我猜",
+                    "why": " Marks it as a guess rather than a fact, matching \"I think\" without overclaiming."
+                  },
+                  {
+                    "phrase": "再確認一下",
+                    "why": "The usual way to say you'll go check something; 確認一下 keeps it casual but clear."
+                  },
+                  {
+                    "phrase": "亮面的",
+                    "why": "Pairs naturally with 消光的 from the message being replied to, since the noun 車架 is already understood."
+                  }
+                ],
+                "text": "我也不太確定 不過我猜只有消光的會這樣？\n亮面的我中午過後再確認一下",
+                "back": "I'm not too sure either, but I guess only the matte ones do this?\nI'll check the glossy ones again after noon",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "我不太確定，不過我認為只有消光的部分會這樣？",
+                  "亮面的車架我中午過後會再確認。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "只有消光的部分會這樣",
+                    "why": "Adds 部分 so the sentence reads as a complete statement in a more formal register."
+                  },
+                  {
+                    "phrase": "我認為",
+                    "why": "A neutral way to state an opinion in writing without sounding too casual."
+                  },
+                  {
+                    "phrase": "會再確認",
+                    "why": "Full-width punctuation and a complete sentence fit a message to someone you don't know well."
+                  }
+                ],
+                "text": "我不太確定，不過我認為只有消光的部分會這樣？\n亮面的車架我中午過後會再確認。",
+                "back": "I'm not certain, but I think it's only the matte parts that do this?\nI will confirm again with the glossy frames after noon.",
+                "check": {
+                  "status": "info",
+                  "summary": "Same meaning: your hedge stays a hedge, and confirming the glossy frames after lunch matches your draft.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1826,
+                  "outputTokens": 417
+                },
+                "ms": 2566
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 651,
+                  "outputTokens": 118
+                },
+                "ms": 844
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 891,
+                    "outputTokens": 38
+                  },
+                  "ms": 656
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 891,
+                    "outputTokens": 38
+                  },
+                  "ms": 488
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 897,
+                    "outputTokens": 49
+                  },
+                  "ms": 887
+                }
+              ]
+            }
+          },
+          "ms": 4303
+        }
+      ]
+    },
+    {
+      "id": "07-en-to-zh-question",
+      "title": "英文草稿 → 台灣中文頻道：提問加理由",
+      "conversation": "factory-zh",
+      "replyTo": 5,
+      "userLang": "en",
+      "channelLang": "zh-TW",
+      "draft": "should we push it to next Tuesday instead? QA hasn't signed off yet and I don't want to ship with a known color issue",
+      "watch": "是提問不是決定；「品管還沒簽核」「不想帶著已知的色差出貨」都要在；沒有翻譯腔（例如「我不想要帶著…去出貨」）",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "should we push it to next Tuesday instead? QA hasn't signed off yet and I don't want to ship with a known color issue",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "還是延到下週二？",
+                  "品管還沒簽核 我不想帶著色差出貨"
+                ],
+                "merged": "還是延到下週二？品管還沒簽核 我不想帶著色差出貨",
+                "notes": [
+                  {
+                    "phrase": "還是延到下週二？",
+                    "why": "Dropping 要不要 and leading with 還是 is how people here float a different option without making it sound like a formal proposal."
+                  },
+                  {
+                    "phrase": "品管還沒簽核",
+                    "why": "No subject and no 他們 — the channel names the blocker and lets the verb carry the sentence."
+                  },
+                  {
+                    "phrase": "帶著色差出貨",
+                    "why": "Turning \"ship with a known color issue\" into 帶著…出貨 keeps it spoken rather than translating the English preposition word for word."
+                  }
+                ],
+                "text": "還是延到下週二？\n品管還沒簽核 我不想帶著色差出貨",
+                "back": "Or push it to next Tuesday?\nQC hasn't signed off yet, I don't want to ship with a color difference",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "還是延到下週二？",
+                  "品管那邊還沒簽核 我不想帶著已知的色差出貨"
+                ],
+                "merged": "還是延到下週二？品管那邊還沒簽核 我不想帶著已知的色差出貨",
+                "notes": [
+                  {
+                    "phrase": "品管那邊",
+                    "why": "Echoes the 品管那邊 said earlier in the thread, so it reads as picking up the same conversation."
+                  },
+                  {
+                    "phrase": "下週二",
+                    "why": "Written as 下週二 rather than 下星期二, matching how this channel shortens dates."
+                  },
+                  {
+                    "phrase": "我不想帶著已知的色差出貨",
+                    "why": "A space instead of a comma between the clauses, and no ending punctuation on the statement — the channel's default rhythm."
+                  }
+                ],
+                "text": "還是延到下週二？\n品管那邊還沒簽核 我不想帶著已知的色差出貨",
+                "back": "Or push it to next Tuesday?\nQC hasn't signed off yet, I don't want to ship with a known color difference",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "要不要改延到下週二？品管那邊還沒完成簽核，我不想在有已知色差的情況下出貨。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "要不要改延到下週二？",
+                    "why": "Spelling out 要不要 makes the counter-proposal a clear question for someone you do not work with closely."
+                  },
+                  {
+                    "phrase": "還沒完成簽核",
+                    "why": "Full verb phrase with punctuation, since clipped phrasing reads as sloppy in a formal message."
+                  },
+                  {
+                    "phrase": "在有已知色差的情況下出貨",
+                    "why": "The formal register can afford the full 在…的情況下 frame that the casual versions deliberately avoid."
+                  }
+                ],
+                "text": "要不要改延到下週二？品管那邊還沒完成簽核，我不想在有已知色差的情況下出貨。",
+                "back": "Should we change it to push to next Tuesday? QC hasn't finished the sign-off yet, and I don't want to ship when there's a known color difference.",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1853,
+                  "outputTokens": 1088
+                },
+                "ms": 6756
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 644,
+                  "outputTokens": 114
+                },
+                "ms": 765
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 885,
+                    "outputTokens": 38
+                  },
+                  "ms": 469
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 889,
+                    "outputTokens": 38
+                  },
+                  "ms": 664
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 900,
+                    "outputTokens": 38
+                  },
+                  "ms": 663
+                }
+              ]
+            }
+          },
+          "ms": 8188
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "should we push it to next Tuesday instead? QA hasn't signed off yet and I don't want to ship with a known color issue",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "還是延到下週二？",
+                  "品保還沒簽核 我不想帶著已知的色差出貨"
+                ],
+                "merged": "還是延到下週二？品保還沒簽核 我不想帶著已知的色差出貨",
+                "notes": [
+                  {
+                    "phrase": "還是延到下週二？",
+                    "why": "Echoes 怡君's 還是先延 in the thread, so it reads as a direct reply rather than a new question."
+                  },
+                  {
+                    "phrase": "品保還沒簽核",
+                    "why": "品保 and 簽核 are the everyday Taiwan manufacturing words for QA and sign-off."
+                  },
+                  {
+                    "phrase": "我不想帶著已知的色差出貨",
+                    "why": "Stacks the reason straight after the clause with no filler, the way short bursts work here."
+                  }
+                ],
+                "text": "還是延到下週二？\n品保還沒簽核 我不想帶著已知的色差出貨",
+                "back": "Or push it to next Tuesday?\nQA hasn't signed off yet, I don't want to ship with a known color difference",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "還是延到下週二？",
+                  "品保還沒簽核 而且我不想帶著已知的色差出貨"
+                ],
+                "merged": "還是延到下週二？品保還沒簽核 而且我不想帶著已知的色差出貨",
+                "notes": [
+                  {
+                    "phrase": "還是延到下週二？",
+                    "why": "A space-separated follow-up question keeps the same half-width style as the rest of the channel."
+                  },
+                  {
+                    "phrase": "品保還沒簽核",
+                    "why": "Puts the blocker first so the reason for the delay lands before the opinion."
+                  },
+                  {
+                    "phrase": "而且我不想帶著已知的色差出貨",
+                    "why": "而且 links the two reasons without a comma, matching the channel's habit of using spaces instead of punctuation."
+                  }
+                ],
+                "text": "還是延到下週二？\n品保還沒簽核 而且我不想帶著已知的色差出貨",
+                "back": "Or push it to next Tuesday?\nQA hasn't signed off yet, and I don't want to ship with a known color difference",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "想確認一下，是否改成延到下週二？品保還沒簽核，我不希望在已知有色差的情況下出貨。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "想確認一下，是否改成延到下週二？",
+                    "why": "Keeps it a genuine question while softening the opener for a more formal register."
+                  },
+                  {
+                    "phrase": "品保還沒簽核",
+                    "why": "States the outstanding approval plainly, which is what justifies moving the date."
+                  },
+                  {
+                    "phrase": "在已知有色差的情況下出貨",
+                    "why": "A complete clause with full-width punctuation, as formal written Chinese expects."
+                  }
+                ],
+                "text": "想確認一下，是否改成延到下週二？品保還沒簽核，我不希望在已知有色差的情況下出貨。",
+                "back": "I'd like to confirm — should we change it to a delay until next Tuesday? QA hasn't signed off yet, and I don't wish to ship while there is a known color difference.",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1828,
+                  "outputTokens": 445
+                },
+                "ms": 3095
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 648,
+                  "outputTokens": 121
+                },
+                "ms": 745
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 888,
+                    "outputTokens": 38
+                  },
+                  "ms": 608
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 890,
+                    "outputTokens": 38
+                  },
+                  "ms": 532
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 907,
+                    "outputTokens": 38
+                  },
+                  "ms": 596
+                }
+              ]
+            }
+          },
+          "ms": 4449
+        }
+      ]
+    },
+    {
+      "id": "08-en-to-zh-cn-thanks",
+      "title": "英文草稿 → 大陆简体频道：道谢加提议",
+      "conversation": [
+        {
+          "user": "王磊",
+          "ts": 1793145360,
+          "text": "安卓那边的包我已经打好了"
+        },
+        {
+          "user": "王磊",
+          "ts": 1793145380,
+          "text": "测试服务器上可以直接下载"
+        },
+        {
+          "user": "刘洋",
+          "ts": 1793145500,
+          "text": "收到 我下午看一下"
+        },
+        {
+          "user": "王磊",
+          "ts": 1793145560,
+          "text": "有问题随时说哈"
+        }
+      ],
+      "replyTo": 1,
+      "userLang": "en",
+      "channelLang": "zh-CN",
+      "draft": "thanks Wang Lei! I can help test the login flow too if that's useful",
+      "watch": "用简体与大陆用词（服务器、登录）；道谢对象的名字要在；「if that's useful」的客气要保留，不能变成「我来测」",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "card": {
+            "draft": "thanks Wang Lei! I can help test the login flow too if that's useful",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "谢啦王磊",
+                  "登录流程我也能顺手测测 有用的话"
+                ],
+                "merged": "谢啦王磊 登录流程我也能顺手测测 有用的话",
+                "notes": [
+                  {
+                    "phrase": "谢啦王磊",
+                    "why": "Dropping the second syllable of 谢谢 keeps the thanks light, and 啦 is one of the few particles that fits this channel's tone."
+                  },
+                  {
+                    "phrase": "顺手测测",
+                    "why": "Repeating the verb makes the offer sound low-effort and casual rather than like a formal commitment."
+                  },
+                  {
+                    "phrase": "有用的话",
+                    "why": "The hedge stays at the end with no punctuation, which is exactly how short bursts are written here."
+                  }
+                ],
+                "text": "谢啦王磊\n登录流程我也能顺手测测 有用的话",
+                "back": "Thanks Wang Lei\nI can test the login flow on the side too, if that's useful",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "谢谢王磊",
+                  "登录流程我也可以帮忙测 有用的话"
+                ],
+                "merged": "谢谢王磊 登录流程我也可以帮忙测 有用的话",
+                "notes": [
+                  {
+                    "phrase": "登录流程",
+                    "why": "Keeps the term in Chinese since this channel almost never mixes in English words."
+                  },
+                  {
+                    "phrase": "也可以帮忙测",
+                    "why": "也 signals this is an extra offer on top of already downloading the build, so it reads as a reply."
+                  },
+                  {
+                    "phrase": " 有用的话",
+                    "why": "A space stands in for the comma, matching how people here separate clauses without punctuation."
+                  }
+                ],
+                "text": "谢谢王磊\n登录流程我也可以帮忙测 有用的话",
+                "back": "Thanks Wang Lei\nI can help test the login flow too, if that's useful",
+                "check": {
+                  "status": "info",
+                  "summary": "Same meaning: nothing added or left out, apart from a slightly more casual, fragmented delivery in the sent message.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "谢谢王磊，登录流程我也可以帮忙测试，如果有用的话。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "谢谢王磊，",
+                    "why": "Full name plus a full-width comma reads as a complete, polite sentence for someone the user does not know well."
+                  },
+                  {
+                    "phrase": "我也可以帮忙测试",
+                    "why": "Spelling out 测试 in full instead of shortening it suits the more complete register."
+                  },
+                  {
+                    "phrase": "如果有用的话",
+                    "why": "The conditional stays explicit at the end so the offer does not turn into a promise."
+                  }
+                ],
+                "text": "谢谢王磊，登录流程我也可以帮忙测试，如果有用的话。",
+                "back": "Thanks Wang Lei, I can also help test the login flow, if that's useful.",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: nothing added or left out.",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1653,
+                  "outputTokens": 981
+                },
+                "ms": 5694
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 511,
+                  "outputTokens": 83
+                },
+                "ms": 801
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 756,
+                    "outputTokens": 38
+                  },
+                  "ms": 603
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 752,
+                    "outputTokens": 52
+                  },
+                  "ms": 734
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 754,
+                    "outputTokens": 38
+                  },
+                  "ms": 592
+                }
+              ]
+            }
+          },
+          "ms": 7231
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "card": {
+            "draft": "thanks Wang Lei! I can help test the login flow too if that's useful",
+            "variants": {
+              "casual": {
+                "bubbles": [
+                  "谢谢王磊",
+                  "登录流程我也可以帮忙测"
+                ],
+                "merged": "谢谢王磊 登录流程我也可以帮忙测",
+                "notes": [
+                  {
+                    "phrase": "谢谢王磊",
+                    "why": "Drops the 你 and keeps it to two characters, which is how people thank a colleague in a quick chat burst."
+                  },
+                  {
+                    "phrase": "我也可以帮忙测",
+                    "why": "用「也」把帮忙测试框成额外的选项,和草稿里的 too 对应,又不显得是在主动揽活。"
+                  }
+                ],
+                "text": "谢谢王磊\n登录流程我也可以帮忙测",
+                "back": "Thanks Wang Lei\nI can help test the login flow too",
+                "check": {
+                  "status": "ok",
+                  "summary": "Same meaning: the offer to help test the login flow and the thanks both come through; only the conditional \"if that's useful\" is dropped, which just makes the offer sound slightly more direct.",
+                  "added": [],
+                  "omitted": [
+                    "the qualifier \"if that's useful\""
+                  ],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "channel": {
+                "bubbles": [
+                  "谢谢王磊 登录流程我也可以帮忙测 需要的话说一声"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "谢谢王磊",
+                    "why": "A bare name with 谢谢 is the standard way to thank a teammate here, no 您 or exclamation marks."
+                  },
+                  {
+                    "phrase": "我也可以帮忙测",
+                    "why": "Keeps the offer modest and matches the plain verb-first phrasing used in this channel."
+                  },
+                  {
+                    "phrase": "需要的话说一声",
+                    "why": "Renders the \"if that's useful\" hedge as a conditional clause instead of a vague maybe, which is how this channel phrases conditional offers."
+                  }
+                ],
+                "text": "谢谢王磊 登录流程我也可以帮忙测 需要的话说一声",
+                "back": "Thanks Wang Lei, I can help test the login flow too, just say if you need me to",
+                "check": {
+                  "status": "info",
+                  "summary": "Same meaning: the draft's offer to help test the login flow and to say if useful comes through, just phrased as \"just say if you need me to\".",
+                  "added": [],
+                  "omitted": [],
+                  "toneShifts": [],
+                  "highlights": []
+                }
+              },
+              "formal": {
+                "bubbles": [
+                  "谢谢王磊。登录流程我也可以帮忙测试，如果有需要的话请告诉我。"
+                ],
+                "merged": null,
+                "notes": [
+                  {
+                    "phrase": "谢谢王磊。",
+                    "why": "Full sentence with a period, since the formal register uses normal punctuation."
+                  },
+                  {
+                    "phrase": "如果有需要的话请告诉我",
+                    "why": "Spells out the conditional offer politely rather than leaving it implied."
+                  },
+                  {
+                    "phrase": "登录流程我也可以帮忙测试",
+                    "why": "Complete subject-predicate sentence, keeping the offer but stating it plainly."
+                  }
+                ],
+                "text": "谢谢王磊。登录流程我也可以帮忙测试，如果有需要的话请告诉我。",
+                "back": "Thank you, Wang Lei. I can also help test the login flow; please let me know if it's needed.",
+                "check": {
+                  "status": "warn",
+                  "summary": "Your offer to help test is now conditional on them asking for it (\"if needed\"), so it reads less proactive than your draft.",
+                  "added": [
+                    "Frames the offer as conditional (\"please let me know if it's needed\") rather than stating it's useful"
+                  ],
+                  "omitted": [],
+                  "toneShifts": [
+                    {
+                      "original": "if that's useful",
+                      "now": "please let me know if it's needed",
+                      "direction": "different"
+                    }
+                  ],
+                  "highlights": [
+                    "please let me know if it's needed"
+                  ]
+                }
+              }
+            },
+            "meta": {
+              "polish": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 1628,
+                  "outputTokens": 350
+                },
+                "ms": 2208
+              },
+              "backtranslate": {
+                "provider": "deepseek",
+                "model": "deepseek-flash",
+                "usage": {
+                  "inputTokens": 510,
+                  "outputTokens": 85
+                },
+                "ms": 707
+              },
+              "compare": [
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 744,
+                    "outputTokens": 79
+                  },
+                  "ms": 895
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 757,
+                    "outputTokens": 64
+                  },
+                  "ms": 732
+                },
+                {
+                  "provider": "deepseek",
+                  "model": "deepseek-flash",
+                  "usage": {
+                    "inputTokens": 762,
+                    "outputTokens": 114
+                  },
+                  "ms": 1032
+                }
+              ]
+            }
+          },
+          "ms": 3949
+        }
+      ]
+    },
+    {
+      "id": "r01-zh-slang-to-en",
+      "kind": "read",
+      "title": "台灣中文訊息 → 英文：網路用語與省略主詞",
+      "conversation": "factory-zh",
+      "target": "en",
+      "watch": "「我傻眼」「卡關」「又來」「先延比較保險啦」要翻出語氣；俚語註解用英文；「有消息再跟大家講」不能漏",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "translations": [
+            {
+              "id": "0",
+              "text": "The second batch of frames just finished baking the paint.",
+              "idioms": []
+            },
+            {
+              "id": "1",
+              "text": "And the green is still on the dark side. I'm speechless.",
+              "idioms": [
+                {
+                  "phrase": "傻眼",
+                  "meaning": "speechless; stunned into disbelief",
+                  "usage": "Said when something goes wrong or is so unexpected that you don't know what to say."
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "text": "Here we go again. This color difference has been stuck for two weeks now, hasn't it?",
+              "idioms": [
+                {
+                  "phrase": "又來",
+                  "meaning": "here we go again; not this again",
+                  "usage": "Said with a sigh when the same annoying problem happens once more."
+                },
+                {
+                  "phrase": "卡關",
+                  "meaning": "stuck; blocked at a hurdle (from game jargon)",
+                  "usage": "Used when a task or issue can't move forward and stays stuck at the same point."
+                }
+              ]
+            },
+            {
+              "id": "3",
+              "text": "QC says matte ones are more prone to color shift.",
+              "idioms": []
+            },
+            {
+              "id": "4",
+              "text": "Right, every single matte one in the batch I have is like this.",
+              "idioms": []
+            },
+            {
+              "id": "5",
+              "text": "So are we still shipping Thursday? Or should we push it back?",
+              "idioms": []
+            },
+            {
+              "id": "6",
+              "text": "I think pushing it back is the safer call.",
+              "idioms": []
+            },
+            {
+              "id": "7",
+              "text": "OK, I'll let the PM know first, and I'll tell everyone once I hear back.",
+              "idioms": []
+            },
+            {
+              "id": "8",
+              "text": "Thanks for the hard work 🙏 I'll upload the measurement data a bit later.",
+              "idioms": []
+            }
+          ],
+          "ms": 6841
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "translations": [
+            {
+              "id": "0",
+              "text": "The second batch of frames just finished baking the paint.",
+              "idioms": []
+            },
+            {
+              "id": "1",
+              "text": "Turns out the green is still too dark. I'm dumbfounded.",
+              "idioms": [
+                {
+                  "phrase": "傻眼",
+                  "meaning": "stunned, speechless, at a loss for words",
+                  "usage": "Used when something is so surprising or frustrating that you don't know how to react."
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "text": "Again? This color difference has been stuck for two weeks now, hasn't it?",
+              "idioms": [
+                {
+                  "phrase": "卡關",
+                  "meaning": "stuck, unable to get past an obstacle (from video-game slang for being stuck on a level)",
+                  "usage": "Used when a task or problem can't move forward and is stuck at the same point."
+                }
+              ]
+            },
+            {
+              "id": "3",
+              "text": "QC says the matte ones tend to shift color more easily.",
+              "idioms": []
+            },
+            {
+              "id": "4",
+              "text": "Right, every single one of these matte ones I've got here is like that.",
+              "idioms": []
+            },
+            {
+              "id": "5",
+              "text": "So are we still shipping Thursday? Or should we push it back?",
+              "idioms": []
+            },
+            {
+              "id": "6",
+              "text": "I think pushing it back is the safer bet.",
+              "idioms": []
+            },
+            {
+              "id": "7",
+              "text": "OK, I'll let the PM know first, and I'll tell everyone once there's news.",
+              "idioms": []
+            },
+            {
+              "id": "8",
+              "text": "Thanks for your hard work 🙏 I'll post the measurement data a bit later.",
+              "idioms": [
+                {
+                  "phrase": "丟上來",
+                  "meaning": "to post or upload something (casually, into a channel or chat)",
+                  "usage": "Used when someone will share a file or data in a chat or channel in a casual way."
+                }
+              ]
+            }
+          ],
+          "ms": 2472
+        }
+      ]
+    },
+    {
+      "id": "r02-zh-cn-slang-to-en",
+      "kind": "read",
+      "title": "大陆简体消息 → 英文：网络用语",
+      "conversation": [
+        {
+          "user": "王磊",
+          "ts": 1793145360,
+          "text": "新版的启动速度绝了 yyds"
+        },
+        {
+          "user": "刘洋",
+          "ts": 1793145380,
+          "text": "真的假的 我这边还是卡成 PPT"
+        },
+        {
+          "user": "王磊",
+          "ts": 1793145500,
+          "text": "你是不是没清缓存 哈哈"
+        },
+        {
+          "user": "刘洋",
+          "ts": 1793145520,
+          "text": "清了 还是一样 先摸鱼了 明天再搞"
+        },
+        {
+          "user": "王磊",
+          "ts": 1793145560,
+          "text": "收到 我也躺平了"
+        }
+      ],
+      "target": "en",
+      "watch": "「绝了」「yyds」「卡成 PPT」「摸鱼」「躺平」要有英文註解且意思對；「收到」不能翻成 received",
+      "results": [
+        {
+          "model": "deepseek:deepseek-flash@high",
+          "translations": [
+            {
+              "id": "0",
+              "text": "The new version's startup speed is insane — yyds",
+              "idioms": [
+                {
+                  "phrase": "绝了",
+                  "meaning": "insane, unbelievable — used to express strong amazement or admiration",
+                  "usage": "People say it when something is so good (or so absurd) that they're blown away; e.g. 這速度绝了！"
+                },
+                {
+                  "phrase": "yyds",
+                  "meaning": "\"the eternal god\" — i.e. the greatest of all time, GOAT",
+                  "usage": "Fans use it to hype something or someone as unbeatable; e.g. 这家店 yyds。"
+                }
+              ]
+            },
+            {
+              "id": "1",
+              "text": "For real? Mine still lags so bad it's basically a PowerPoint",
+              "idioms": [
+                {
+                  "phrase": "卡成 PPT",
+                  "meaning": "lagging so badly it turns into a slideshow",
+                  "usage": "Said when an app or computer stutters frame by frame; e.g. 游戏卡成 PPT 了。"
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "text": "Did you forget to clear the cache? haha",
+              "idioms": []
+            },
+            {
+              "id": "3",
+              "text": "I cleared it, still the same. Gonna slack off for now, deal with it tomorrow",
+              "idioms": [
+                {
+                  "phrase": "摸鱼",
+                  "meaning": "to slack off at work, to goof around on the clock (literally \"catch fish\")",
+                  "usage": "Used when someone kills time instead of working; e.g. 別摸魚了，快點做完。"
+                }
+              ]
+            },
+            {
+              "id": "4",
+              "text": "Got it. I'm lying flat too",
+              "idioms": [
+                {
+                  "phrase": "收到",
+                  "meaning": "got it, roger, message received",
+                  "usage": "A quick acknowledgment in chats, like \"copy that\"; e.g. 收到，明天見。"
+                },
+                {
+                  "phrase": "躺平",
+                  "meaning": "to lie flat — to give up striving and just check out",
+                  "usage": "Said when someone stops pushing and accepts doing nothing; e.g. 太累了，我选择躺平。"
+                }
+              ]
+            }
+          ],
+          "ms": 4518
+        },
+        {
+          "model": "deepseek:deepseek-flash",
+          "translations": [
+            {
+              "id": "0",
+              "text": "The new version's startup speed is insane — GOAT",
+              "idioms": [
+                {
+                  "phrase": "绝了",
+                  "meaning": "insane; off the charts (used to express strong amazement, positive or negative)",
+                  "usage": "Say this when something is so extreme it leaves you speechless, often as praise."
+                },
+                {
+                  "phrase": "yyds",
+                  "meaning": "GOAT — the greatest of all time; internet slang for the absolute best",
+                  "usage": "Use it to hype up something or someone you think is unbeatable, often in casual chat."
+                }
+              ]
+            },
+            {
+              "id": "1",
+              "text": "For real? Mine's still lagging so bad it's like a slideshow",
+              "idioms": [
+                {
+                  "phrase": "真的假的",
+                  "meaning": "for real? no way? (expressing disbelief)",
+                  "usage": "Say it when you're surprised or skeptical about what someone just told you."
+                },
+                {
+                  "phrase": "卡成 PPT",
+                  "meaning": "so laggy it's like a slideshow; stuttering badly",
+                  "usage": "Use it when a device or app freezes and stutters painfully, frame by frame like presentation slides."
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "text": "Did you forget to clear the cache? Haha",
+              "idioms": []
+            },
+            {
+              "id": "3",
+              "text": "I cleared it, still the same. Gonna slack off for now, deal with it tomorrow",
+              "idioms": [
+                {
+                  "phrase": "摸鱼",
+                  "meaning": "to slack off; to goof around instead of working",
+                  "usage": "Use it when you're killing time or not doing real work, often while pretending to be busy."
+                }
+              ]
+            },
+            {
+              "id": "4",
+              "text": "Got it. I'm lying flat too",
+              "idioms": [
+                {
+                  "phrase": "躺平",
+                  "meaning": "to lie flat; to give up striving and just coast",
+                  "usage": "Use it when someone decides to stop pushing hard and just relax or opt out of the rat race."
+                }
+              ]
+            }
+          ],
+          "ms": 3581
+        }
+      ]
+    }
+  ]
+}

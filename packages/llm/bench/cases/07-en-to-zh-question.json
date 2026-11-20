@@ -1,10 +1,10 @@
 {
   "id": "07-en-to-zh-question",
   "title": "英文草稿 → 台灣中文頻道：提問加理由",
-  "conversation": "release-zh",
+  "conversation": "factory-zh",
   "replyTo": 5,
   "userLang": "en",
   "channelLang": "zh-TW",
-  "draft": "should we push it to next Tuesday instead? QA hasn't signed off yet and I don't want to ship with a known crash",
-  "watch": "是提問不是決定；「QA 還沒簽核」「不想帶著已知的閃退出貨」都要在；沒有翻譯腔（例如「我不想要帶著…去出貨」）"
+  "draft": "should we push it to next Tuesday instead? QA hasn't signed off yet and I don't want to ship with a known color issue",
+  "watch": "是提問不是決定；「品管還沒簽核」「不想帶著已知的色差出貨」都要在；沒有翻譯腔（例如「我不想要帶著…去出貨」）"
 }

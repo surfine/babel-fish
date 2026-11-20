@@ -1,0 +1,11 @@
+[
+  {"user": "Sam Keller", "ts": 1793145360, "text": "did the frame samples from Taichung arrive yet?"},
+  {"user": "Rita Alvarez", "ts": 1793145380, "text": "yep, landed at the office this morning"},
+  {"user": "Owen Park", "ts": 1793145500, "text": "photo of the sample next to the swatch, the green is way darker"},
+  {"user": "Owen Park", "ts": 1793145560, "text": "@dana like we thought, the green on the sample still doesn’t match the swatch in daylight"},
+  {"user": "Dana Brooks", "ts": 1793146020, "text": "ah k"},
+  {"user": "Owen Park", "ts": 1793146040, "text": "spec sheet fine print fwiw\n> Color must be within ΔE 2.0 of the approved swatch, measured under D65 light. Samples outside tolerance are remade at the supplier’s cost."},
+  {"user": "Dana Brooks", "ts": 1793146050, "text": "yep"},
+  {"user": "Dana Brooks", "ts": 1793146055, "text": "daylight = the D65 lamp, not the window!"},
+  {"user": "Owen Park", "ts": 1793146100, "text": "yeah i think the confusion was that weird lightbox-esque thing in the old studio... glad they streamlined this"}
+]

@@ -9,7 +9,7 @@ describe('computeToneProfile', () => {
       m('a', '@dana as expected nothing here'), // 去掉提及後是 as…，小寫
       m('b', '<@U123> Sounds good'), // Slack 原始提及，去掉後大寫
       m('c', '27.2 is out'), // 數字開頭，不列入分母
-      m('d', 'https://apple.com check this'), // 去掉網址後是 check，小寫
+      m('d', 'https://example.com check this'), // 去掉網址後是 check，小寫
     ]);
     expect(p.lowercaseStartRatio).toBeCloseTo(2 / 3, 2);
     expect(p.sampleSize).toBe(4);
@@ -56,7 +56,7 @@ describe('computeToneProfile', () => {
   });
 
   it('引用行不算進寫法，emoji 比例看原文', () => {
-    const p = computeToneProfile([m('a', 'fine print fwiw\n> Find My for AirPods requires AirPods Pro.'), m('b', 'love it :tada:')]);
+    const p = computeToneProfile([m('a', 'fine print fwiw\n> Color must be within ΔE 2.0.'), m('b', 'love it :tada:')]);
     expect(p.endings.period).toBe(0);
     expect(p.avgWords).toBe(2.5);
     expect(p.emojiRatio).toBe(0.5);

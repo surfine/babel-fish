@@ -4,7 +4,7 @@ import { emojiChar } from './emoji';
 
 const ctx: MrkdwnContext = {
   userName: (id) => ({ U01DANA: 'dana', U01ME: 'mei' })[id],
-  channelName: (id) => ({ C01NEWS: 'newsroom' })[id],
+  channelName: (id) => ({ C01NEWS: 'product' })[id],
   emoji: (name) => (name === 'partyparrot' ? { url: 'https://emoji.slack-edge.com/T1/partyparrot/abc.gif' } : { char: emojiChar(name) }),
   selfId: 'U01ME',
 };
@@ -29,14 +29,14 @@ describe('renderMrkdwn', () => {
     const html = renderMrkdwn('<@U01DANA> <@U01ME> <#C01NEWS> <#C02X|general> <!here>', ctx);
     expect(html).toContain('<span class="mention" data-user="U01DANA">@dana</span>');
     expect(html).toContain('<span class="mention self" data-user="U01ME">@mei</span>');
-    expect(html).toContain('#newsroom');
+    expect(html).toContain('#product');
     expect(html).toContain('#general');
     expect(html).toContain('<span class="mention broadcast">@here</span>');
   });
 
   it('連結：有標籤、無標籤、不安全的協定', () => {
-    expect(renderMrkdwn('<https://example.com/ipad|iPad>')).toBe(
-      '<a href="https://example.com/ipad" target="_blank" rel="noreferrer">iPad</a>',
+    expect(renderMrkdwn('<https://example.com/bikes|Bikes>')).toBe(
+      '<a href="https://example.com/bikes" target="_blank" rel="noreferrer">Bikes</a>',
     );
     expect(renderMrkdwn('<https://a.com/?x=1&amp;y=2>')).toBe(
       '<a href="https://a.com/?x=1&amp;y=2" target="_blank" rel="noreferrer">https://a.com/?x=1&amp;y=2</a>',
@@ -60,8 +60,8 @@ describe('renderMrkdwn', () => {
   });
 
   it('引用與換行', () => {
-    expect(renderMrkdwn('&gt; Find My for AirPods\n&gt; requires AirPods Pro\nyep')).toBe(
-      '<blockquote>Find My for AirPods<br>requires AirPods Pro</blockquote>yep',
+    expect(renderMrkdwn('&gt; Color must be within ΔE 2.0\n&gt; under D65 light\nyep')).toBe(
+      '<blockquote>Color must be within ΔE 2.0<br>under D65 light</blockquote>yep',
     );
     expect(renderMrkdwn('a\nb')).toBe('a<br>b');
   });

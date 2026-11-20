@@ -26,7 +26,7 @@ describe('reviewDraft', () => {
   });
 
   it('回譯請求裡絕對沒有中文原稿；比對請求才有', async () => {
-    const card = await reviewDraft(llm, { draft: DRAFT, recent: [{ user: 'owen', text: 'no AirPods here' }], tone: computeToneProfile([]) });
+    const card = await reviewDraft(llm, { draft: DRAFT, recent: [{ user: 'owen', text: 'the green looks off' }], tone: computeToneProfile([]) });
     const back = seen.find((r) => r.json?.name === 'backtranslation')!;
     const backText = (back.system ?? '') + back.messages.map((m) => m.content).join('');
     expect(backText).not.toContain(DRAFT);

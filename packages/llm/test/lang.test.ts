@@ -43,10 +43,10 @@ describe('閱讀：中文訊息翻成英文', () => {
   });
 
   it('術語表給英文讀者時，列出中文寫法對應的英文正式名稱', () => {
-    const g = [{ term: 'Find My', zh: '「尋找」', zhVariants: { 'zh-CN': '“查找”' } }, { term: 'AirPods Pro', zh: null }];
+    const g = [{ term: 'chainring', zh: '大盤', zhVariants: { 'zh-CN': '牙盘' } }, { term: 'D65', zh: null }];
     const out = formatGlossary(g, 'en');
-    expect(out).toContain('Find My (Chinese: 「尋找」 / “查找”)');
-    expect(out).toContain('AirPods Pro (same in Chinese)');
+    expect(out).toContain('chainring (Chinese: 大盤 / 牙盘)');
+    expect(out).toContain('D65 (same in Chinese)');
   });
 });
 

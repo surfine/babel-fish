@@ -305,10 +305,10 @@ textarea::placeholder{color:var(--text-3)}
 
 <div class="app" id="app">
   <aside class="sidebar" aria-label="側欄">
-    <div class="ws">Tidewater Tech <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4.5 6 7.5 9 4.5"/></svg></div>
+    <div class="ws">Harbor Cycles <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4.5 6 7.5 9 4.5"/></svg></div>
     <div class="rosetta-on"><span class="dot"></span><div><b>Rosetta 已啟用</b><br>英文 ⇄ 繁體中文（台灣）</div></div>
     <div class="sec">頻道</div>
-    <div class="item active"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>newsroom</div>
+    <div class="item active"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>product</div>
     <div class="sec">私訊</div>
     <div class="item"><span class="avatar av" style="background:#6d28d9">DB</span>Dana Brooks</div>
     <div class="item"><span class="avatar av" style="background:#b45309">OP</span>Owen Park</div>
@@ -319,7 +319,7 @@ textarea::placeholder{color:var(--text-3)}
 
   <main class="channel">
     <header class="ch-head">
-      <div class="ch-title"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>newsroom<span class="members">14 位成員</span></div>
+      <div class="ch-title"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>product<span class="members">14 位成員</span></div>
       <div class="ch-tools">
         <div class="seg seg-modes" role="tablist" aria-label="閱讀模式">
           <button role="tab" data-mode="both" aria-selected="true">對照</button>
@@ -382,64 +382,69 @@ const PEOPLE = {
 
 const IDIOMS = {
   'sure does': '<b>sure does…</b>　加強語氣：「還真的是…」。<br>常用來附和或感嘆，例：it sure does take a while.',
-  'fine print': '<b>fine print</b>　合約、公告底下的小字細則。<br>apple fine print＝Apple 官方的細則說明。',
+  'fine print': '<b>fine print</b>　合約、文件底下的小字細則。<br>spec sheet fine print＝規格書裡的細則。',
   'fwiw': '<b>fwiw</b>　= for what it’s worth<br>「僅供參考／順帶一提」，低調地補充資訊時用。',
   'ah k': '<b>ah k</b>　= ah okay<br>極短的「喔好」，很隨意，熟人之間才這樣打。',
-  'Find My-esque': '<b>-esque</b>　字尾，「有點像…的」。<br>Find My-esque＝有點像「尋找」App 的。',
+  'lightbox-esque': '<b>-esque</b>　字尾，「有點像…的」。<br>lightbox-esque＝有點像燈箱的。',
   'streamlined': '<b>streamline</b>　把流程理順、拿掉多餘步驟。<br>常用來稱讚改版：glad they streamlined this.',
 };
 
 const MSGS = [
-  { id: 1, who: 'owen', time: '早上 7:56', en: 'sure does take forever to Verify', zh: '「驗證」這一步還真的有夠久', idioms: ['sure does'] },
-  { id: 2, who: 'owen', cont: true, en: 'Oh good, iPadOS 27 drops the 8th gen iPad anyway so that one’s off the test list', zh: '喔不錯，反正 iPadOS 27 不支援第八代 iPad，那台就不用測了' },
-  { id: 3, who: 'owen', cont: true, en: 'ok it’s updating now', zh: '好，現在在更新了' },
-  { id: 4, who: 'owen', cont: true, en: '@dana like we thought, my AirPods Pro still aren’t in the find my app on iPadOS 27 beta 4', zh: '@dana 跟我們想的一樣，升到 iPadOS 27 beta 4 後，我的 AirPods Pro 還是沒出現在「尋找」App 裡' },
+  { id: 1, who: 'owen', time: '早上 7:56', en: 'sure does take forever to clear customs', zh: '清關還真的有夠久', idioms: ['sure does'] },
+  { id: 2, who: 'owen', cont: true, en: 'Oh good, we’re dropping the 52cm size anyway so that one’s off the test list', zh: '喔不錯，反正 52 公分的尺寸要停掉了，那支就不用測了' },
+  { id: 3, who: 'owen', cont: true, en: 'ok assembling it now', zh: '好，現在在組裝了' },
+  { id: 4, who: 'owen', cont: true, en: '@dana like we thought, the green on the sample still doesn’t match the swatch in daylight', zh: '@dana 跟我們想的一樣，在日光下，樣品的綠色還是跟色卡對不上' },
   { id: 5, who: 'dana', time: '早上 8:07', en: 'ah k', zh: '喔，好', idioms: ['ah k'] },
-  { id: 6, who: 'owen', time: '早上 8:07', en: 'support doc fine print fwiw', zh: '順手附上支援文件的細則，供參考', idioms: ['fine print', 'fwiw'],
-    quote: { en: 'Find My for AirPods requires AirPods Pro (2nd generation) or later. Precision Finding requires an iPhone with Ultra Wideband running the latest iOS software',
-             zh: 'AirPods 的「尋找」功能需要 AirPods Pro（第二代）或後續機型。「精確尋找」需要配備超寬頻、執行最新版 iOS 的 iPhone。' } },
+  { id: 6, who: 'owen', time: '早上 8:07', en: 'spec sheet fine print fwiw', zh: '順手附上規格書的細則，供參考', idioms: ['fine print', 'fwiw'],
+    quote: { en: 'Color must be within ΔE 2.0 of the approved swatch, measured under D65 light. Samples outside tolerance are remade at the supplier’s cost.',
+             zh: '顏色與核可色卡的差異須在 ΔE 2.0 以內，以 D65 光源量測。超出誤差的樣品由供應商負擔費用重做。' } },
   { id: 7, who: 'dana', time: '早上 8:07', en: 'yep', zh: '對' },
-  { id: 8, who: 'dana', cont: true, en: 'find my = the find my app, not the widget!', zh: 'find my 是指「尋找」App，不是小工具！' },
-  { id: 9, who: 'owen', time: '早上 8:08', en: 'yeah i think the confusion was that weird Find My-esque tile in Control Center... glad they streamlined this', zh: '對啊，我想之前會搞混，是因為控制中心裡那個有點像「尋找」的怪方塊……很高興他們把這塊理順了', idioms: ['Find My-esque', 'streamlined'] },
+  { id: 8, who: 'dana', cont: true, en: 'daylight = the D65 lamp, not the window!', zh: '日光是指 D65 燈，不是窗邊！' },
+  { id: 9, who: 'owen', time: '早上 8:08', en: 'yeah i think the confusion was that weird lightbox-esque thing in the old studio... glad they streamlined this', zh: '對啊，我想之前會搞混，是因為舊工作室那個有點像燈箱的怪東西……很高興他們把這塊理順了', idioms: ['lightbox-esque', 'streamlined'] },
 ];
 
-const SAMPLE = '我這邊也一樣，beta 4 上看不到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試';
+const SAMPLE = '我這邊也一樣，樣品的綠色比色卡深。也許是燈光的關係？我明天白天再拍一次';
 
 const V = {
   casual: {
-    bubbles: ['yep same, nothing on beta 4 here either', 'prob need to restart the iPad first. will check again later'],
-    merged: 'yep same, nothing on beta 4 here either. prob need to restart the iPad first, will check again later',
-    back: '對啊我也是，beta 4 這邊也什麼都沒有。<mark>大概</mark>要先把 iPad 重開機吧，我晚點再看看。',
+    bubbles: ['yep same, my sample looks darker than the swatch too', 'prob the lighting. will reshoot tomorrow in daylight'],
+    merged: 'yep same, my sample looks darker than the swatch too. prob the lighting, will reshoot tomorrow in daylight',
+    back: '對啊我也是，我的樣品看起來也比色卡深。<mark>大概</mark>是燈光的關係，我明天白天再重拍。',
     check: ['warn', '「也許」寫成了 prob（大概），語氣比你的原稿篤定一點'],
-    notes: [['yep same', '比 same here 更隨意，適合跟熟的同事'], ['prob', 'probably 的縮寫，這個頻道很常見'], ['will check again later', '省略主詞 I，口語訊息很常這樣寫']],
+    notes: [['yep same', '比 same here 更隨意，適合跟熟的同事'], ['prob', 'probably 的縮寫，這個頻道很常見'], ['will reshoot tomorrow', '省略主詞 I，口語訊息很常這樣寫']],
   },
   natural: {
-    bubbles: ['same here, no AirPods showing up on beta 4 for me either', 'maybe they only show up after the iPad restarts? will try again in a bit'],
-    merged: 'same here, no AirPods showing up on beta 4 for me either. maybe they only show up after the iPad restarts? will try again in a bit',
-    back: '我這邊也一樣，beta 4 上也沒看到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試試。',
+    bubbles: ['same here, the green on my sample looks darker than the swatch too', 'maybe it’s the lighting? will take another photo tomorrow in daylight'],
+    merged: 'same here, the green on my sample looks darker than the swatch too. maybe it’s the lighting? will take another photo tomorrow in daylight',
+    back: '我這邊也一樣，我的樣品綠色看起來也比色卡深。也許是燈光的關係？我明天白天再拍一張。',
     check: ['ok', '意思一致：沒有新增或漏掉資訊'],
-    notes: [['same here', '「我這邊也一樣」。Slack 上最自然的附和，比 I have the same situation 道地得多'], ['no AirPods showing up', '用 show up 表示「出現在清單裡」，也呼應 Owen 剛說的 still aren’t in'], ['小寫開頭、句尾不加句號', '跟這個頻道 86% 的訊息一致；在這裡正式大寫反而顯得生分'], ['in a bit', '「等一下」，比 later 更近、更口語']],
+    notes: [
+      ['same here', '「我這邊也一樣」。Slack 上最自然的附和，比 I have the same situation 道地得多'],
+      ['looks darker than the swatch', '用 look 說「看起來」，也呼應 Owen 剛說的 doesn’t match the swatch'],
+      ['小寫開頭、句尾不加句號', '跟這個頻道大多數訊息一致；在這裡正式大寫反而顯得生分'],
+      ['in daylight', '「白天」。拍顏色時說 in daylight，大家就知道你要換成自然光'],
+    ],
   },
   formal: {
-    bubbles: ['Same here. I’m not seeing any AirPods on iPadOS 27 beta 4 either. They may only appear after the iPad restarts, so I’ll try again shortly.'],
+    bubbles: ['Same here. The green on my frame sample also looks darker than the swatch. It may be the lighting, so I’ll take another photo in daylight tomorrow.'],
     merged: null,
-    back: '我這邊也一樣，在 <mark>iPadOS 27</mark> beta 4 上也看不到任何 AirPods。可能要等 iPad 重開機後才會出現，我稍後再試一次。',
-    check: ['info', '補上了「iPadOS 27」讓版本號更清楚，其餘意思一致'],
-    notes: [['完整句子、正常大小寫', '適合寫給編輯，或還不熟的人'], ['I’m not seeing', '進行式比 I don’t see 委婉，帶「目前看起來」的意思'], ['合併成一則', '正式一點的訊息通常不連發']],
+    back: '我這邊也一樣，我的<mark>車架</mark>樣品綠色看起來也比色卡深。可能是燈光的關係，所以我明天會在白天再拍一張。',
+    check: ['info', '補上了「車架」讓說的是哪個樣品更清楚，其餘意思一致'],
+    notes: [['完整句子、正常大小寫', '適合寫給主管，或還不熟的人'], ['It may be the lighting', '用 may 保留你原稿「也許」的不確定'], ['合併成一則', '正式一點的訊息通常不連發']],
   },
   short: {
-    bubbles: ['same, nothing on beta 4 for me either', 'prob needs an iPad restart first. will retry in a bit'],
-    merged: 'same, nothing on beta 4 for me either. prob needs an iPad restart first, will retry in a bit',
-    back: '一樣，我 beta 4 上也沒有。<mark>大概</mark>要先重開 iPad，我等等再試。',
+    bubbles: ['same, mine looks darker than the swatch too', 'prob the lighting. will reshoot tomorrow in daylight'],
+    merged: 'same, mine looks darker than the swatch too. prob the lighting, will reshoot tomorrow in daylight',
+    back: '一樣，我的也比色卡深。<mark>大概</mark>是燈光，我明天白天重拍。',
     check: ['warn', '「也許」寫成了 prob（大概），語氣比你的原稿篤定一點'],
-    notes: [['刪掉可省略的字', 'here、showing up 都拿掉了，意思不變'], ['retry', '比 try again 短，技術討論裡很常見']],
+    notes: [['刪掉可省略的字', 'here、the green 都拿掉了，看上下文就知道說的是顏色'], ['reshoot', '「重拍」，比 take another photo 短']],
   },
   warm: {
-    bubbles: ['same here!! no AirPods showing up on beta 4 for me either', 'maybe they only show up after the iPad restarts? will try again in a bit and report back'],
-    merged: 'same here!! no AirPods showing up on beta 4 for me either. maybe they only show up after the iPad restarts? will try again in a bit and report back',
-    back: '我這邊也一樣！！beta 4 上也沒看到 AirPods。也許要等 iPad 重開機後才會出現？我等一下再試，<mark>有結果再回報</mark>。',
+    bubbles: ['same here!! the green on my sample looks darker than the swatch too', 'maybe it’s the lighting? will take another photo tomorrow in daylight and report back'],
+    merged: 'same here!! the green on my sample looks darker than the swatch too. maybe it’s the lighting? will take another photo tomorrow in daylight and report back',
+    back: '我這邊也一樣！！我的樣品綠色看起來也比色卡深。也許是燈光的關係？我明天白天再拍一張，<mark>有結果再回報</mark>。',
     check: ['warn', '多了一句「有結果再回報」（report back），你的原稿沒有這句'],
-    notes: [['!!', '兩個驚嘆號讓語氣更熱絡，這個頻道偶爾會這樣用'], ['report back', '「回報結果」。這句是我加的，不需要就直接刪掉']],
+    notes: [['!!', '兩個驚嘆號讓語氣更熱絡，這個頻道偶爾會這樣用'], ['report back', '「回報結果」。這句是模型加的，不需要就直接刪掉']],
   },
 };
 
@@ -509,7 +514,7 @@ function sentHTML(s) {
 
 const CATCHUP = `<div class="catchup" id="catchup">
   <h4>${ICON.spark}你離開的 52 分鐘裡有 9 則新訊息</h4>
-  <p>Owen 把 iPad 升到 iPadOS 27 beta 4 後，「尋找」App 裡還是看不到他的 AirPods Pro。支援文件寫明 AirPods Pro 第二代以後才支援「尋找」，「精確尋找」則要有超寬頻的 iPhone。Dana 確認大家說的 find my 就是「尋找」App，不是小工具。</p>
+  <p>台中寄來的車架樣品到了，Owen 發現在日光下，樣品的綠色還是比色卡深。規格書寫明顏色誤差要在 ΔE 2.0 以內、用 D65 光源量測，超出就由供應商重做。Dana 確認大家說的日光就是 D65 燈，不是窗邊。</p>
   <div class="cu-actions"><button class="link-btn" data-act="close-catchup">收起摘要</button></div>
 </div>`;
 
@@ -571,13 +576,13 @@ const STYLE_PANEL = `<h4>這個頻道的寫法</h4><p class="sub">依最近 200 
   <label class="switch"><input type="checkbox" checked> 潤色時跟著這個語氣</label>
   <label class="switch"><input type="checkbox" checked> 也參考我過去 50 則英文訊息的用字</label>`;
 
-const GLOSS_PANEL = `<h4>術語表</h4><p class="sub">翻譯和潤色都照這張表；產品名一律用 Apple 官方寫法</p>
+const GLOSS_PANEL = `<h4>術語表</h4><p class="sub">翻譯和潤色都照這張表；專有名詞和數值照原樣保留</p>
   <table class="gloss">
-    <tr><td>Find My</td><td>「尋找」</td></tr>
-    <tr><td>Precision Finding</td><td>精確尋找</td></tr>
-    <tr><td>Control Center</td><td>控制中心</td></tr>
-    <tr><td>AirPods Pro</td><td>不翻譯</td></tr>
-    <tr><td>iPadOS 27、beta 4</td><td>不翻譯，保留大小寫</td></tr>
+    <tr><td>swatch</td><td>色卡</td></tr>
+    <tr><td>lightbox</td><td>燈箱</td></tr>
+    <tr><td>matte</td><td>消光</td></tr>
+    <tr><td>D65</td><td>不翻譯</td></tr>
+    <tr><td>ΔE 2.0</td><td>不翻譯，數值照原樣</td></tr>
   </table>
   <button class="link-btn">＋ 新增詞條</button>`;
 
@@ -682,7 +687,7 @@ function renderReview(anim = false) {
       <button class="btn ghost" data-act="cancel">取消</button>
       <button class="btn ghost" data-act="edit-zh">改中文</button>
       <div class="send-area">
-        <span class="as-who">以 Mei Lin 的身分送到 newsroom</span>
+        <span class="as-who">以 Mei Lin 的身分送到 product</span>
         <span class="kbd">⌘↩</span>
         <button class="btn primary" data-act="send" ${state.armed ? '' : 'disabled'}>送出${n > 1 ? ` ${n} 則` : ''}</button>
       </div>
@@ -747,7 +752,7 @@ function send() {
       clearInterval(sendTimer);
       s.pending = false;
       renderFeed();
-      toast(`已送到 newsroom（${texts.length} 則）`);
+      toast(`已送到 product（${texts.length} 則）`);
       return;
     }
     const u = $(`[data-sent="${s.id}"] [data-act="undo"]`);

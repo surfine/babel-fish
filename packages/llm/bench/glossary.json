@@ -1,8 +1,7 @@
 [
-  { "term": "Find My", "zh": "「尋找」" },
-  { "term": "Precision Finding", "zh": "精確尋找" },
-  { "term": "Control Center", "zh": "控制中心" },
-  { "term": "AirPods Pro", "zh": null },
-  { "term": "iPadOS 27", "zh": null, "note": "版本號保留原樣" },
-  { "term": "beta 4", "zh": null, "note": "版本號保留原樣" }
+  {"term": "swatch", "zh": "色卡"},
+  {"term": "lightbox", "zh": "燈箱"},
+  {"term": "matte", "zh": "消光"},
+  {"term": "D65", "zh": null, "note": "光源名稱保留原樣"},
+  {"term": "ΔE 2.0", "zh": null, "note": "數值保留原樣"}
 ]

@@ -3,13 +3,13 @@ import { detectChannelLang, detectLang } from './lang';
 
 describe('detectLang', () => {
   it.each([
-    ['我這邊也一樣，27.2 上看不到遙控器', 'zh'],
+    ['我這邊也一樣，樣品上看不到序號', 'zh'],
     ['今天要開會嗎？我晚點到', 'zh'],
     ['sure does take a long time to Prepare', 'en'],
     ['ah k', 'en'],
-    ['iPadOS 27 終於出了，AirPods Pro 可以用尋找了', 'zh'],
-    ['新しいMacBook Proはすごいです', 'ja'],
-    ['새로운 맥북 프로', 'ko'],
+    ['新版色卡終於到了，D65 燈箱也裝好了', 'zh'],
+    ['新しい自転車はすごいです', 'ja'],
+    ['새로운 자전거', 'ko'],
     ['Ежедневные новости', 'ru'],
   ])('%s → %s', (text, lang) => {
     expect(detectLang(text)).toBe(lang);
